@@ -1,4 +1,4 @@
-// UMvC3 PageTurn - diagnostic build 0.0.1
+// UMvC3 PageTurn - diagnostic build 0.0.2
 // Loads via Ultimate ASI Loader (dinput8.dll). Logs select-screen events only; changes nothing.
 #define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
@@ -36,6 +36,19 @@ static tBuildIcons o_BuildIcons = nullptr;
 static tSetDims    o_SetDims = nullptr;
 static tLookup     o_Lookup = nullptr;
 
+// Reads the rip-relative displacement of the 'lea rax,[grid table]' inside lookup(x,y). Clone Engine
+// repoints it at its own bigger table (allocated at 0x1B0000000), so this tells us whether CE is active.
+static void LogGridTable(const char* when) {
+    const uint8_t* lea = (const uint8_t*)0x140361FE5; // 48 8D 05 disp32
+    int32_t disp = *(const int32_t*)(lea + 3);
+    const int32_t* tbl = (const int32_t*)(lea + 7 + disp);
+    int count = 0; for (int i = 0; i < 0x3000 / 4; i++) { if (tbl[i] != 0) count = i + 1; if (i >= 56 && tbl[i] == 0 && tbl[i+1] == 0 && tbl[i+2] == 0) break; }
+    const uint8_t* sd = (const uint8_t*)0x140373280;
+    Log("%s: grid table at %p (%s), last non-zero index %d; setDims bytes %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
+        when, tbl, ((uintptr_t)tbl == 0x140B3E580) ? "vanilla" : "PATCHED (Clone Engine)", count - 1,
+        sd[0],sd[1],sd[2],sd[3],sd[4],sd[5],sd[6],sd[7],sd[8],sd[9],sd[10],sd[11]);
+    if ((uintptr_t)tbl != 0x140B3E580) { for (int i = 56; i < count && i < 56 + 8; i++) Log("   slot %d -> chrId %d", i, tbl[i]); }
+}
 static uint32_t g_lastSlot[2] = { 0xFFFFFFFF, 0xFFFFFFFF };
 
 static void __fastcall h_SetCur(void* self, uint32_t player, uint32_t slot) {
@@ -50,6 +63,7 @@ static void __fastcall h_SetCur(void* self, uint32_t player, uint32_t slot) {
 static void* __fastcall h_CursorCtor(void* self, int player) {
     void* r = o_CursorCtor(self, player);
     uint8_t* inner = (uint8_t*)self + 0x78;
+    if (player == 0) LogGridTable("at cursor ctor");
     Log("cursor ctor self=%p player=%d inner=%p cols=%d rows=%d total=%d",
         self, player, inner, *(int*)(inner + 0x54), *(int*)(inner + 0x58), *(int*)(inner + 0x5c));
     return r;
@@ -76,7 +90,7 @@ static void Init() {
     char* p = strrchr(path, (int)92); if (p) *(p + 1) = 0;
     char logPath[MAX_PATH]; snprintf(logPath, sizeof logPath, "%sUMvC3PageTurn.log", path);
     g_log = fopen(logPath, "w");
-    Log("UMvC3 PageTurn diagnostic 0.0.1 loaded; exe base=%p", GetModuleHandleA(nullptr));
+    Log("UMvC3 PageTurn diagnostic 0.0.2 loaded; exe base=%p", GetModuleHandleA(nullptr));
 
     if (strcmp((const char*)ADDR_GAME_NAME, "umvc3") != 0) {
         Log("version check FAILED: expected 'umvc3' at %llx", (unsigned long long)ADDR_GAME_NAME);
@@ -85,6 +99,7 @@ static void Init() {
     }
     Log("version check ok");
     o_Lookup = (tLookup)ADDR_GRID_LOOKUP;
+    LogGridTable("at init");
 
     if (MH_Initialize() != MH_OK) { Log("MH_Initialize failed"); return; }
     Hook(ADDR_BGMAIN_SETCUR, (void*)h_SetCur, &o_SetCur, "BgMain::setCursorPos");
