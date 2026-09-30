@@ -29,3 +29,6 @@
 .vs/
 __pycache__/
 *.pyc
+*.zip
+*.7z
+*.rar
