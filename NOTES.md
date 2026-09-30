@@ -211,3 +211,11 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 - CE patches are applied **after** our init but **before** the select screen: at cursor ctor the lookup table is at `0x1B0000000`, 141 entries (56 vanilla + 85 clones; children skipped, e.g. slot 63 → chrId 68), setDims body = `89 51 54 BA 12 00 00 00 89 51 58 C3` → **rows = 18** (0x12), cols = 8; inner +0x5c stays 1.
 - Cursor freely reaches y = 7..17; every slot ≥ 56 pushed to BgMain::setCursorPos is dropped by the game (no highlight), as predicted. Hidden characters selectable (Will).
 - Grid size for our paging: 8 × 18 → split mode 3 bands × 2 halves = **6 pages of 28**; solo mode **3 pages of 56**.
+
+## Phase 2 status (2026-09-30 evening)
+
+- **Test 12 (0.1.6) PASS**: split paging works in Versus — P1's left half pages through CE rows, cursor highlight follows, right half untouched, modded pick works. Screenshots in `notes/screenshots/`.
+- Repaint lessons: (1) the game's `buildIcons` cannot be re-run at runtime for clone ids (no `f_` icons exist for clones → engine "Failed open file" fatal dialog); (2) at runtime the resource manager (`mgr->vt+0x60`, fn `0x1402B4CD0`) does NOT resolve arc-packed textures by name, it goes straight to disk. So we cache the texture objects the game loads during its own screen-load `buildIcons` (hooked loader) and reuse them; loose files (CE `b_<Name>255` bodies, our `ui/PageTurn/blank`) load fine at runtime.
+- Clone grid icons: CE ships none; we show the CE body portrait `b_<Name>255_BM_HQ_NOMIP` (silhouette for many) squeezed into the icon. Proper face crops = later polish.
+- Empty cells: our own 128x128 BC3 fully-transparent `assets/nativePCx64/ui/PageTurn/blank_BM_HQ_NOMIP.tex` (Hatena header + zero blocks).
+- Open: Random / Random-all / Hatena not captured by the cache (paths logged in 0.1.7 to fix); page indicator; shoulder buttons; solo-mode test; online test.
