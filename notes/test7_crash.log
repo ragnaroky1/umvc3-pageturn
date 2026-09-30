@@ -1,0 +1,61 @@
+[17:47:25.147] UMvC3 PageTurn 0.1.1 loaded
+[17:47:25.147] ucrtbase invalid-parameter handler installed
+[17:47:25.183] hooks created, MH_EnableHook -> 0
+[17:47:45.789] cursor ctor player=0 outer=00000000161723F0 inner=0000000016172468 cols=8 rows=18 startPos=26
+[17:47:45.789] cursor ctor player=1 outer=000000001616E570 inner=000000001616E5E8 cols=8 rows=18 startPos=29
+[17:47:45.858] buildIcons bgmain=000000001616CCB0 (split=1, P1 page 1, P2 page 2)
+[17:47:45.858]    lookup vis(3,0) -> real(3,0) chrId 53
+[17:47:45.858]    lookup vis(3,1) -> real(3,1) chrId 23
+[17:47:45.858]    lookup vis(3,2) -> real(3,2) chrId 22
+[17:47:45.858]    lookup vis(3,3) -> real(3,3) chrId 7
+[17:47:45.858]    lookup vis(3,4) -> real(3,4) chrId 8
+[17:47:45.858]    lookup vis(3,5) -> real(3,5) chrId 6
+[17:47:45.858]    lookup vis(3,6) -> real(3,6) chrId 12
+[17:47:45.858]    lookup vis(2,0) -> real(2,0) chrId 0
+[17:47:45.859] probe: root=000000001610D7B0 vt=0000000140B22A60 face_a=00000000161FA4B0 vt=0000000140B21DC0
+[17:47:45.859] probe: face_a child 0 = 000000000D17CBE0 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[17:47:45.859] probe: face_a child 1 = 000000000CFFAE90 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[17:47:45.893] player 0 -> page 1/6 (split); repainting grid
+[17:47:45.893] buildIcons bgmain=000000001616CCB0 (split=1, P1 page 1, P2 page 2)
+[17:47:45.893]    lookup vis(3,0) -> real(3,0) chrId 53
+[17:47:45.893]    lookup vis(3,1) -> real(3,1) chrId 23
+[17:47:45.893]    lookup vis(3,2) -> real(3,2) chrId 22
+[17:47:45.893]    lookup vis(3,3) -> real(3,3) chrId 7
+[17:47:45.893]    lookup vis(3,4) -> real(3,4) chrId 8
+[17:47:45.893]    lookup vis(3,5) -> real(3,5) chrId 6
+[17:47:45.893]    lookup vis(3,6) -> real(3,6) chrId 12
+[17:47:45.893]    lookup vis(2,0) -> real(2,0) chrId 0
+[17:47:45.893] probe: root=000000001610D7B0 vt=0000000140B22A60 face_a=00000000161FA4B0 vt=0000000140B21DC0
+[17:47:45.893] probe: face_a child 0 = 000000000D17CBE0 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[17:47:45.893] probe: face_a child 1 = 000000000CFFAE90 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[17:47:45.893] player 1 -> page 2/6 (split); repainting grid
+[17:47:45.893] buildIcons bgmain=000000001616CCB0 (split=1, P1 page 1, P2 page 2)
+[17:47:45.893]    lookup vis(3,0) -> real(3,0) chrId 53
+[17:47:45.893]    lookup vis(3,1) -> real(3,1) chrId 23
+[17:47:45.893]    lookup vis(3,2) -> real(3,2) chrId 22
+[17:47:45.893]    lookup vis(3,3) -> real(3,3) chrId 7
+[17:47:45.893]    lookup vis(3,4) -> real(3,4) chrId 8
+[17:47:45.893]    lookup vis(3,5) -> real(3,5) chrId 6
+[17:47:45.893]    lookup vis(3,6) -> real(3,6) chrId 12
+[17:47:45.893]    lookup vis(2,0) -> real(2,0) chrId 0
+[17:47:46.693] move p0 d=(0,1) -> page 1 cell (2,0) real slot 2 (x=2 y=0)
+[17:47:46.943] move p0 d=(0,1) -> page 1 cell (2,0) real slot 2 (x=2 y=0)
+[17:47:47.128] move p0 d=(0,1) -> page 1 cell (2,0) real slot 2 (x=2 y=0)
+[17:47:47.927] move p0 d=(0,-1) -> page 1 cell (2,0) real slot 2 (x=2 y=0)
+[17:47:48.561] move p0 d=(1,0) -> page 2 cell (1,0) real slot 5 (x=5 y=0)
+[17:47:48.561] player 0 -> page 2/6 (split); repainting grid
+[17:47:48.561] buildIcons bgmain=000000001616CCB0 (split=1, P1 page 2, P2 page 2)
+[17:47:48.561]    lookup vis(3,0) -> real(7,0) chrId 37
+[17:47:48.561]    lookup vis(3,1) -> real(7,1) chrId 49
+[17:47:48.561]    lookup vis(3,2) -> real(7,2) chrId 39
+[17:47:48.561]    lookup vis(3,3) -> real(7,3) chrId 35
+[17:47:48.561]    lookup vis(3,4) -> real(7,4) chrId 38
+[17:47:48.561]    lookup vis(3,5) -> real(7,5) chrId 42
+[17:47:48.561]    lookup vis(3,6) -> real(7,6) chrId 32
+[17:47:48.561]    lookup vis(2,0) -> real(6,0) chrId 0
+[17:47:49.428] move p0 d=(1,0) -> page 2 cell (2,0) real slot 6 (x=6 y=0)
+[17:47:50.260] move p0 d=(0,-1) -> page 6 cell (2,3) real slot 142 (x=6 y=17)
+[17:47:50.260] player 0 -> page 6/6 (split); repainting grid
+[17:47:50.260] buildIcons bgmain=000000001616CCB0 (split=1, P1 page 6, P2 page 2)
+[17:47:50.260]    lookup vis(3,0) -> real(7,14) chrId 135
+[17:47:58.622] unloading

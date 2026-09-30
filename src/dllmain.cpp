@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.1"
+#define PT_VERSION "0.1.2"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -115,7 +115,8 @@ static int RealFromVisible(int vis) {
     int page = g_pc[face].realPos < 0 ? face : PageOf(g_pc[face].realPos);
     return RealFromPage(page, x % 4, y);
 }
-static bool RealBlocked(void* inner, int pos) { int x = pos & 7, y = pos >> 3; return y >= g_rows || vt_blocked(inner, x, y) != 0; }
+// vt+0xf8 (0x140372d90) returns TRUE when the cell holds a selectable character, FALSE when empty/taken.
+static bool RealBlocked(void* inner, int pos) { int x = pos & 7, y = pos >> 3; return y >= g_rows || vt_blocked(inner, x, y) == 0; }
 
 // ---------------------------------------------------------------- hooks
 static int g_lookupLogBudget = 0;
@@ -243,6 +244,60 @@ static void __fastcall h_CursorTick(void* self) {
     if (pc->realPos >= 0) *(int*)(in + UC_POS) = VisibleFromReal(*(int*)(o + OC_PLAYER), pc->realPos);
 }
 
+// ---------------------------------------------------------------- our own grid repaint (never asks the engine for a file that does not exist)
+typedef void* (__fastcall* tGetResMgr)();                                        // 0x140001b10
+typedef void* (__fastcall* tResLoad)(void* mgr, void* dti, const char* path, int flag); // mgr vt+0x60
+typedef void* (__fastcall* tTexHandle)(void* tex);                                 // 0x1400b0f60
+typedef void  (__fastcall* tResRelease)(void* res);                                // 0x14050d5a0
+typedef void  (__fastcall* tNodeSetTex)(void* node, void* handle);                 // node vt+0x50
+typedef const char* (__fastcall* tChrName)(int chrId);                             // 0x140058f90 (CE repoints its table)
+static const uintptr_t ADDR_RESMGR_GET = 0x140001B10, ADDR_TEX_HANDLE = 0x1400B0F60, ADDR_RES_RELEASE = 0x14050D5A0,
+                       ADDR_CHR_NAME = 0x140058F90, ADDR_FIND_NODE = 0x1402DE580, ADDR_CHILD_BY_IDX = 0x140326B90,
+                       ADDR_TEX_DTI = 0x140E17570;
+static char g_gameDir[MAX_PATH];
+
+static bool LooseFileExists(const char* resPath) {
+    char full[MAX_PATH]; snprintf(full, sizeof full, "%snativePCx64\%s.tex", g_gameDir, resPath);
+    return GetFileAttributesA(full) != INVALID_FILE_ATTRIBUTES;
+}
+// Pick a texture resource path for a character id. Vanilla ids come from the arc (always present).
+static void IconPathFor(int chrId, char* out, size_t n) {
+    if (chrId == 0x35)                { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Random_BM_HQ_NOMIP"); return; }
+    if (chrId == 0x36)                { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Random_all_BM_HQ_NOMIP"); return; }
+    if (chrId <= 0 || chrId == 0x34 || chrId == 0x37) { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP"); return; }
+    const char* name = ((tChrName)ADDR_CHR_NAME)(chrId);
+    if (!name || !*name)              { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP"); return; }
+    if (chrId < 60)                   { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_%s00_BM_HQ_NOMIP", name); return; }
+    // Clone Engine character: only loose files can exist. Try a real icon, then the body portrait, else "?".
+    snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_%s00_BM_HQ_NOMIP", name);   if (LooseFileExists(out)) return;
+    snprintf(out, n, "ui\chs\chs_b1p\chs_body\b_%s255_BM_HQ_NOMIP", name);      if (LooseFileExists(out)) return;  // CE clone bodies use 255
+    snprintf(out, n, "ui\chs\chs_b1p\chs_body\b_%s99_BM_HQ_NOMIP", name);       if (LooseFileExists(out)) return;
+    snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP");
+}
+static void RepaintIcons(void* bgMain) {
+    void* root = *(void**)((uint8_t*)bgMain + 0x58);
+    if (!root) return;
+    void* mgr = ((tGetResMgr)ADDR_RESMGR_GET)();
+    tResLoad load = *(tResLoad*)(*(uint8_t**)mgr + 0x60);
+    int painted = 0, missing = 0;
+    for (int face = 0; face < 2; face++) {
+        void* mesh = ((tFindNode)ADDR_FIND_NODE)(root, face ? "chs_meku_face_b" : "chs_meku_face_a");
+        if (!mesh) continue;
+        for (int i = 0; i < 28; i++) {
+            int x = face ? 4 + i / 7 : 3 - i / 7, y = i % 7;
+            int real = RealFromVisible(y * 8 + x);
+            int chrId = o_Lookup(real & 7, real >> 3);
+            char path[160]; IconPathFor(chrId, path, sizeof path);
+            void* tex = load(mgr, (void*)ADDR_TEX_DTI, path, 1);
+            if (!tex) { missing++; continue; }
+            void* node = ((tChildByIdx)ADDR_CHILD_BY_IDX)(mesh, i);
+            if (node) { (*(tNodeSetTex*)(*(uint8_t**)node + 0x50))(node, ((tTexHandle)ADDR_TEX_HANDLE)(tex)); painted++; }
+            ((tResRelease)ADDR_RES_RELEASE)(tex);
+        }
+    }
+    Log("repaint: %d nodes painted, %d textures unavailable", painted, missing);
+}
+
 static void __fastcall h_CursorUpdate(void* self) {
     PlayerCursor* pc = FindByOuter(self);
     if (!pc) { o_CursorUpdate(self); return; }
@@ -256,10 +311,9 @@ static void __fastcall h_CursorUpdate(void* self) {
     int key = page * 2 + (SplitMode() ? 1 : 0);
     if (key != pc->shownPage) {
         pc->shownPage = key;
-        if (g_bgMain && o_BuildIcons) {
+        if (g_bgMain) {
             Log("player %d -> page %d/%d (%s); repainting grid", player, page + 1, PageCount(), SplitMode() ? "split" : "solo");
-            h_BuildIcons(g_bgMain);
-            // the other face may also have changed meaning (mode switch); force its key to refresh next frame
+            RepaintIcons(g_bgMain);
         }
     }
 }
@@ -311,6 +365,7 @@ template<typename T> static bool Hook(uintptr_t addr, void* detour, T** orig, co
 static void Init() {
     char path[MAX_PATH]; GetModuleFileNameA(nullptr, path, MAX_PATH);
     char* p = strrchr(path, (int)92); if (p) *(p + 1) = 0;
+    strncpy(g_gameDir, path, sizeof g_gameDir - 1);
     char logPath[MAX_PATH]; snprintf(logPath, sizeof logPath, "%sUMvC3PageTurn.log", path);
     g_log = fopen(logPath, "w");
     Log("UMvC3 PageTurn %s loaded", PT_VERSION);
