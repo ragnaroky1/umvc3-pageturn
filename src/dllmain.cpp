@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.8"
+#define PT_VERSION "0.2.0"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -81,7 +81,6 @@ static PlayerCursor g_pc[2];
 static uint8_t* g_bgMain = nullptr;
 static int  g_cols = 8, g_rows = 18;        // read from the inner cursor after ctor
 static bool g_translate = false;            // lookup(x,y) receives visible coords -> translate to real
-static bool g_needRepaint = false;
 
 static inline int vtcall_bool(void* self, int slot, int player) { return (*(tVtBool1*)(*(uint8_t**)self + slot))(self, player); }
 static inline char vt_blocked(void* self, int x, int y)          { return (*(tVtBlocked*)(*(uint8_t**)self + VT_BLOCKED))(self, x, y); }
@@ -93,37 +92,48 @@ static PlayerCursor* FindByOuter(void* outer) { for (auto& p : g_pc) if (p.outer
 static bool SplitMode() {
     return g_pc[0].inner && g_pc[1].inner && g_pc[0].inner[UC_ENABLED] && g_pc[1].inner[UC_ENABLED];
 }
-static int Bands()     { return (g_rows + 6) / 7; }
-static int PageCount() { return SplitMode() ? Bands() * 2 : Bands(); }
-
-// page geometry: split -> page P covers x in [ (P%2)*4, +4 ), y in [ (P/2)*7, +7 ); solo -> x 0..7, y in [P*7, +7)
-static int  PageOf(int pos)   { int x = pos & 7, y = pos >> 3; return SplitMode() ? (y / 7) * 2 + (x / 4) : y / 7; }
-static int  PageW()           { return SplitMode() ? 4 : 8; }
-static void PageCell(int pos, int& cx, int& cy) { int x = pos & 7, y = pos >> 3; cx = SplitMode() ? x % 4 : x; cy = y % 7; }
+static int  g_ceCount = 0;                   // number of Clone Engine slots (real pos 56 .. 56+g_ceCount-1)
+static int  BasePages()    { return SplitMode() ? 2 : 1; }
+static int  PageW()        { return SplitMode() ? 4 : 8; }
+// Cells hidden behind the CAPCOM / MARVEL logos on the top row: x = 1,2 and 5,6. Modded pages never use them.
+static bool IsHole(int cx, int cy) { if (cy != 0) return false; int x = SplitMode() ? cx : cx; return (x % 4) == 1 || (x % 4) == 2; }
+static int  CellsPerPage() { return PageW() * 7 - (SplitMode() ? 2 : 4); }
+static int  PageCount()    { int cpp = CellsPerPage(); return BasePages() + (g_ceCount + cpp - 1) / cpp; }
+// index of a cell within a modded page's fill order (row-major, skipping holes), or -1 for a hole
+static int  CellIndex(int cx, int cy) { if (IsHole(cx, cy)) return -1; int k = 0; for (int y = 0; y <= cy; y++) for (int x = 0; x < PageW(); x++) { if (y == cy && x == cx) return k; if (!IsHole(x, y)) k++; } return -1; }
+static void CellFromIndex(int k, int& cx, int& cy) { int i = 0; for (int y = 0; y < 7; y++) for (int x = 0; x < PageW(); x++) { if (IsHole(x, y)) continue; if (i == k) { cx = x; cy = y; return; } i++; } cx = cy = 0; }
+// real pos -> page / cell
+static int  PageOf(int pos) { int x = pos & 7, y = pos >> 3; if (pos < 56) return SplitMode() ? x / 4 : 0; return BasePages() + (pos - 56) / CellsPerPage(); }
+static void PageCell(int pos, int& cx, int& cy) {
+    if (pos < 56) { int x = pos & 7, y = pos >> 3; cx = SplitMode() ? x % 4 : x; cy = y; return; }
+    CellFromIndex((pos - 56) % CellsPerPage(), cx, cy);
+}
+// page / cell -> real pos, or -1 for a hole / beyond the roster
 static int  RealFromPage(int page, int cx, int cy) {
-    int x, y;
-    if (SplitMode()) { x = (page % 2) * 4 + cx; y = (page / 2) * 7 + cy; } else { x = cx; y = page * 7 + cy; }
-    return y * 8 + x;
+    if (page < BasePages()) return SplitMode() ? cy * 8 + page * 4 + cx : cy * 8 + cx;
+    int k = CellIndex(cx, cy); if (k < 0) return -1;
+    int n = (page - BasePages()) * CellsPerPage() + k;
+    return n < g_ceCount ? 56 + n : -1;
 }
 // visible slot (0..55) on screen for a real pos of player p
 static int VisibleFromReal(int p, int pos) { int cx, cy; PageCell(pos, cx, cy); return SplitMode() ? cy * 8 + p * 4 + cx : cy * 8 + cx; }
-// real pos for a visible slot on face f (0 left / 1 right)
+// real pos for a visible slot (face f = x/4 in split mode); -1 for holes / beyond roster
 static int RealFromVisible(int vis) {
     int x = vis & 7, y = vis >> 3;
-    if (!SplitMode()) return RealFromPage(PageOf(g_pc[0].realPos < 0 ? 0 : g_pc[0].realPos), x, y);
+    if (!SplitMode()) return RealFromPage(g_pc[0].realPos < 0 ? 0 : PageOf(g_pc[0].realPos), x, y);
     int face = x / 4;
     int page = g_pc[face].realPos < 0 ? face : PageOf(g_pc[face].realPos);
     return RealFromPage(page, x % 4, y);
 }
 // vt+0xf8 (0x140372d90) returns TRUE when the cell holds a selectable character, FALSE when empty/taken.
-static bool RealBlocked(void* inner, int pos) { int x = pos & 7, y = pos >> 3; return y >= g_rows || vt_blocked(inner, x, y) == 0; }
+static bool RealBlocked(void* inner, int pos) { if (pos < 0) return true; int x = pos & 7, y = pos >> 3; return y >= g_rows || vt_blocked(inner, x, y) == 0; }
 
 // ---------------------------------------------------------------- hooks
 static int g_lookupLogBudget = 0;
 static int __fastcall h_Lookup(int x, int y) {
     if (g_translate && x >= 0 && x < 8 && y >= 0 && y < 7) {
         int r = RealFromVisible(y * 8 + x);
-        int id = o_Lookup(r & 7, r >> 3);
+        int id = r < 0 ? 0 : o_Lookup(r & 7, r >> 3);
         if (g_lookupLogBudget > 0) { g_lookupLogBudget--; Log("   lookup vis(%d,%d) -> real(%d,%d) chrId %d", x, y, r & 7, r >> 3, id); }
         return id;
     }
@@ -203,6 +213,8 @@ static void* __fastcall h_CursorCtor(void* self, int player) {
         g_texCacheN = 0;
         g_cols = *(int*)(g_pc[player].inner + UC_COLS);
         g_rows = *(int*)(g_pc[player].inner + UC_ROWS);
+        g_ceCount = 0;
+        for (int sl = 56; sl < g_rows * 8; sl++) if (o_Lookup(sl & 7, sl >> 3) != 0) g_ceCount = sl - 56 + 1;
         Log("cursor ctor player=%d outer=%p inner=%p cols=%d rows=%d startPos=%d", player, self, g_pc[player].inner, g_cols, g_rows, g_pc[player].realPos);
     }
     return r;
@@ -272,7 +284,7 @@ static void __fastcall h_CursorTick(void* self) {
             if (m >= 0 && m < 0x38) {
                 if (!SplitMode() || (m & 7) / 4 == 0) {          // P1's half only in split mode
                     int r = RealFromVisible(m);
-                    if (r != before && !RealBlocked(in, r)) pc->realPos = r;
+                    if (r >= 0 && r != before && !RealBlocked(in, r)) pc->realPos = r;
                 }
             }
         }
@@ -323,7 +335,7 @@ static void RepaintIcons(void* bgMain) {
         for (int i = 0; i < 28; i++) {
             int x = face ? 4 + i / 7 : 3 - i / 7, y = i % 7;
             int real = RealFromVisible(y * 8 + x);
-            int chrId = o_Lookup(real & 7, real >> 3);
+            int chrId = real < 0 ? 0 : o_Lookup(real & 7, real >> 3);
             char path[160]; IconPathFor(chrId, path, sizeof path); ToBackslashes(path);
             if (g_repaintLog > 0) { g_repaintLog--; Log("   node %c%d vis(%d,%d) real %d chrId %d -> %s", face ? 'b' : 'a', i, x, y, real, chrId, path); }
             void* tex = CacheFind(path); bool fromCache = tex != nullptr;
