@@ -219,3 +219,9 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 - Clone grid icons: CE ships none; we show the CE body portrait `b_<Name>255_BM_HQ_NOMIP` (silhouette for many) squeezed into the icon. Proper face crops = later polish.
 - Empty cells: our own 128x128 BC3 fully-transparent `assets/nativePCx64/ui/PageTurn/blank_BM_HQ_NOMIP.tex` (Hatena header + zero blocks).
 - Open: Random / Random-all / Hatena not captured by the cache (paths logged in 0.1.7 to fix); page indicator; shoulder buttons; solo-mode test; online test.
+
+## Clone icons (2026-09-30)
+
+- CE 1.2.3 slot order (56+k) = `Characters.ini` block order **excluding entries named in any `ChildN=`** (85 entries; matches the 141-entry runtime table). Saved in `notes/ce_slot_order.txt`. Verified against `Character_Slot_Locations.png` row 1 (Rash, KennFist, Gui, Chl | Jeannix, WL3, Psylock, Cyclop).
+- Icon convention for creators: `nativePCx64\ui\chs\chs_face_a\chs_cs_f\f_<CharacterID>00_BM_HQ_NOMIP.tex`, 128x128 BC3 (docs/ICONS_FOR_CREATORS.md). Converter: `scripts/make_icon.py` (own BC3 encoder, header from vanilla icon).
+- For Will's install only: 85 icons cropped from CE's own `Character_Slot_Locations.png` (cells: rows y=730,811,891,971,1050,1130,1208,1286,1367,1446,1523; cols 0/79/158/237/316 and 385/463/542/620/699; drop 18 px name strip). Kept in `test_icons/ce_faces/` (gitignored: derived from CE art; ask the CE team before shipping).
