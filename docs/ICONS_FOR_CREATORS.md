@@ -13,7 +13,7 @@ that is missing too, to a blank cell.
 | `<CharacterID>` | exactly the `CharacterID=` value from your `[CharacterN]` block in `Characters.ini` (case matters) |
 | Folder | `<game>\nativePCx64\ui\chs\chs_face_a\chs_cs_f\` (loose file, not inside an .arc) |
 | Size | 128 x 128 pixels |
-| Format | MT Framework TEX, BC3 / DXT5, no mipmaps (same as the vanilla `f_Ryu00_BM_HQ_NOMIP.tex`) |
+| Format | MT Framework TEX, plain BC3 / DXT5 (texture format 0x17), no mipmaps - the same format as the Community Edition body portraits (`b_<CharacterID>255`). Do not copy the vanilla icons' header: they use a special colour encoding (format 0x2a) |
 | Content | head / upper body shot, like the vanilla icons |
 
 Example: `CharacterID=Rash` -> `nativePCx64\ui\chs\chs_face_a\chs_cs_f\f_Rash00_BM_HQ_NOMIP.tex`

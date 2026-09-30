@@ -7,14 +7,15 @@ Usage:
 Output: <outdir>/f_<CharacterID>00_BM_HQ_NOMIP.tex   (default outdir: ./icons_out)
 Install location in the game: nativePCx64\\ui\\chs\\chs_face_a\\chs_cs_f\\
 
-Format: MT Framework TEX, 128x128, BC3/DXT5, no mipmaps - identical to the vanilla f_<Name>00 icons.
+Format: MT Framework TEX, 128x128, plain BC3/DXT5 (format 0x17), no mipmaps. The game renders it correctly on the grid.
+(The vanilla f_<Name>00 icons use format 0x2a, a YCoCg-swizzled DXT5; do not copy their header.)
 The image is center-cropped to a square and resized to 128x128. Vanilla icons are a head/upper-body shot.
 """
 import sys, os, struct
 from PIL import Image, ImageDraw, ImageFont
 
 # 24-byte header copied from a vanilla icon (f_Hatena / f_Ryu00): TEX, version 0x9d, 128x128, BC3, 1 mip
-HEADER = bytes.fromhex("544558009da0002001200004012a010018000000" + "00000000")
+HEADER = bytes.fromhex("544558009da000200120000401170100" + "1800000000000000")   # format 0x17 = plain DXT5 (the vanilla icons use 0x2a = YCoCg-DXT5, which needs a special encoder)
 
 def _rgb565(r, g, b):
     return ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3)

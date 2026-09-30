@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.2.0"
+#define PT_VERSION "0.2.1"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -250,8 +250,8 @@ static void PagedCursorUpdate(PlayerCursor& pc) {
         cx += dx; cy += dy;
         if (cx < 0)  { cx = w - 1; page = (page - 1 + npages) % npages; }
         if (cx >= w) { cx = 0;     page = (page + 1) % npages; }
-        if (cy < 0)  { cy = 6;     page = (page - 1 + npages) % npages; }
-        if (cy >= 7) { cy = 0;     page = (page + 1) % npages; }
+        if (cy < 0)  { cy = 6; }                                   // up/down wrap inside the page
+        if (cy >= 7) { cy = 0; }                                   // only left/right flip pages (Will's preference)
         int np = RealFromPage(page, cx, cy);
         if (!RealBlocked(c, np)) { pos = np; break; }
     }
