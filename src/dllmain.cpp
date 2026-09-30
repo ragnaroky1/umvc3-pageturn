@@ -85,12 +85,23 @@ template<typename T> static bool Hook(uintptr_t addr, void* detour, T** orig, co
     return true;
 }
 
+static void LogRegion(const char* when, uintptr_t addr) {
+    MEMORY_BASIC_INFORMATION mbi = {};
+    VirtualQuery((LPCVOID)addr, &mbi, sizeof mbi);
+    char mod[MAX_PATH] = "-";
+    if (mbi.State != MEM_FREE) GetModuleFileNameA((HMODULE)mbi.AllocationBase, mod, MAX_PATH);
+    Log("%s: region at %llx: base=%p allocBase=%p size=%llx state=%s protect=%lx type=%lx module=%s", when,
+        (unsigned long long)addr, mbi.BaseAddress, mbi.AllocationBase, (unsigned long long)mbi.RegionSize,
+        mbi.State == MEM_FREE ? "FREE" : mbi.State == MEM_RESERVE ? "RESERVE" : "COMMIT", mbi.Protect, mbi.Type, mod);
+}
 static void Init() {
     char path[MAX_PATH]; GetModuleFileNameA(nullptr, path, MAX_PATH);
     char* p = strrchr(path, (int)92); if (p) *(p + 1) = 0;
     char logPath[MAX_PATH]; snprintf(logPath, sizeof logPath, "%sUMvC3PageTurn.log", path);
     g_log = fopen(logPath, "w");
-    Log("UMvC3 PageTurn diagnostic 0.0.3 loaded; exe base=%p", GetModuleHandleA(nullptr));
+    HMODULE self = nullptr; GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR)&Init, &self);
+    Log("UMvC3 PageTurn diagnostic 0.0.5 loaded; exe base=%p; our module base=%p", GetModuleHandleA(nullptr), self);
+    LogRegion("before hooks", 0x1B0000000ULL);
 
     if (strcmp((const char*)ADDR_GAME_NAME, "umvc3") != 0) {
         Log("version check FAILED: expected 'umvc3' at %llx", (unsigned long long)ADDR_GAME_NAME);
@@ -108,6 +119,8 @@ static void Init() {
     // NOTE: never hook 0x140373280 (uiCursor::setDims): Clone Engine overwrites its whole body later; hooking it crashed CE init.
     MH_STATUS s = MH_EnableHook(MH_ALL_HOOKS);
     Log("MH_EnableHook -> %d", s);
+    LogRegion("after hooks", 0x1B0000000ULL);
+    LogRegion("trampoline check", (uintptr_t)o_SetCur);
 }
 
 extern "C" __declspec(dllexport) void InitializeASI() { Init(); }

@@ -86,6 +86,17 @@ VOID UninitializeBuffer(VOID)
 
 //-------------------------------------------------------------------------
 #if defined(_M_X64) || defined(__x86_64__)
+// UMvC3PageTurn modification: Clone Engine (CloneEngine.asi) VirtualAllocs fixed code caves at
+// 0x13FF40000..0x13FFF0000 (just below the exe) and data tables at 0x150000000..0x260000000.
+// If our trampoline block takes one of those pages, CE's allocation fails and it aborts the game.
+// So never place a block in those ranges.
+static BOOL IsReservedForCloneEngine(ULONG_PTR addr)
+{
+    if (addr >= 0x13F000000ULL && addr < 0x140000000ULL) return TRUE;
+    if (addr >= 0x140F00000ULL && addr < 0x300000000ULL) return TRUE;
+    return FALSE;
+}
+
 static LPVOID FindPrevFreeRegion(LPVOID pAddress, LPVOID pMinAddr, DWORD dwAllocationGranularity)
 {
     ULONG_PTR tryAddr = (ULONG_PTR)pAddress;
@@ -102,8 +113,14 @@ static LPVOID FindPrevFreeRegion(LPVOID pAddress, LPVOID pMinAddr, DWORD dwAlloc
         if (VirtualQuery((LPVOID)tryAddr, &mbi, sizeof(mbi)) == 0)
             break;
 
-        if (mbi.State == MEM_FREE)
+        if (mbi.State == MEM_FREE && !IsReservedForCloneEngine(tryAddr))
             return (LPVOID)tryAddr;
+
+        if (mbi.State == MEM_FREE)
+        {
+            tryAddr -= dwAllocationGranularity;
+            continue;
+        }
 
         if ((ULONG_PTR)mbi.AllocationBase < dwAllocationGranularity)
             break;
@@ -133,8 +150,14 @@ static LPVOID FindNextFreeRegion(LPVOID pAddress, LPVOID pMaxAddr, DWORD dwAlloc
         if (VirtualQuery((LPVOID)tryAddr, &mbi, sizeof(mbi)) == 0)
             break;
 
-        if (mbi.State == MEM_FREE)
+        if (mbi.State == MEM_FREE && !IsReservedForCloneEngine(tryAddr))
             return (LPVOID)tryAddr;
+
+        if (mbi.State == MEM_FREE)
+        {
+            tryAddr += dwAllocationGranularity;
+            continue;
+        }
 
         tryAddr = (ULONG_PTR)mbi.BaseAddress + mbi.RegionSize;
 
