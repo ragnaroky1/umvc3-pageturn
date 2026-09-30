@@ -1,0 +1,80 @@
+[17:32:48.639] UMvC3 PageTurn diagnostic 0.0.5 loaded; exe base=0000000140000000; our module base=00007FFA69010000
+[17:32:48.639] before hooks: region at 1b0000000: base=00000001B0000000 allocBase=0000000000000000 size=7ff34dec0000 state=FREE protect=1 type=0 module=-
+[17:32:48.639] version check ok
+[17:32:48.639] at init: grid table at 0000000140B3E580 (vanilla), last non-zero index 1728; setDims bytes 89 51 54 41 0F AF D0 44 89 41 58 89
+[17:32:48.639] hook BgMain::setCursorPos at 14036e820 ok
+[17:32:48.639] hook uMenuChrSelCursor::ctor at 140372900 ok
+[17:32:48.639] hook BgMain::buildIcons at 14036df90 ok
+[17:32:48.680] MH_EnableHook -> 0
+[17:32:48.680] after hooks: region at 1b0000000: base=00000001B0000000 allocBase=0000000000000000 size=7ff34dec0000 state=FREE protect=1 type=0 module=-
+[17:32:48.680] trampoline check: region at 13eff0fc0: base=000000013EFF0000 allocBase=000000013EFF0000 size=1000 state=COMMIT protect=40 type=20000 module=-
+[17:33:14.516] at cursor ctor: grid table at 00000001B0000000 (PATCHED (Clone Engine)), last non-zero index 140; setDims bytes 89 51 54 BA 12 00 00 00 89 51 58 C3
+[17:33:14.516]    slot 56 -> chrId 60
+[17:33:14.516]    slot 57 -> chrId 61
+[17:33:14.516]    slot 58 -> chrId 62
+[17:33:14.516]    slot 59 -> chrId 63
+[17:33:14.516]    slot 60 -> chrId 64
+[17:33:14.516]    slot 61 -> chrId 65
+[17:33:14.516]    slot 62 -> chrId 66
+[17:33:14.516]    slot 63 -> chrId 68
+[17:33:14.516] cursor ctor self=00000000161824D0 player=0 inner=0000000016182548 cols=8 rows=18 total=1
+[17:33:14.516] cursor ctor self=00000000161A3900 player=1 inner=00000000161A3978 cols=8 rows=18 total=1
+[17:33:14.586] buildIcons bgmain=00000000161A2040
+[17:33:14.586] buildIcons done
+[17:33:14.620] setCursorPos bgmain=00000000161A2040 player=0 slot=26 (x=2 y=3) chrId=1
+[17:33:16.021] setCursorPos bgmain=00000000161A2040 player=0 slot=34 (x=2 y=4) chrId=2
+[17:33:16.238] setCursorPos bgmain=00000000161A2040 player=0 slot=42 (x=2 y=5) chrId=3
+[17:33:16.488] setCursorPos bgmain=00000000161A2040 player=0 slot=50 (x=2 y=6) chrId=18
+[17:33:16.921] setCursorPos bgmain=00000000161A2040 player=0 slot=58 (x=2 y=7) chrId=-1  <-- beyond 56, game ignores
+[17:33:18.587] setCursorPos bgmain=00000000161A2040 player=0 slot=26 (x=2 y=3) chrId=1
+[17:33:20.054] setCursorPos bgmain=00000000161A2040 player=0 slot=34 (x=2 y=4) chrId=2
+[17:33:20.237] setCursorPos bgmain=00000000161A2040 player=0 slot=42 (x=2 y=5) chrId=3
+[17:33:20.422] setCursorPos bgmain=00000000161A2040 player=0 slot=50 (x=2 y=6) chrId=18
+[17:33:20.771] setCursorPos bgmain=00000000161A2040 player=0 slot=66 (x=2 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:21.539] setCursorPos bgmain=00000000161A2040 player=0 slot=67 (x=3 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:21.772] setCursorPos bgmain=00000000161A2040 player=0 slot=68 (x=4 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:22.021] setCursorPos bgmain=00000000161A2040 player=0 slot=69 (x=5 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:22.472] setCursorPos bgmain=00000000161A2040 player=0 slot=70 (x=6 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:22.854] setCursorPos bgmain=00000000161A2040 player=0 slot=71 (x=7 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:23.204] setCursorPos bgmain=00000000161A2040 player=0 slot=64 (x=0 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:23.522] setCursorPos bgmain=00000000161A2040 player=0 slot=65 (x=1 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:24.022] setCursorPos bgmain=00000000161A2040 player=0 slot=66 (x=2 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:24.604] setCursorPos bgmain=00000000161A2040 player=0 slot=67 (x=3 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:25.038] setCursorPos bgmain=00000000161A2040 player=0 slot=68 (x=4 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:25.421] setCursorPos bgmain=00000000161A2040 player=0 slot=69 (x=5 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:26.072] setCursorPos bgmain=00000000161A2040 player=0 slot=68 (x=4 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:27.470] setCursorPos bgmain=00000000161A2040 player=0 slot=60 (x=4 y=7) chrId=-1  <-- beyond 56, game ignores
+[17:33:28.022] setCursorPos bgmain=00000000161A2040 player=0 slot=52 (x=4 y=6) chrId=36
+[17:33:29.120] setCursorPos bgmain=00000000161A2040 player=0 slot=60 (x=4 y=7) chrId=-1  <-- beyond 56, game ignores
+[17:33:29.520] setCursorPos bgmain=00000000161A2040 player=0 slot=68 (x=4 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:29.889] setCursorPos bgmain=00000000161A2040 player=0 slot=76 (x=4 y=9) chrId=-1  <-- beyond 56, game ignores
+[17:33:30.304] setCursorPos bgmain=00000000161A2040 player=0 slot=84 (x=4 y=10) chrId=-1  <-- beyond 56, game ignores
+[17:33:30.705] setCursorPos bgmain=00000000161A2040 player=0 slot=92 (x=4 y=11) chrId=-1  <-- beyond 56, game ignores
+[17:33:31.072] setCursorPos bgmain=00000000161A2040 player=0 slot=100 (x=4 y=12) chrId=-1  <-- beyond 56, game ignores
+[17:33:33.422] setCursorPos bgmain=00000000161A2040 player=0 slot=26 (x=2 y=3) chrId=1
+[17:33:37.838] setCursorPos bgmain=00000000161A2040 player=0 slot=34 (x=2 y=4) chrId=2
+[17:33:38.037] setCursorPos bgmain=00000000161A2040 player=0 slot=42 (x=2 y=5) chrId=3
+[17:33:38.205] setCursorPos bgmain=00000000161A2040 player=0 slot=50 (x=2 y=6) chrId=18
+[17:33:38.355] setCursorPos bgmain=00000000161A2040 player=0 slot=66 (x=2 y=8) chrId=-1  <-- beyond 56, game ignores
+[17:33:38.538] setCursorPos bgmain=00000000161A2040 player=0 slot=74 (x=2 y=9) chrId=-1  <-- beyond 56, game ignores
+[17:33:38.704] setCursorPos bgmain=00000000161A2040 player=0 slot=82 (x=2 y=10) chrId=-1  <-- beyond 56, game ignores
+[17:33:38.871] setCursorPos bgmain=00000000161A2040 player=0 slot=90 (x=2 y=11) chrId=-1  <-- beyond 56, game ignores
+[17:33:39.088] setCursorPos bgmain=00000000161A2040 player=0 slot=98 (x=2 y=12) chrId=-1  <-- beyond 56, game ignores
+[17:33:39.288] setCursorPos bgmain=00000000161A2040 player=0 slot=106 (x=2 y=13) chrId=-1  <-- beyond 56, game ignores
+[17:33:39.489] setCursorPos bgmain=00000000161A2040 player=0 slot=114 (x=2 y=14) chrId=-1  <-- beyond 56, game ignores
+[17:33:39.688] setCursorPos bgmain=00000000161A2040 player=0 slot=122 (x=2 y=15) chrId=-1  <-- beyond 56, game ignores
+[17:33:39.889] setCursorPos bgmain=00000000161A2040 player=0 slot=130 (x=2 y=16) chrId=-1  <-- beyond 56, game ignores
+[17:33:40.104] setCursorPos bgmain=00000000161A2040 player=0 slot=138 (x=2 y=17) chrId=-1  <-- beyond 56, game ignores
+[17:33:40.304] setCursorPos bgmain=00000000161A2040 player=0 slot=10 (x=2 y=1) chrId=21
+[17:33:40.489] setCursorPos bgmain=00000000161A2040 player=0 slot=18 (x=2 y=2) chrId=9
+[17:33:40.687] setCursorPos bgmain=00000000161A2040 player=0 slot=26 (x=2 y=3) chrId=1
+[17:33:41.037] setCursorPos bgmain=00000000161A2040 player=0 slot=18 (x=2 y=2) chrId=9
+[17:33:41.237] setCursorPos bgmain=00000000161A2040 player=0 slot=10 (x=2 y=1) chrId=21
+[17:33:41.488] setCursorPos bgmain=00000000161A2040 player=0 slot=138 (x=2 y=17) chrId=-1  <-- beyond 56, game ignores
+[17:33:44.121] setCursorPos bgmain=00000000161A2040 player=0 slot=130 (x=2 y=16) chrId=-1  <-- beyond 56, game ignores
+[17:33:44.321] setCursorPos bgmain=00000000161A2040 player=0 slot=122 (x=2 y=15) chrId=-1  <-- beyond 56, game ignores
+[17:33:44.905] setCursorPos bgmain=00000000161A2040 player=0 slot=123 (x=3 y=15) chrId=-1  <-- beyond 56, game ignores
+[17:33:45.071] setCursorPos bgmain=00000000161A2040 player=0 slot=124 (x=4 y=15) chrId=-1  <-- beyond 56, game ignores
+[17:33:45.237] setCursorPos bgmain=00000000161A2040 player=0 slot=125 (x=5 y=15) chrId=-1  <-- beyond 56, game ignores
+[17:33:45.405] setCursorPos bgmain=00000000161A2040 player=0 slot=126 (x=6 y=15) chrId=-1  <-- beyond 56, game ignores
+[17:33:59.854] unloading

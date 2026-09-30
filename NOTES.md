@@ -205,3 +205,9 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 - Fix: vendored MinHook `buffer.c` now refuses to place trampoline blocks in `[0x13F000000, 0x140000000)` and `[0x140F00000, 0x300000000)` (`IsReservedForCloneEngine`). Verified: block now lands at `0x13EFF0000`, CE logs steps 0..18 + Done, game stays up.
 - Also learned: hooking `0x140373280` (setDims) is unnecessary and CE rewrites that function body later; keep hands off it.
 - Rule for the future: **any new hook library / code cave must avoid those ranges.**
+
+## Live test 5 (CE 1.2.3 + diagnostic 0.0.5) — PASS. Log `notes/test5_ce_diag.log`
+
+- CE patches are applied **after** our init but **before** the select screen: at cursor ctor the lookup table is at `0x1B0000000`, 141 entries (56 vanilla + 85 clones; children skipped, e.g. slot 63 → chrId 68), setDims body = `89 51 54 BA 12 00 00 00 89 51 58 C3` → **rows = 18** (0x12), cols = 8; inner +0x5c stays 1.
+- Cursor freely reaches y = 7..17; every slot ≥ 56 pushed to BgMain::setCursorPos is dropped by the game (no highlight), as predicted. Hidden characters selectable (Will).
+- Grid size for our paging: 8 × 18 → split mode 3 bands × 2 halves = **6 pages of 28**; solo mode **3 pages of 56**.
