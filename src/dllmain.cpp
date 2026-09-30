@@ -1,4 +1,4 @@
-// UMvC3 PageTurn - diagnostic build 0.0.2
+// UMvC3 PageTurn - diagnostic build 0.0.3
 // Loads via Ultimate ASI Loader (dinput8.dll). Logs select-screen events only; changes nothing.
 #define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
@@ -90,7 +90,7 @@ static void Init() {
     char* p = strrchr(path, (int)92); if (p) *(p + 1) = 0;
     char logPath[MAX_PATH]; snprintf(logPath, sizeof logPath, "%sUMvC3PageTurn.log", path);
     g_log = fopen(logPath, "w");
-    Log("UMvC3 PageTurn diagnostic 0.0.2 loaded; exe base=%p", GetModuleHandleA(nullptr));
+    Log("UMvC3 PageTurn diagnostic 0.0.3 loaded; exe base=%p", GetModuleHandleA(nullptr));
 
     if (strcmp((const char*)ADDR_GAME_NAME, "umvc3") != 0) {
         Log("version check FAILED: expected 'umvc3' at %llx", (unsigned long long)ADDR_GAME_NAME);
@@ -105,7 +105,7 @@ static void Init() {
     Hook(ADDR_BGMAIN_SETCUR, (void*)h_SetCur, &o_SetCur, "BgMain::setCursorPos");
     Hook(ADDR_CURSOR_CTOR, (void*)h_CursorCtor, &o_CursorCtor, "uMenuChrSelCursor::ctor");
     Hook(ADDR_BGMAIN_ICONS, (void*)h_BuildIcons, &o_BuildIcons, "BgMain::buildIcons");
-    Hook(ADDR_UICURSOR_SETDIM, (void*)h_SetDims, &o_SetDims, "uiCursor::setDims");
+    // NOTE: never hook 0x140373280 (uiCursor::setDims): Clone Engine overwrites its whole body later; hooking it crashed CE init.
     MH_STATUS s = MH_EnableHook(MH_ALL_HOOKS);
     Log("MH_EnableHook -> %d", s);
 }
