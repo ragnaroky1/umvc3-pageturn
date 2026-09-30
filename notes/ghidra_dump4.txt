@@ -1,0 +1,618 @@
+==================== 0x14036e004 ====================
+function FUN_14036df90 @ 14036df90 size=1589
+-- xrefs to entry:
+   140e69868 (?) DATA
+   140c15130 (?) DATA
+   140c1514c (?) DATA
+   140c15164 (?) DATA
+   140c15178 (?) DATA
+   140c15188 (?) DATA
+   140c151b0 (?) DATA
+   140b3f058 (?) DATA
+
+void FUN_14036df90(longlong param_1)
+
+{
+  longlong lVar1;
+  char cVar2;
+  int iVar3;
+  undefined8 uVar4;
+  longlong lVar5;
+  longlong *plVar6;
+  longlong lVar7;
+  longlong lVar8;
+  uint uVar9;
+  undefined1 *puVar10;
+  uint uVar11;
+  int iVar12;
+  ulonglong uVar13;
+  undefined **ppuVar14;
+  longlong lVar15;
+  int iVar16;
+  longlong lVar17;
+  undefined1 local_res10 [8];
+  longlong local_res18;
+  longlong local_res20;
+  undefined **local_4b8;
+  longlong local_4a8 [2];
+  longlong local_498 [2];
+  undefined1 local_488 [272];
+  undefined1 local_378 [272];
+  undefined1 local_268 [272];
+  undefined1 local_158 [280];
+  
+  FUN_14036e720(param_1,0,1);
+  if (*(longlong *)(param_1 + 0x58) != 0) {
+    FUN_14001d8c0(local_res10);
+    iVar16 = 0;
+    lVar15 = 0;
+    do {
+      FUN_1404c4410(local_res10,"chs_meku_face_%c",iVar16 + 0x61);
+      uVar4 = thunk_FUN_14001f280(local_res10);
+      lVar5 = FUN_1402de580(*(undefined8 *)(param_1 + 0x58),uVar4);
+      if (lVar5 != 0) {
+        uVar4 = FUN_140001ac0();
+        cVar2 = FUN_140362200(uVar4);
+        if (cVar2 != '\0') {
+          uVar4 = FUN_14036d6f0(uVar4,local_498);
+          FUN_140002af0(lVar5,uVar4);
+          uVar4 = FUN_140001ac0();
+          uVar4 = FUN_14036d720(uVar4,local_4a8);
+          FUN_140016830(lVar5,uVar4);
+        }
+        uVar13 = 0;
+        do {
+          iVar12 = (int)uVar13;
+          iVar3 = (int)(uVar13 * 0x24924925 >> 0x20);
+          uVar9 = ((uint)(iVar12 - iVar3) >> 1) + iVar3 >> 2;
+          uVar11 = uVar9;
+          if (lVar15 == 0) {
+            uVar11 = -uVar9 - 1;
+          }
+          iVar3 = FUN_140361fd0(uVar11 + 4,iVar12 + uVar9 * -7);
+          if ((iVar3 == 0) || (iVar3 == 0x34)) {
+LAB_14036e14a:
+            FUN_1404c4410(local_res10,"ui\\chs\\chs_face_a\\chs_cs_f\\f_Hatena_BM_HQ_NOMIP");
+            uVar4 = thunk_FUN_14001f280(local_res10);
+            puVar10 = local_378;
+LAB_14036e16d:
+            uVar4 = FUN_140455260(puVar10,1,uVar4,1);
+            uVar4 = FUN_140151080(uVar4);
+            thunk_FUN_14001e260(local_res10,uVar4);
+          }
+          else {
+            if (iVar3 == 0x35) {
+              FUN_1404c4410(local_res10,"ui\\chs\\chs_face_a\\chs_cs_f\\f_Random_BM_HQ_NOMIP");
+              uVar4 = thunk_FUN_14001f280(local_res10);
+              puVar10 = local_268;
+              goto LAB_14036e16d;
+            }
+            if (iVar3 == 0x36) {
+              FUN_1404c4410(local_res10,"ui\\chs\\chs_face_a\\chs_cs_f\\f_Random_all_BM_HQ_NOMIP");
+              uVar4 = thunk_FUN_14001f280(local_res10);
+              puVar10 = local_488;
+              goto LAB_14036e16d;
+            }
+            if (iVar3 == 0x37) goto LAB_14036e14a;
+            uVar4 = FUN_140058f90(iVar3);
+            FUN_1404c4410(local_res10,"ui\\chs\\chs_face_a\\chs_cs_f\\f_%s00_BM_HQ_NOMIP",uVar4);
+          }
+          plVar6 = (longlong *)FUN_140001b10();
+          lVar7 = *plVar6;
+          uVar4 = thunk_FUN_14001f280(local_res10);
+          lVar7 = (**(code **)(lVar7 + 0x60))(plVar6,&DAT_140e17570,uVar4,1);
+          if (lVar7 != 0) {
+            plVar6 = (longlong *)FUN_140326b90(lVar5,uVar13);
+            if (plVar6 != (longlong *)0x0) {
+              lVar1 = *plVar6;
+              uVar4 = FUN_1400b0f60(lVar7);
+              (**(code **)(lVar1 + 0x50))(plVar6,uVar4);
+            }
+            FUN_14050d5a0(lVar7);
+          }
+          uVar13 = (ulonglong)(iVar12 + 1U);
+        } while ((int)(iVar12 + 1U) < 0x1c);
+      }
+      iVar16 = iVar16 + 1;
+      lVar15 = lVar15 + 1;
+    } while (iVar16 < 2);
+    lVar15 = 0xc;
+    local_4b8 = &PTR_s_chs_meku_sel1_a_140d04300;
+    ppuVar14 = &PTR_s_chs_meku_sel1_a_140d04300;
+    do {
+      lVar5 = FUN_1402de580(*(undefined8 *)(param_1 + 0x58),*ppuVar14);
+      if (lVar5 != 0) {
+        uVar4 = FUN_140001ac0();
+        cVar2 = FUN_140362200(uVar4);
+        if (cVar2 != '\0') {
+          uVar4 = FUN_14036d6f0(uVar4,local_498);
+          FUN_140002af0(lVar5,uVar4);
+          uVar4 = FUN_140001ac0();
+          uVar4 = FUN_14036d720(uVar4,local_4a8);
+          FUN_140016830(lVar5,uVar4);
+        }
+        uVar11 = 0;
+        do {
+          plVar6 = (longlong *)FUN_140326b90(lVar5,uVar11);
+          if (plVar6 != (longlong *)0x0) {
+            (**(code **)(*plVar6 + 0x40))(plVar6,&DAT_140d76020);
+          }
+          uVar11 = uVar11 + 1;
+        } while (uVar11 < 0x1c);
+      }
+      ppuVar14 = ppuVar14 + 1;
+      lVar15 = lVar15 + -1;
+    } while (lVar15 != 0);
+    plVar6 = (longlong *)FUN_140001b10();
+    lVar15 = *plVar6;
+    uVar4 = FUN_140455260(local_158,1,"ui\\chs\\chs_meku\\chs_sel1_BM_NOMIP",1);
+    uVar4 = FUN_140151080(uVar4);
+    lVar7 = (**(code **)(lVar15 + 0x60))(plVar6,&DAT_140e17570,uVar4,1);
+    local_res20 = lVar7;
+    FUN_1402a8c60(local_158);
+    plVar6 = (longlong *)FUN_140001b10();
+    lVar15 = *plVar6;
+    uVar4 = FUN_140455260(local_378,1,"ui\\chs\\chs_meku\\chs_sel2_BM_NOMIP",1);
+    uVar4 = FUN_140151080(uVar4);
+    lVar5 = (**(code **)(lVar15 + 0x60))(plVar6,&DAT_140e17570,uVar4,1);
+    local_res18 = lVar5;
+    FUN_1402a8c60(local_378);
+    plVar6 = (longlong *)FUN_140001b10();
+    lVar15 = *plVar6;
+    uVar4 = FUN_140455260(local_268,1,"ui\\chs\\chs_meku\\chs_seld1_BM_NOMIP",1);
+    uVar4 = FUN_140151080(uVar4);
+    local_4a8[0] = (**(code **)(lVar15 + 0x60))(plVar6,&DAT_140e17570,uVar4,1);
+    FUN_1402a8c60(local_268);
+    plVar6 = (longlong *)FUN_140001b10();
+    lVar15 = *plVar6;
+    uVar4 = FUN_140455260(local_488,1,"ui\\chs\\chs_meku\\chs_seld2_BM_NOMIP",1);
+    uVar4 = FUN_140151080(uVar4);
+    lVar15 = (**(code **)(lVar15 + 0x60))(plVar6,&DAT_140e17570,uVar4,1);
+    local_498[0] = lVar15;
+    FUN_1402a8c60(local_488);
+    uVar11 = 0;
+    do {
+      if ((uVar11 < 0xc) &&
+         (lVar8 = FUN_1402de580(*(undefined8 *)(param_1 + 0x58),*local_4b8), lVar1 = local_4a8[0],
+         lVar8 != 0)) {
+        iVar16 = 0;
+        do {
+          lVar17 = lVar5;
+          switch(uVar11) {
+          case 0:
+          case 1:
+            lVar17 = lVar7;
+            break;
+          case 2:
+          case 3:
+            lVar17 = lVar1;
+            break;
+          case 4:
+          case 5:
+            break;
+          case 6:
+          case 7:
+            lVar17 = lVar15;
+            break;
+          default:
+            goto switchD_14036e46a_default;
+          }
+          plVar6 = (longlong *)FUN_140326b90(lVar8,iVar16);
+          lVar5 = local_res18;
+          lVar7 = local_res20;
+          if ((plVar6 != (longlong *)0x0) && (lVar17 != 0)) {
+            lVar15 = *plVar6;
+            uVar4 = FUN_1400b0f60(lVar17);
+            (**(code **)(lVar15 + 0x50))(plVar6,uVar4);
+            lVar15 = local_498[0];
+            lVar5 = local_res18;
+            lVar7 = local_res20;
+          }
+switchD_14036e46a_default:
+          iVar16 = iVar16 + 1;
+        } while (iVar16 < 0x1c);
+      }
+      uVar11 = uVar11 + 1;
+      local_4b8 = local_4b8 + 1;
+    } while (uVar11 < 0xc);
+    if (lVar7 != 0) {
+      FUN_14050d5a0(lVar7);
+    }
+    if (lVar5 != 0) {
+      FUN_14050d5a0(lVar5);
+    }
+    if (local_4a8[0] != 0) {
+      FUN_14050d5a0(local_4a8[0]);
+    }
+    if (lVar15 != 0) {
+      FUN_14050d5a0(lVar15);
+    }
+    plVar6 = (longlong *)FUN_140001b10();
+    lVar15 = *plVar6;
+    uVar4 = FUN_140455260(local_488,0,"ui\\chs\\chs_meku\\meku_chs02_BM_NOMIP",1);
+    uVar4 = FUN_140151080(uVar4);
+    lVar15 = (**(code **)(lVar15 + 0x60))(plVar6,&DAT_140e17570,uVar4,1);
+    FUN_1402a8c60(local_488);
+    FUN_14036e960(param_1,lVar15,lVar15);
+    if (lVar15 != 0) {
+      FUN_14050d5a0(lVar15);
+    }
+    thunk_FUN_14001f2a0(local_res10);
+  }
+  return;
+}
+
+
+==================== 0x140368bf0 ====================
+function FUN_140368bf0 @ 140368bf0 size=1167
+-- xrefs to entry:
+   140e69490 (?) DATA
+   140362871 (FUN_1403625e0@1403625e0) UNCONDITIONAL_CALL
+   140364c2b (FUN_140364bd0@140364bd0) UNCONDITIONAL_CALL
+
+void FUN_140368bf0(longlong param_1,uint param_2,int param_3)
+
+{
+  longlong lVar1;
+  longlong lVar2;
+  char cVar3;
+  undefined4 uVar4;
+  int iVar5;
+  undefined4 uVar6;
+  undefined4 uVar7;
+  undefined4 uVar8;
+  undefined8 uVar9;
+  int iVar10;
+  ulonglong uVar11;
+  ulonglong uVar12;
+  int *piVar13;
+  int iVar14;
+  longlong lVar15;
+  int local_res20;
+  undefined4 local_718;
+  longlong local_710;
+  undefined4 local_6f0 [6];
+  undefined1 local_6d8 [184];
+  int local_620 [9];
+  undefined4 auStack_5fc [9];
+  undefined4 auStack_5d8 [358];
+  
+  uVar11 = (ulonglong)(int)param_2;
+  lVar15 = (longlong)param_3;
+  *(int *)(param_1 + 0x2f4 + uVar11 * 4) = param_3;
+  uVar9 = FUN_140004750();
+  FUN_140203550(uVar9,local_6d8);
+  local_6f0[0] = 2;
+  local_6f0[1] = 4;
+  local_6f0[2] = 6;
+  local_6f0[3] = 0xb;
+  uVar9 = FUN_140004700();
+  cVar3 = FUN_140006800(uVar9);
+  if ((cVar3 != '\0') && (local_6f0[3] = 0xe, *(longlong *)(param_1 + 0xf0) != 0)) {
+    FUN_140368b90();
+  }
+  local_res20 = 0;
+  iVar10 = 0;
+  piVar13 = local_620 + lVar15 * 3;
+  local_718 = 0;
+  local_710 = 0;
+  uVar12 = uVar11;
+  do {
+    if (0 < *piVar13) {
+      uVar4 = FUN_140455640(*piVar13,0,0,0x33);
+      iVar14 = param_2 * 3 + iVar10;
+      uVar9 = FUN_140004700();
+      FUN_140146380(uVar9,iVar14,uVar4);
+      local_718 = FUN_140361f50(uVar4);
+      lVar1 = param_1 + (uVar11 * 3 + local_710) * 0xc;
+      *(undefined4 *)(lVar1 + 0x178) = local_718;
+      iVar5 = FUN_14001e9b0(uVar4);
+      uVar6 = FUN_140455640(auStack_5d8[lVar15 * 3 + local_710],0,0,iVar5 + -1);
+      uVar9 = FUN_140004700();
+      uVar6 = FUN_14024cb70(uVar9,uVar12 & 0xffffffff,uVar4,uVar6);
+      uVar9 = FUN_140004700();
+      FUN_140368990(uVar9,iVar14,uVar6);
+      *(undefined4 *)(lVar1 + 0x17c) = uVar6;
+      uVar7 = FUN_140455640(auStack_5fc[lVar15 * 3 + local_710],0,0,2);
+      uVar9 = FUN_140004700();
+      FUN_140368940(uVar9,iVar14,uVar7);
+      *(undefined4 *)(param_1 + (local_710 + 0x20 + uVar11 * 3) * 0xc) = uVar7;
+      uVar9 = FUN_140004700();
+      uVar7 = FUN_14024cd40(uVar9,iVar14);
+      uVar9 = FUN_140001ab0();
+      uVar7 = FUN_140251bd0(uVar9,uVar7);
+      uVar9 = FUN_140004700();
+      FUN_1401463d0(uVar9,iVar14,uVar7);
+      uVar9 = FUN_140004700();
+      uVar8 = FUN_14024cd40(uVar9,iVar14);
+      uVar9 = FUN_140001ac0();
+      FUN_14024e160(uVar9,param_2,iVar10,uVar8);
+      uVar9 = FUN_140004700();
+      uVar8 = FUN_14001e970(uVar9,iVar14);
+      uVar9 = FUN_140001ac0();
+      FUN_14024e120(uVar9,param_2,iVar10,uVar8);
+      uVar9 = FUN_140004700();
+      uVar8 = FUN_14024c9f0(uVar9,iVar14);
+      uVar9 = FUN_140001ac0();
+      FUN_14024e100(uVar9,param_2,iVar10,uVar8);
+      uVar9 = FUN_1400046e0();
+      FUN_140274390(uVar9,iVar10);
+      uVar9 = FUN_1400046e0();
+      FUN_140274390(uVar9,param_2 * -3 + 3 + iVar14);
+      local_res20 = local_res20 + 1;
+      uVar9 = FUN_140001aa0();
+      FUN_140059bc0(uVar9,uVar4,uVar6,uVar7,0,0);
+      uVar9 = FUN_140001aa0();
+      FUN_140059600(uVar9,uVar4,uVar6,uVar7,0,0,2);
+      uVar9 = FUN_140004700();
+      cVar3 = FUN_140006770(uVar9);
+      if (cVar3 != '\0') {
+        uVar9 = FUN_140001ab0();
+        uVar9 = FUN_140004690(uVar9);
+        iVar5 = FUN_140112220(uVar9);
+        if ((((iVar5 == 0x11) && (iVar10 == 0)) ||
+            ((iVar5 = FUN_140112220(uVar9), iVar5 == 0x12 && (iVar10 == 1)))) ||
+           ((((iVar5 = FUN_140112220(uVar9), iVar5 == 0x25 && (iVar10 == 0)) ||
+             ((iVar5 = FUN_140112220(uVar9), iVar5 == 0x2c && (iVar10 == 0)))) ||
+            (((iVar5 = FUN_140112220(uVar9), iVar5 == 0x21 && (iVar10 == 0)) ||
+             ((iVar5 = FUN_140112220(uVar9), iVar5 == 0x23 && (iVar10 == 1)))))))) {
+          local_res20 = 3;
+          goto LAB_140368ff3;
+        }
+      }
+      uVar12 = (ulonglong)param_2;
+    }
+    local_710 = local_710 + 1;
+    iVar10 = iVar10 + 1;
+    piVar13 = piVar13 + 1;
+    if (2 < iVar10) {
+LAB_140368ff3:
+      lVar15 = param_1 + uVar11 * 4;
+      lVar1 = param_1 + uVar11 * 8;
+      *(undefined4 *)(lVar15 + 0x2b4) = local_6f0[local_res20];
+      lVar2 = *(longlong *)(lVar1 + 0x120);
+      if (lVar2 != 0) {
+        FUN_140368930(lVar2,0);
+        FUN_140369090(*(undefined8 *)(lVar1 + 0x120),local_718);
+        if (*(longlong *)(param_1 + 0xf0) != 0) {
+          FUN_14036e820(*(longlong *)(param_1 + 0xf0),param_2,local_718);
+        }
+      }
+      if (*(int *)(lVar15 + 0x2b4) == 0xe) {
+        FUN_140368a30(param_1,0);
+      }
+      return;
+    }
+  } while( true );
+}
+
+
+==================== 0x14036d6f0 ====================
+function FUN_14036d6f0 @ 14036d6f0 size=33
+-- xrefs to entry:
+   140e697b4 (?) DATA
+   14036e057 (FUN_14036df90@14036df90) UNCONDITIONAL_CALL
+   14036e260 (FUN_14036df90@14036df90) UNCONDITIONAL_CALL
+   140373081 (FUN_140372e50@140372e50) UNCONDITIONAL_CALL
+
+undefined8 FUN_14036d6f0(longlong param_1,undefined8 param_2)
+
+{
+  FUN_14000bf40(param_2,param_1 + 0x5b80);
+  return param_2;
+}
+
+
+==================== 0x140373270 ====================
+function FUN_140373270 @ 140373270 size=4
+-- xrefs to entry:
+   1402834cc (FUN_140283430@140283430) UNCONDITIONAL_CALL
+   140039e41 (FUN_140039e10@140039e10) UNCONDITIONAL_CALL
+   140039f7e (FUN_140039e10@140039e10) UNCONDITIONAL_CALL
+   1402835d3 (FUN_140283530@140283530) UNCONDITIONAL_CALL
+   140373162 (FUN_140373120@140373120) UNCONDITIONAL_CALL
+   1403f60ad (FUN_1403f5720@1403f5720) UNCONDITIONAL_CALL
+   1403f6b64 (FUN_1403f6b40@1403f6b40) UNCONDITIONAL_CALL
+   1403f6b88 (FUN_1403f6b40@1403f6b40) UNCONDITIONAL_CALL
+
+void FUN_140373270(longlong param_1,undefined1 param_2)
+
+{
+  *(undefined1 *)(param_1 + 0x7c) = param_2;
+  return;
+}
+
+
+==================== 0x1402f2a30 ====================
+function FUN_1402f2a30 @ 1402f2a30 size=4
+-- xrefs to entry:
+   14001bbfb (FUN_14001bb60@14001bb60) UNCONDITIONAL_CALL
+   14001bc4c (FUN_14001bb60@14001bb60) UNCONDITIONAL_CALL
+   14001bc65 (FUN_14001bb60@14001bb60) UNCONDITIONAL_CALL
+   140220f40 (FUN_140220b50@140220b50) UNCONDITIONAL_CALL
+   140036ce1 (FUN_140036cd0@140036cd0) UNCONDITIONAL_CALL
+   140043d8e (FUN_140043c80@140043c80) UNCONDITIONAL_CALL
+   14004423d (FUN_140043c80@140043c80) UNCONDITIONAL_CALL
+   140044f0f (FUN_140044350@140044350) UNCONDITIONAL_CALL
+   140044f23 (FUN_140044350@140044350) UNCONDITIONAL_CALL
+   14004505e (FUN_140044350@140044350) UNCONDITIONAL_CALL
+   140046677 (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046c1c (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046c79 (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046cad (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046ce1 (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046d15 (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046d24 (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046d33 (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046d8c (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   140046ded (FUN_140046600@140046600) UNCONDITIONAL_CALL
+   1400488ff (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   140048993 (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   140048e54 (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   140048e63 (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   140048e72 (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   140049655 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   14004968c (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   1400496c4 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   1400496d3 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   1400496e2 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049763 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049ada (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049b11 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049b49 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049b58 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049b67 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   140049be8 (FUN_1400494e0@1400494e0) UNCONDITIONAL_CALL
+   14005ed4d (FUN_14005e390@14005e390) UNCONDITIONAL_CALL
+   14005ed67 (FUN_14005e390@14005e390) UNCONDITIONAL_CALL
+   140142f8d (FUN_140142f80@140142f80) UNCONDITIONAL_CALL
+   1401c8f85 (FUN_1401c8f30@1401c8f30) UNCONDITIONAL_CALL
+   1401b2925 (FUN_1401b2800@1401b2800) UNCONDITIONAL_CALL
+   140223736 (FUN_140223660@140223660) UNCONDITIONAL_CALL
+   140222474 (FUN_1402220c0@1402220c0) UNCONDITIONAL_CALL
+   14021244d (FUN_1402123d0@1402123d0) UNCONDITIONAL_CALL
+   14021245b (FUN_1402123d0@1402123d0) UNCONDITIONAL_CALL
+   14021247a (FUN_1402123d0@1402123d0) UNCONDITIONAL_CALL
+   140216ea9 (FUN_140216940@140216940) UNCONDITIONAL_CALL
+   140295723 (FUN_140295700@140295700) UNCONDITIONAL_CALL
+   1402df6e7 (FUN_1402df4b0@1402df4b0) UNCONDITIONAL_CALL
+   1402df84c (FUN_1402df4b0@1402df4b0) UNCONDITIONAL_CALL
+   1402f2d8f (FUN_1402f2b30@1402f2b30) UNCONDITIONAL_CALL
+   1402f724f (FUN_1402f6910@1402f6910) UNCONDITIONAL_CALL
+   140326fa4 (FUN_140326f20@140326f20) UNCONDITIONAL_CALL
+   140373181 (FUN_140373120@140373120) UNCONDITIONAL_CALL
+   1404dd0bc (FUN_1404dd0b0@1404dd0b0) UNCONDITIONAL_CALL
+   1404deb38 (FUN_1404deb20@1404deb20) UNCONDITIONAL_CALL
+   1404df671 (FUN_1404df650@1404df650) UNCONDITIONAL_CALL
+   1404df772 (FUN_1404df6f0@1404df6f0) UNCONDITIONAL_CALL
+   1404df79a (FUN_1404df6f0@1404df6f0) UNCONDITIONAL_CALL
+   1404fb0fc (FUN_1404fb0f0@1404fb0f0) UNCONDITIONAL_CALL
+   1404fb5c8 (FUN_1404fb5b0@1404fb5b0) UNCONDITIONAL_CALL
+   1404fb5d0 (FUN_1404fb5b0@1404fb5b0) UNCONDITIONAL_CALL
+   1404fb615 (FUN_1404fb5f0@1404fb5f0) UNCONDITIONAL_CALL
+   1404fb781 (FUN_1404fb760@1404fb760) UNCONDITIONAL_CALL
+   1404fb838 (FUN_1404fb7b0@1404fb7b0) UNCONDITIONAL_CALL
+   1404fb85a (FUN_1404fb7b0@1404fb7b0) UNCONDITIONAL_CALL
+   1404fe03c (FUN_1404fe030@1404fe030) UNCONDITIONAL_CALL
+   1404fef2c (FUN_1404fef10@1404fef10) UNCONDITIONAL_CALL
+   1404ff13e (FUN_1404ff120@1404ff120) UNCONDITIONAL_CALL
+   1404ff3ac (FUN_1404ff360@1404ff360) UNCONDITIONAL_CALL
+   1404ff3cc (FUN_1404ff360@1404ff360) UNCONDITIONAL_CALL
+   14050a58c (FUN_14050a580@14050a580) UNCONDITIONAL_CALL
+   14050b8d8 (FUN_14050b8c0@14050b8c0) UNCONDITIONAL_CALL
+   14050b8e0 (FUN_14050b8c0@14050b8c0) UNCONDITIONAL_CALL
+   14050ba6c (FUN_14050ba50@14050ba50) UNCONDITIONAL_CALL
+   14050bd71 (FUN_14050bd50@14050bd50) UNCONDITIONAL_CALL
+   14050bf13 (FUN_14050be90@14050be90) UNCONDITIONAL_CALL
+   14050bf3e (FUN_14050be90@14050be90) UNCONDITIONAL_CALL
+   14050c3a7 (FUN_14050c3a0@14050c3a0) UNCONDITIONAL_CALL
+   14050c725 (FUN_14050c700@14050c700) UNCONDITIONAL_CALL
+   14050c7a1 (FUN_14050c780@14050c780) UNCONDITIONAL_CALL
+   14050c852 (FUN_14050c7d0@14050c7d0) UNCONDITIONAL_CALL
+   14050c86f (FUN_14050c7d0@14050c7d0) UNCONDITIONAL_CALL
+   14004919e (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   1400491ad (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   1400491bc (FUN_140048810@140048810) UNCONDITIONAL_CALL
+   1400fcc43 (FUN_1400fbc10@1400fbc10) UNCONDITIONAL_CALL
+   14064a4e7 (FUN_14064a3b0@14064a3b0) DATA
+   14064a51a (FUN_14064a3b0@14064a3b0) DATA
+   140b11d28 (?) DATA
+   140b12008 (?) DATA
+   140b122e8 (?) DATA
+   140bcc168 (?) DATA
+   14050c6f8 (?) UNCONDITIONAL_CALL
+
+undefined4 FUN_1402f2a30(longlong param_1)
+
+{
+  return *(undefined4 *)(param_1 + 0x48);
+}
+
+
+==================== 0x14025c3c0 ====================
+function FUN_14025c3c0 @ 14025c3c0 size=66
+-- xrefs to entry:
+   140e4f7b0 (?) DATA
+   140002454 (FUN_1400022b0@1400022b0) UNCONDITIONAL_CALL
+   1400034e3 (FUN_1400033e0@1400033e0) UNCONDITIONAL_CALL
+   1402d4bfd (FUN_1402d4a50@1402d4a50) UNCONDITIONAL_CALL
+   1402dd208 (FUN_1402dd110@1402dd110) UNCONDITIONAL_CALL
+   1402df71a (FUN_1402df4b0@1402df4b0) UNCONDITIONAL_CALL
+   1402ea543 (FUN_1402ea460@1402ea460) UNCONDITIONAL_CALL
+   1402eb13b (FUN_1402eb040@1402eb040) UNCONDITIONAL_CALL
+   1402eb9e6 (FUN_1402eb900@1402eb900) UNCONDITIONAL_CALL
+   1402ec414 (FUN_1402ec350@1402ec350) UNCONDITIONAL_CALL
+   140301783 (FUN_1403015d0@1403015d0) UNCONDITIONAL_CALL
+   140307255 (FUN_140306fc0@140306fc0) UNCONDITIONAL_CALL
+   14030abc2 (FUN_14030a770@14030a770) UNCONDITIONAL_CALL
+   1403227a9 (FUN_140322630@140322630) UNCONDITIONAL_CALL
+   140371d75 (FUN_140371cc0@140371cc0) UNCONDITIONAL_CALL
+   1403731b3 (FUN_140373120@140373120) UNCONDITIONAL_CALL
+   14037720a (FUN_1403771c0@1403771c0) UNCONDITIONAL_CALL
+   14037773f (FUN_140377710@140377710) UNCONDITIONAL_CALL
+   140377d06 (FUN_140377c90@140377c90) UNCONDITIONAL_CALL
+   1403780b6 (FUN_140378040@140378040) UNCONDITIONAL_CALL
+   1403783c5 (FUN_140378360@140378360) UNCONDITIONAL_CALL
+   14037f2ed (FUN_14037f1a0@14037f1a0) UNCONDITIONAL_CALL
+   1403dbd9b (FUN_1403dbb50@1403dbb50) UNCONDITIONAL_CALL
+   1403dcb5e (FUN_1403dc760@1403dc760) UNCONDITIONAL_CALL
+   1403ea41a (FUN_1403e9d90@1403e9d90) UNCONDITIONAL_CALL
+   1403f0ca5 (FUN_1403f0b40@1403f0b40) UNCONDITIONAL_CALL
+   1403f1442 (FUN_1403f12f0@1403f12f0) UNCONDITIONAL_CALL
+   1403f5170 (FUN_1403f5050@1403f5050) UNCONDITIONAL_CALL
+   1403fe407 (FUN_1403fe290@1403fe290) UNCONDITIONAL_CALL
+   140402cf6 (FUN_140402c30@140402c30) UNCONDITIONAL_CALL
+   140403770 (FUN_140403690@140403690) UNCONDITIONAL_CALL
+   14041d38d (FUN_14041d1c0@14041d1c0) UNCONDITIONAL_CALL
+   14041e7d8 (FUN_14041e6b0@14041e6b0) UNCONDITIONAL_CALL
+   14041f1df (FUN_14041efa0@14041efa0) UNCONDITIONAL_CALL
+   140421200 (FUN_1404211b0@1404211b0) UNCONDITIONAL_CALL
+   14042155d (FUN_1404214e0@1404214e0) UNCONDITIONAL_CALL
+   140421ee3 (FUN_140421ea0@140421ea0) UNCONDITIONAL_CALL
+   1404276bd (FUN_140427110@140427110) UNCONDITIONAL_CALL
+   14042969f (FUN_1404295b0@1404295b0) UNCONDITIONAL_CALL
+   14042c356 (FUN_14042c0c0@14042c0c0) UNCONDITIONAL_CALL
+   14042caad (FUN_14042c850@14042c850) UNCONDITIONAL_CALL
+   1404359d2 (FUN_140435400@140435400) UNCONDITIONAL_CALL
+   14043a2ae (FUN_14043a140@14043a140) UNCONDITIONAL_CALL
+   14043ad65 (FUN_14043ac70@14043ac70) UNCONDITIONAL_CALL
+   14043bdd4 (FUN_14043bcd0@14043bcd0) UNCONDITIONAL_CALL
+   14043c4d4 (FUN_14043c3c0@14043c3c0) UNCONDITIONAL_CALL
+   140440dd7 (FUN_140440a40@140440a40) UNCONDITIONAL_CALL
+   140442b4f (FUN_140442a60@140442a60) UNCONDITIONAL_CALL
+   140443a2e (FUN_140443930@140443930) UNCONDITIONAL_CALL
+   140444c58 (FUN_140444b60@140444b60) UNCONDITIONAL_CALL
+   1404460f2 (FUN_140445ff0@140445ff0) UNCONDITIONAL_CALL
+   1403e1a87 (FUN_1403e1830@1403e1830) UNCONDITIONAL_CALL
+   1403e03b9 (FUN_1403dfda0@1403dfda0) UNCONDITIONAL_CALL
+
+undefined4 FUN_14025c3c0(longlong param_1,int param_2)
+
+{
+  char cVar1;
+  
+  cVar1 = FUN_14025ca70(param_1,param_2,1);
+  if (cVar1 == '\x01') {
+    return 0xffffffff;
+  }
+  return *(undefined4 *)((longlong)param_2 * 0x70 + 0x44 + param_1);
+}
+
+
+==================== 0x140362200 ====================
+function FUN_140362200 @ 140362200 size=8
+-- xrefs to entry:
+   140362006 (FUN_140361fd0@140361fd0) UNCONDITIONAL_CALL
+   140372960 (FUN_140372900@140372900) UNCONDITIONAL_CALL
+   14036e046 (FUN_14036df90@14036df90) UNCONDITIONAL_CALL
+   14036e24f (FUN_14036df90@14036df90) UNCONDITIONAL_CALL
+   14037303e (FUN_140372e50@140372e50) UNCONDITIONAL_CALL
+   1403f7f29 (FUN_1403f7db0@1403f7db0) UNCONDITIONAL_CALL
+
+undefined1 FUN_140362200(longlong param_1)
+
+{
+  return *(undefined1 *)(param_1 + 0x5b6c);
+}
+
+

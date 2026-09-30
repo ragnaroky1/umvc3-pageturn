@@ -143,3 +143,28 @@ Implication: the visible grid is fully described by a static 56-entry table plus
 - Second ctor `0x1403729b0` (no player; also 8×7).
 - Inner vtable (`0x140b3fa80` base): +0x00 dtor `0x140372b60`, +0x20 `0x140372e20` (DTI), +0x40 `0x140323920`, +0x60 `0x1407e4d40` (returns 0), +0x78 `0x1403740a0`, +0x88 `0x140323890`, +0x90 `0x140323700`, +0x98 `0x140323750`, +0xa0 `0x140323840`, +0xa8 `0x140372cd0` (confirm), **+0xb0 `0x140372c50` (isSelectable(slot))**, +0xb8 `0x140372bc0` (cancel), +0xc0..+0xf0 = `0x1407e1a10` (stub), +0xf8 `0x140372d90` (isBlocked(row,col)), +0x100 `0x140323600` (input bits), +0x108 = 0.
 - All earlier "field offsets" for the cursor (+0x4c pos, +0x54 cols, +0x84 player) are relative to the **inner** object at outer+0x78.
+
+## Decompiled select-screen logic (Ghidra 12.1.4 on the unpacked exe; dumps in `notes/ghidra_dump*.txt`)
+
+### Coordinate system (confirmed)
+- Grid is **8 columns (x) × 7 rows (y) = 56 slots**. `slot = x + 8*y` (x = slot & 7, y = slot >> 3).
+- Left half x=0..3 is face mesh `chs_meku_face_a`, right half x=4..7 is `chs_meku_face_b` (mirrored). Node index within a face: `FUN_14036d670(slot)` = `(3 - x') * 7 + y` with `x' = x>3 ? 7-x : x`; `FUN_14036d6e0(slot)` = `x > 3` (which face).
+- Layout table `0x140b3e580` is `int32[56]` indexed by `slot` directly (my earlier "[col][row]" reading == x + 8*y). `FUN_140361fd0(x, y)` = table lookup + availability; `FUN_140361fa0(slot)` = same by slot; `FUN_140361f50(chrId)` = reverse lookup (chrId → slot, 0 if absent).
+- Table contents (x→ left to right, y↓): y0: Jill,·,·,Random,RandomAll,·,·,Shuma; y1: Nemesis,RedArremer,Hiryu,Naruhodo,Nova,GhostRider,HawkEye,DrStrange; … y6: Leilei,Haggar,CViper,Amaterasu,Phoenix,Magneto,SheHulk,TaskMaster. (`·` = 0 = empty.)
+
+### Objects and key functions
+- **uMenuChrSel** (owner; property fn `0x1403615e0`): +0x78 mChrSelArray, **+0xf0 mpChrSelBgMain**, +0xf8 mpChrSelOpt, **+0x120 mpCursor[2]**, +0x140 mpCardPlayer[2], +0x150 mpAssist[2], +0x160 mpReserveUnit[2], +0x178 chrSelData[6] {mType,mBody,mAssist} (3 per player), **+0x1c0 mChrTbl[60] u32, +0x2b0 mChrTblMax**, +0x2b4 mMode[2], +0x2c4 mRandAll[2], +0x2c8 mPhase, +0x2f4 mReserveId[2], +0x32b mbHost.
+- **uMenuChrSelCursor** outer (`0x140372900` ctor): +0x78 inner uiCursor, **+0x110 = pointer to BgMain**, +0x11c anim time, +0x120/+0x124 player, +0x128 enabled.
+  - `FUN_140372e50` = update: ticks inner via `FUN_140373120`, then `pos = FUN_1402e79d0(inner)` (= inner+0x4c), sets the cursor sprite animation frame to `pos * 60 + t` via `FUN_1401aabe0`, then **`FUN_14036e820(bgMain, player, pos)`**.
+  - `FUN_140373120`: inner enable/player, calls inner vt+0x40 (uiCursor::update), then mouse: `slot = FUN_14025c3c0(mouse, 0)`; if `slot < 0x38` and not blocked (`vt+0xf8(inner, slot & 7, slot >> 3)`) → `FUN_140028060(inner, slot)` (set pos).
+- **uiCursor** (generic, name string "uiCursor" at 0x140b212b8; vtable `0x140b211b0`): +0x48 state (-1 idle), **+0x4c pos**, +0x50 prevPos, **+0x54 = 8 (columns), +0x58 = 7 (rows), +0x5c = 56**, +0x60 player, +0x68 moveFlags, +0x74 repeat timer, +0x78 repeat limit 10.0, +0x7c enabled.
+  - `FUN_140323920` = update: confirm (vt+0xa8) → callback(this,0); cancel (vt+0xb8) → callback(this,-2); x = pos % 8, y = pos / 8; vt+0xa0 (bit 0x20) → x++, vt+0x98 (bit 0x80) → x--, vt+0x90 (bit 0x40) → y++, vt+0x88 (bit 0x10) → y--; **wraps x in [0,8), y in [0,rows)**; pos = y*8 + x; then `FUN_140323b20` skips blocked slots (vt+0xf8) by continuing in the move direction.
+  - `FUN_140373280(this, cols, rows)` sets +0x54/+0x58/+0x5c. `FUN_140028060(this, pos)` sets pos. `FUN_1402e79d0(this)` gets pos. `FUN_140255150(this, player)`. `FUN_140373270(this, enabled)`.
+- **uMenuChrSelBgMain** (`0x14036e9c0` = load: loads `chs_meku`, color/uv SDLs, 2 highlight units at +0x138; initial mCursorPos = 0x1a (P1) / 0x1d (P2), or from saved teams via `FUN_140361f50`).
+  - **`FUN_14036e820(this, player, slot)`: `if (player < 2 && slot < 0x38) mCursorPos[player] = slot;`** — slots ≥ 56 are silently ignored (this is why Clone Engine rows show no highlight).
+  - `FUN_14036ce80` = update: per player derives highlight node from mCursorPos (+0xbc/+0xc0) and old (+0xc4/+0xc8), colors the 12 highlight meshes via `FUN_14036e840(this, meshIdx, uv, color)`, plays `sel_round_*` anims via `FUN_14036c930(this, player, state)`, and iterates all 56 slots marking taken/unavailable characters (`FUN_14024d3f0(game, player, chrId, -1, -1)` = "already on a team").
+  - **`FUN_14036df90(this)` = build icons** (1589 bytes; vtable 0x140b3f058): for face a/b × 28 nodes calls `FUN_140361fd0(...)` and assigns `f_<Name>00` / `f_Hatena` / `f_Random` / `f_Random_all` textures to node materials (`node->vt+0x50(node, tex+8)`), then the 12 highlight meshes. Self-contained → **callable again from a mod to repaint the grid.**
+- Netplay: `FUN_140368bf0(uMenuChrSel, player, teamSlot)` receives **character IDs** (clamped 0..0x33 by `FUN_140455640`), converts to slot with `FUN_140361f50`, and pushes it to the cursor (`FUN_140369090`) and BgMain. So online sync is by chrId, not by cursor movement — local cursor/page changes are not part of the synced state (to be verified live).
+
+### What Clone Engine most likely does (inference; verify once CE is installed)
+- Raises the row count passed to `FUN_140373280` (7 → 7+k) so the cursor can move into y ≥ 7, and hooks `FUN_140361fd0` / `FUN_140361fa0` (and the 0x33 clamps) to return clone chrIds for those slots. No icons/highlight exist for y ≥ 7 (`FUN_14036e820` drops them), hence "scrolling into empty space".
