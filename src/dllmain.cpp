@@ -1,12 +1,19 @@
-// UMvC3 PageTurn - diagnostic build 0.0.3
-// Loads via Ultimate ASI Loader (dinput8.dll). Logs select-screen events only; changes nothing.
+// UMvC3 PageTurn 0.1.0 (Phase 2 minimum version)
+// Pages the character select grid over Clone Engine's extended rows.
+//   Two-player select: each player owns one half (P1 left, P2 right); each half is a 28-slot page.
+//   Solo select: full-width 56-slot pages.
+// Loads via Ultimate ASI Loader (dinput8.dll). Requires UMvC3 Community Edition / Clone Engine.
 #define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #include <cstdio>
 #include <cstdarg>
 #include <cstdint>
+#include <cstring>
 #include "MinHook.h"
 
+#define PT_VERSION "0.1.0"
+
+// ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
 static void Log(const char* fmt, ...) {
     if (!g_log) return;
@@ -16,111 +23,262 @@ static void Log(const char* fmt, ...) {
     fputc('\n', g_log); fflush(g_log);
 }
 
-// ---- Game addresses (Steam build, exe dated 2017-04-03, image base 0x140000000, no ASLR) ----
-static const uintptr_t ADDR_GAME_NAME      = 0x140B12D10; // "umvc3"
-static const uintptr_t ADDR_BGMAIN_SETCUR  = 0x14036E820; // BgMain::setCursorPos(this, player, slot) (slot < 0x38 filter)
-static const uintptr_t ADDR_CURSOR_CTOR    = 0x140372900; // uMenuChrSelCursor::ctor(this, player)
-static const uintptr_t ADDR_BGMAIN_ICONS   = 0x14036DF90; // BgMain::buildIcons(this)
-static const uintptr_t ADDR_UICURSOR_SETDIM= 0x140373280; // uiCursor::setDims(this, cols, rows)
-static const uintptr_t ADDR_GRID_LOOKUP    = 0x140361FD0; // lookup(x, y) -> chrId
+// ---------------------------------------------------------------- game addresses (Steam exe 2017-04-03, no ASLR)
+static const uintptr_t ADDR_GAME_NAME       = 0x140B12D10; // "umvc3"
+static const uintptr_t ADDR_GRID_LOOKUP     = 0x140361FD0; // int lookup(int x, int y) -> chrId   (CE repoints its table inside)
+static const uintptr_t ADDR_BGMAIN_SETCUR   = 0x14036E820; // BgMain::setCursorPos(this, player, slot<0x38)
+static const uintptr_t ADDR_BGMAIN_ICONS    = 0x14036DF90; // BgMain::buildIcons(this)
+static const uintptr_t ADDR_BGMAIN_UPDATE   = 0x14036CE80; // BgMain::update(this)
+static const uintptr_t ADDR_CURSOR_CTOR     = 0x140372900; // uMenuChrSelCursor::ctor(this, player)
+static const uintptr_t ADDR_CURSOR_UPDATE   = 0x140372E50; // uMenuChrSelCursor::update(this)
+static const uintptr_t ADDR_CURSOR_TICK     = 0x140373120; // uMenuChrSelCursor::tick(this)  (drives inner uiCursor + mouse)
+static const uintptr_t ADDR_UICURSOR_UPDATE = 0x140323920; // uiCursor::update(this)  (generic; we replace it for our cursors)
+static const uintptr_t ADDR_UICURSOR_SETEN  = 0x140373270; // uiCursor::setEnabled(this, bool)
+static const uintptr_t ADDR_UICURSOR_SETPL  = 0x140255150; // uiCursor::setPlayer(this, int)
+static const uintptr_t ADDR_INPUTMGR_GET    = 0x140001AE0; // getInputMgr()
+static const uintptr_t ADDR_MOUSE_GET       = 0x140001AD0; // getMouse()
+static const uintptr_t ADDR_MOUSE_SLOT      = 0x14025C3C0; // mouseSlot(mouse, 0) -> slot or -1
+static const uintptr_t ADDR_INPUT_BLOCKED   = 0x140282600; // inputBlocked(inputMgr, 0)
 
-typedef void   (__fastcall* tSetCur)(void* self, uint32_t player, uint32_t slot);
-typedef void*  (__fastcall* tCursorCtor)(void* self, int player);
-typedef void   (__fastcall* tBuildIcons)(void* self);
-typedef void   (__fastcall* tSetDims)(void* self, int cols, int rows);
-typedef int    (__fastcall* tLookup)(int x, int y);
+// inner uiCursor offsets (inner = outer + 0x78)
+enum : int { UC_STATE = 0x48, UC_POS = 0x4C, UC_PREV = 0x50, UC_COLS = 0x54, UC_ROWS = 0x58, UC_PLAYER = 0x60,
+             UC_MOVEFLAGS = 0x68, UC_REPEAT = 0x74, UC_REPEATLIM = 0x78, UC_ENABLED = 0x7C, UC_DT = 0x28 };
+// outer uMenuChrSelCursor offsets
+enum : int { OC_INNER = 0x78, OC_BGMAIN = 0x110, OC_PLAYER = 0x124, OC_ENABLED = 0x128 };
+// vtable slots of the inner cursor
+enum : int { VT_IN_LEFT = 0x88, VT_IN_RIGHT = 0x90, VT_IN_UP = 0x98, VT_IN_DOWN = 0xA0, VT_CONFIRM = 0xA8, VT_CANCEL = 0xB8, VT_BLOCKED = 0xF8 };
+// NOTE: from uiCursor::update: vt+0xa0 -> x++, vt+0x98 -> x--, vt+0x90 -> y++, vt+0x88 -> y--.
 
-static tSetCur     o_SetCur = nullptr;
+typedef int   (__fastcall* tLookup)(int x, int y);
+typedef void  (__fastcall* tSetCur)(void* self, uint32_t player, uint32_t slot);
+typedef void  (__fastcall* tVoidThis)(void* self);
+typedef void* (__fastcall* tCursorCtor)(void* self, int player);
+typedef void  (__fastcall* tSetInt)(void* self, int v);
+typedef void  (__fastcall* tSetBool)(void* self, uint8_t v);
+typedef void* (__fastcall* tGetPtr)();
+typedef int   (__fastcall* tMouseSlot)(void* mouse, int i);
+typedef char  (__fastcall* tInputBlocked)(void* mgr, int i);
+typedef char  (__fastcall* tVtBool1)(void* self, int player);
+typedef char  (__fastcall* tVtBlocked)(void* self, int x, int y);
+
+static tLookup    o_Lookup = nullptr;
+static tSetCur    o_SetCur = nullptr;
+static tVoidThis  o_BuildIcons = nullptr;
+static tVoidThis  o_BgUpdate = nullptr;
 static tCursorCtor o_CursorCtor = nullptr;
-static tBuildIcons o_BuildIcons = nullptr;
-static tSetDims    o_SetDims = nullptr;
-static tLookup     o_Lookup = nullptr;
+static tVoidThis  o_CursorUpdate = nullptr;
+static tVoidThis  o_CursorTick = nullptr;
+static tVoidThis  o_UiCursorUpdate = nullptr;
 
-// Reads the rip-relative displacement of the 'lea rax,[grid table]' inside lookup(x,y). Clone Engine
-// repoints it at its own bigger table (allocated at 0x1B0000000), so this tells us whether CE is active.
-static void LogGridTable(const char* when) {
-    const uint8_t* lea = (const uint8_t*)0x140361FE5; // 48 8D 05 disp32
-    int32_t disp = *(const int32_t*)(lea + 3);
-    const int32_t* tbl = (const int32_t*)(lea + 7 + disp);
-    int count = 0; for (int i = 0; i < 0x3000 / 4; i++) { if (tbl[i] != 0) count = i + 1; if (i >= 56 && tbl[i] == 0 && tbl[i+1] == 0 && tbl[i+2] == 0) break; }
-    const uint8_t* sd = (const uint8_t*)0x140373280;
-    Log("%s: grid table at %p (%s), last non-zero index %d; setDims bytes %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
-        when, tbl, ((uintptr_t)tbl == 0x140B3E580) ? "vanilla" : "PATCHED (Clone Engine)", count - 1,
-        sd[0],sd[1],sd[2],sd[3],sd[4],sd[5],sd[6],sd[7],sd[8],sd[9],sd[10],sd[11]);
-    if ((uintptr_t)tbl != 0x140B3E580) { for (int i = 56; i < count && i < 56 + 8; i++) Log("   slot %d -> chrId %d", i, tbl[i]); }
+// ---------------------------------------------------------------- state
+struct PlayerCursor {
+    uint8_t* outer = nullptr;   // uMenuChrSelCursor
+    uint8_t* inner = nullptr;   // uiCursor at outer+0x78
+    int      realPos = -1;      // authoritative slot in CE's 8 x rows grid
+    int      shownPage = -1;    // page currently painted on this player's face (-1 = never)
+};
+static PlayerCursor g_pc[2];
+static uint8_t* g_bgMain = nullptr;
+static int  g_cols = 8, g_rows = 18;        // read from the inner cursor after ctor
+static bool g_translate = false;            // lookup(x,y) receives visible coords -> translate to real
+static bool g_needRepaint = false;
+
+static inline int vtcall_bool(void* self, int slot, int player) { return (*(tVtBool1*)(*(uint8_t**)self + slot))(self, player); }
+static inline char vt_blocked(void* self, int x, int y)          { return (*(tVtBlocked*)(*(uint8_t**)self + VT_BLOCKED))(self, x, y); }
+
+static PlayerCursor* FindByInner(void* inner) { for (auto& p : g_pc) if (p.inner == inner) return &p; return nullptr; }
+static PlayerCursor* FindByOuter(void* outer) { for (auto& p : g_pc) if (p.outer == outer) return &p; return nullptr; }
+
+// Split mode = both cursors exist and are enabled. Otherwise solo (full width).
+static bool SplitMode() {
+    return g_pc[0].inner && g_pc[1].inner && g_pc[0].inner[UC_ENABLED] && g_pc[1].inner[UC_ENABLED];
 }
-static uint32_t g_lastSlot[2] = { 0xFFFFFFFF, 0xFFFFFFFF };
+static int Bands()     { return (g_rows + 6) / 7; }
+static int PageCount() { return SplitMode() ? Bands() * 2 : Bands(); }
 
-static void __fastcall h_SetCur(void* self, uint32_t player, uint32_t slot) {
-    if (player < 2 && g_lastSlot[player] != slot) {
-        g_lastSlot[player] = slot;
-        int chr = (slot < 0x38) ? o_Lookup(slot & 7, slot >> 3) : -1;
-        Log("setCursorPos bgmain=%p player=%u slot=%u (x=%u y=%u) chrId=%d%s",
-            self, player, slot, slot & 7, slot >> 3, chr, slot >= 0x38 ? "  <-- beyond 56, game ignores" : "");
+// page geometry: split -> page P covers x in [ (P%2)*4, +4 ), y in [ (P/2)*7, +7 ); solo -> x 0..7, y in [P*7, +7)
+static int  PageOf(int pos)   { int x = pos & 7, y = pos >> 3; return SplitMode() ? (y / 7) * 2 + (x / 4) : y / 7; }
+static int  PageW()           { return SplitMode() ? 4 : 8; }
+static void PageCell(int pos, int& cx, int& cy) { int x = pos & 7, y = pos >> 3; cx = SplitMode() ? x % 4 : x; cy = y % 7; }
+static int  RealFromPage(int page, int cx, int cy) {
+    int x, y;
+    if (SplitMode()) { x = (page % 2) * 4 + cx; y = (page / 2) * 7 + cy; } else { x = cx; y = page * 7 + cy; }
+    return y * 8 + x;
+}
+// visible slot (0..55) on screen for a real pos of player p
+static int VisibleFromReal(int p, int pos) { int cx, cy; PageCell(pos, cx, cy); return SplitMode() ? cy * 8 + p * 4 + cx : cy * 8 + cx; }
+// real pos for a visible slot on face f (0 left / 1 right)
+static int RealFromVisible(int vis) {
+    int x = vis & 7, y = vis >> 3;
+    if (!SplitMode()) return RealFromPage(PageOf(g_pc[0].realPos < 0 ? 0 : g_pc[0].realPos), x, y);
+    int face = x / 4;
+    int page = g_pc[face].realPos < 0 ? face : PageOf(g_pc[face].realPos);
+    return RealFromPage(page, x % 4, y);
+}
+static bool RealBlocked(void* inner, int pos) { int x = pos & 7, y = pos >> 3; return y >= g_rows || vt_blocked(inner, x, y) != 0; }
+
+// ---------------------------------------------------------------- hooks
+static int __fastcall h_Lookup(int x, int y) {
+    if (g_translate && x >= 0 && x < 8 && y >= 0 && y < 7) {
+        int r = RealFromVisible(y * 8 + x);
+        return o_Lookup(r & 7, r >> 3);
     }
-    o_SetCur(self, player, slot);
+    return o_Lookup(x, y);
 }
+
+static void __fastcall h_BuildIcons(void* self) {
+    bool prev = g_translate; g_translate = true;
+    o_BuildIcons(self);
+    g_translate = prev;
+}
+static void __fastcall h_BgUpdate(void* self) {
+    g_bgMain = (uint8_t*)self;
+    bool prev = g_translate; g_translate = true;
+    o_BgUpdate(self);
+    g_translate = prev;
+}
+
 static void* __fastcall h_CursorCtor(void* self, int player) {
     void* r = o_CursorCtor(self, player);
-    uint8_t* inner = (uint8_t*)self + 0x78;
-    if (player == 0) LogGridTable("at cursor ctor");
-    Log("cursor ctor self=%p player=%d inner=%p cols=%d rows=%d total=%d",
-        self, player, inner, *(int*)(inner + 0x54), *(int*)(inner + 0x58), *(int*)(inner + 0x5c));
+    if (player >= 0 && player < 2) {
+        g_pc[player].outer = (uint8_t*)self;
+        g_pc[player].inner = (uint8_t*)self + OC_INNER;
+        g_pc[player].realPos = *(int*)(g_pc[player].inner + UC_POS);
+        g_pc[player].shownPage = -1;
+        g_cols = *(int*)(g_pc[player].inner + UC_COLS);
+        g_rows = *(int*)(g_pc[player].inner + UC_ROWS);
+        Log("cursor ctor player=%d outer=%p inner=%p cols=%d rows=%d startPos=%d", player, self, g_pc[player].inner, g_cols, g_rows, g_pc[player].realPos);
+    }
     return r;
 }
-static void __fastcall h_BuildIcons(void* self) {
-    Log("buildIcons bgmain=%p", self);
-    o_BuildIcons(self);
-    Log("buildIcons done");
-}
-static void __fastcall h_SetDims(void* self, int cols, int rows) {
-    Log("uiCursor::setDims cursor=%p cols=%d rows=%d", self, cols, rows);
-    o_SetDims(self, cols, rows);
+
+// Our replacement for uiCursor::update, for the two select-screen cursors only.
+static void PagedCursorUpdate(PlayerCursor& pc) {
+    uint8_t* c = pc.inner;
+    if (*(int*)(c + UC_STATE) != -1 || !c[UC_ENABLED]) return;
+    int player = *(int*)(c + UC_PLAYER);
+    *(int*)(c + UC_MOVEFLAGS) = 0; *(int*)(c + 0x70) = 0;
+    if (player < 0) return;
+    if (vtcall_bool(c, VT_CONFIRM, player)) { *(int*)(c + UC_STATE) = 0; return; }
+    if (vtcall_bool(c, VT_CANCEL, player))  { *(int*)(c + UC_STATE) = -2; return; }
+
+    float rep = *(float*)(c + UC_REPEAT);
+    if (rep < *(float*)(c + UC_REPEATLIM)) *(float*)(c + UC_REPEAT) = rep + *(float*)(c + UC_DT);
+    int pos = pc.realPos; if (pos < 0) pos = *(int*)(c + UC_POS);
+    *(int*)(c + UC_PREV) = pos;
+
+    int dx = 0, dy = 0;
+    if (vtcall_bool(c, VT_IN_DOWN, player))       { dx = +1; *(int*)(c + UC_MOVEFLAGS) |= 2; }   // vt+0xa0: x++
+    else if (vtcall_bool(c, VT_IN_UP, player))    { dx = -1; *(int*)(c + UC_MOVEFLAGS) |= 1; }   // vt+0x98: x--
+    if (vtcall_bool(c, VT_IN_RIGHT, player))      { dy = +1; *(int*)(c + UC_MOVEFLAGS) |= 4; }   // vt+0x90: y++
+    else if (vtcall_bool(c, VT_IN_LEFT, player))  { dy = -1; *(int*)(c + UC_MOVEFLAGS) |= 8; }   // vt+0x88: y--
+    if (!dx && !dy) return;
+    *(float*)(c + UC_REPEAT) = 0;
+
+    int page = PageOf(pos), cx, cy; PageCell(pos, cx, cy);
+    int npages = PageCount(), w = PageW();
+    // step in page space; skip blocked cells continuing in the same direction (like the game does)
+    for (int guard = 0; guard < npages * 56; guard++) {
+        cx += dx; cy += dy;
+        if (cx < 0)  { cx = w - 1; page = (page - 1 + npages) % npages; }
+        if (cx >= w) { cx = 0;     page = (page + 1) % npages; }
+        if (cy < 0)  { cy = 6;     page = (page - (SplitMode() ? 2 : 1) + npages) % npages; }
+        if (cy >= 7) { cy = 0;     page = (page + (SplitMode() ? 2 : 1)) % npages; }
+        int np = RealFromPage(page, cx, cy);
+        if (!RealBlocked(c, np)) { pos = np; break; }
+    }
+    pc.realPos = pos;
+    *(int*)(c + UC_POS) = pos;
 }
 
+static void __fastcall h_UiCursorUpdate(void* self) {
+    PlayerCursor* pc = FindByInner(self);
+    if (!pc) { o_UiCursorUpdate(self); return; }
+    PagedCursorUpdate(*pc);
+}
+
+// Replacement for uMenuChrSelCursor::tick: enable/player, movement, mouse; then leave the VISIBLE pos in +0x4c
+// for the rest of uMenuChrSelCursor::update (cursor sprite animation + BgMain::setCursorPos).
+static void __fastcall h_CursorTick(void* self) {
+    PlayerCursor* pc = FindByOuter(self);
+    if (!pc) { o_CursorTick(self); return; }
+    uint8_t* o = (uint8_t*)self; uint8_t* in = pc->inner;
+    if (!((tInputBlocked)ADDR_INPUT_BLOCKED)(((tGetPtr)ADDR_INPUTMGR_GET)(), 0)) {
+        int before = pc->realPos < 0 ? *(int*)(in + UC_POS) : pc->realPos;
+        *(int*)(in + UC_POS) = before;
+        ((tSetBool)ADDR_UICURSOR_SETEN)(in, o[OC_ENABLED]);
+        ((tSetInt)ADDR_UICURSOR_SETPL)(in, *(int*)(o + OC_PLAYER));
+        (*(tVoidThis*)(*(uint8_t**)in + 0x40))(in);          // -> h_UiCursorUpdate -> PagedCursorUpdate
+        pc->realPos = *(int*)(in + UC_POS);
+        if (*(int*)(in + UC_STATE) == -1 && o[OC_ENABLED] && *(int*)(o + OC_PLAYER) == 0 && pc->realPos == before) {
+            int m = ((tMouseSlot)ADDR_MOUSE_SLOT)(((tGetPtr)ADDR_MOUSE_GET)(), 0);
+            if (m >= 0 && m < 0x38) {
+                if (!SplitMode() || (m & 7) / 4 == 0) {          // P1's half only in split mode
+                    int r = RealFromVisible(m);
+                    if (r != before && !RealBlocked(in, r)) pc->realPos = r;
+                }
+            }
+        }
+    }
+    if (pc->realPos >= 0) *(int*)(in + UC_POS) = VisibleFromReal(*(int*)(o + OC_PLAYER), pc->realPos);
+}
+
+static void __fastcall h_CursorUpdate(void* self) {
+    PlayerCursor* pc = FindByOuter(self);
+    if (!pc) { o_CursorUpdate(self); return; }
+    o_CursorUpdate(self);                                     // uses visible pos left by h_CursorTick
+    if (pc->realPos >= 0) *(int*)(pc->inner + UC_POS) = pc->realPos;   // restore real pos for everyone else
+    uint8_t* bg = *(uint8_t**)((uint8_t*)self + OC_BGMAIN);
+    if (bg) g_bgMain = bg;
+    // repaint when this player's page changed (or mode changed)
+    int player = *(int*)((uint8_t*)self + OC_PLAYER);
+    int page = pc->realPos >= 0 ? PageOf(pc->realPos) : 0;
+    int key = page * 2 + (SplitMode() ? 1 : 0);
+    if (key != pc->shownPage) {
+        pc->shownPage = key;
+        if (g_bgMain && o_BuildIcons) {
+            Log("player %d -> page %d/%d (%s); repainting grid", player, page + 1, PageCount(), SplitMode() ? "split" : "solo");
+            h_BuildIcons(g_bgMain);
+            // the other face may also have changed meaning (mode switch); force its key to refresh next frame
+        }
+    }
+}
+
+static void __fastcall h_SetCur(void* self, uint32_t player, uint32_t slot) {
+    g_bgMain = (uint8_t*)self;
+    o_SetCur(self, player, slot);
+}
+
+// ---------------------------------------------------------------- init
 template<typename T> static bool Hook(uintptr_t addr, void* detour, T** orig, const char* name) {
     MH_STATUS s = MH_CreateHook((void*)addr, detour, (void**)orig);
     if (s != MH_OK) { Log("hook %s at %llx failed: %d", name, (unsigned long long)addr, s); return false; }
-    Log("hook %s at %llx ok", name, (unsigned long long)addr);
     return true;
 }
 
-static void LogRegion(const char* when, uintptr_t addr) {
-    MEMORY_BASIC_INFORMATION mbi = {};
-    VirtualQuery((LPCVOID)addr, &mbi, sizeof mbi);
-    char mod[MAX_PATH] = "-";
-    if (mbi.State != MEM_FREE) GetModuleFileNameA((HMODULE)mbi.AllocationBase, mod, MAX_PATH);
-    Log("%s: region at %llx: base=%p allocBase=%p size=%llx state=%s protect=%lx type=%lx module=%s", when,
-        (unsigned long long)addr, mbi.BaseAddress, mbi.AllocationBase, (unsigned long long)mbi.RegionSize,
-        mbi.State == MEM_FREE ? "FREE" : mbi.State == MEM_RESERVE ? "RESERVE" : "COMMIT", mbi.Protect, mbi.Type, mod);
-}
 static void Init() {
     char path[MAX_PATH]; GetModuleFileNameA(nullptr, path, MAX_PATH);
     char* p = strrchr(path, (int)92); if (p) *(p + 1) = 0;
     char logPath[MAX_PATH]; snprintf(logPath, sizeof logPath, "%sUMvC3PageTurn.log", path);
     g_log = fopen(logPath, "w");
-    HMODULE self = nullptr; GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR)&Init, &self);
-    Log("UMvC3 PageTurn diagnostic 0.0.5 loaded; exe base=%p; our module base=%p", GetModuleHandleA(nullptr), self);
-    LogRegion("before hooks", 0x1B0000000ULL);
-
+    Log("UMvC3 PageTurn %s loaded", PT_VERSION);
     if (strcmp((const char*)ADDR_GAME_NAME, "umvc3") != 0) {
-        Log("version check FAILED: expected 'umvc3' at %llx", (unsigned long long)ADDR_GAME_NAME);
+        Log("version check FAILED");
         MessageBoxA(nullptr, "UMvC3 PageTurn: unsupported game version. Mod disabled.", "UMvC3 PageTurn", MB_ICONWARNING);
         return;
     }
-    Log("version check ok");
-    o_Lookup = (tLookup)ADDR_GRID_LOOKUP;
-    LogGridTable("at init");
-
     if (MH_Initialize() != MH_OK) { Log("MH_Initialize failed"); return; }
-    Hook(ADDR_BGMAIN_SETCUR, (void*)h_SetCur, &o_SetCur, "BgMain::setCursorPos");
-    Hook(ADDR_CURSOR_CTOR, (void*)h_CursorCtor, &o_CursorCtor, "uMenuChrSelCursor::ctor");
-    Hook(ADDR_BGMAIN_ICONS, (void*)h_BuildIcons, &o_BuildIcons, "BgMain::buildIcons");
-    // NOTE: never hook 0x140373280 (uiCursor::setDims): Clone Engine overwrites its whole body later; hooking it crashed CE init.
+    bool ok = true;
+    ok &= Hook(ADDR_GRID_LOOKUP,     (void*)h_Lookup,         &o_Lookup,         "lookup");
+    ok &= Hook(ADDR_BGMAIN_SETCUR,   (void*)h_SetCur,         &o_SetCur,         "BgMain::setCursorPos");
+    ok &= Hook(ADDR_BGMAIN_ICONS,    (void*)h_BuildIcons,     &o_BuildIcons,     "BgMain::buildIcons");
+    ok &= Hook(ADDR_BGMAIN_UPDATE,   (void*)h_BgUpdate,       &o_BgUpdate,       "BgMain::update");
+    ok &= Hook(ADDR_CURSOR_CTOR,     (void*)h_CursorCtor,     &o_CursorCtor,     "uMenuChrSelCursor::ctor");
+    ok &= Hook(ADDR_CURSOR_UPDATE,   (void*)h_CursorUpdate,   &o_CursorUpdate,   "uMenuChrSelCursor::update");
+    ok &= Hook(ADDR_CURSOR_TICK,     (void*)h_CursorTick,     &o_CursorTick,     "uMenuChrSelCursor::tick");
+    ok &= Hook(ADDR_UICURSOR_UPDATE, (void*)h_UiCursorUpdate, &o_UiCursorUpdate, "uiCursor::update");
     MH_STATUS s = MH_EnableHook(MH_ALL_HOOKS);
-    Log("MH_EnableHook -> %d", s);
-    LogRegion("after hooks", 0x1B0000000ULL);
-    LogRegion("trampoline check", (uintptr_t)o_SetCur);
+    Log("hooks %s, MH_EnableHook -> %d", ok ? "created" : "PARTIAL", s);
 }
 
 extern "C" __declspec(dllexport) void InitializeASI() { Init(); }
