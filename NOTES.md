@@ -86,3 +86,42 @@ Running log of every finding. Newest entries appended at the bottom of each sect
 - Format strings used by the grid: `chs_meku_face_%c` (0x140b3f250; face mesh a/b), `ui\chs\chs_face_a\chs_cs_f\f_%s%02d_BM_HQ_NOMIP` (0x140b02f40; grid icon per character name + costume index), `ui\chs\chs_meku\chs_card%dp`, `chs_card%dp_no%d[_tf|_tw]`, `Name_name%dp_no%d`, `ColorSelect%dp`.
 - Grid icon textures live in `mnchs.arc` → `ui/chs/chs_face_a/chs_cs_f/f_<Name>00_BM_HQ_NOMIP.tex` (16,408 bytes each; 53 files incl. f_Random, f_Random_all, f_Hatena = "?" placeholder). Big side portraits are `chs_b1p/chs_body/b_<Name>99…` (262 KB), name plates `chs_b1p/chs_as_n/n_<Name>…typeB` (32 KB).
 - `f_Hatena_BM_HQ_NOMIP_typeC.tex` is a ready-made "?" icon → candidate placeholder for missing modded portraits (Phase 3.4).
+
+## Static analysis of unpacked exe (2026-09-30, capstone via `scripts/disasm.py`)
+
+All addresses are for the Steam 2017-04 exe, image base 0x140000000, no ASLR.
+
+### uMenuChrSelBgMain field offsets (from its DTI property-registration fn `0x14036cad0`)
+
+| offset | field | type/notes |
+|---|---|---|
+| +0xb0 | mbHost | bool |
+| +0xb1 | mTimeInfinite | bool |
+| +0xb2 | mTimeStop | bool |
+| +0xb4 | mPhaseStageSel | u32 |
+| +0xb8 | mHideTbl | u8[2] (per player, hide grid?) |
+| +0xba | mReserveSel | u8[2] |
+| +0xbc | **mCursorPos** | s32[2] — **one int per player**, a slot index (not row/col) |
+| +0xc4 | mCursorPosOld | s32[2] |
+| +0xcc | mTimeLimit | float |
+| +0xd0 | mCursorAnimeTime | float[2] |
+| +0xd8 | mVsTexPhase | u32 |
+| +0xdc | mSelStgId | u32 |
+| +0xe8 | mpColorTypeSdl | ptr |
+| +0xf0 | mpUvOffsetSdl | ptr |
+| +0xf8 | mpChrNameTex | ptr[6] |
+| +0x128 | mpVsPrevTex | ptr |
+| +0x130 | mpVsNextTex | ptr |
+| +0x138 | mpVjobCngColor | ptr[2] |
+| +0x58 | (base class) pointer to the loaded model/scene root, used with `0x1402de580(root, "name")` to find nodes |
+
+Property-registration helpers: `0x140010a20` = bool/u8 prop, `0x14000bb50` = s32 prop, `0x14000bb10` = u32 prop, `0x14000bb90` = float prop, `0x14000bbd0` = pointer prop; `0x14000bf60` appends to the property list. Args: rcx=out, rdx=obj, r8=name, r9=&field, [rsp+0x20]=array flag (0x20), [rsp+0x28]=count.
+
+### Grid layout
+
+- **Grid lookup `0x140361fd0(int row, int col) -> chrId`**: `chrId = dword [0x140b3e580 + (col*8 + row)*4]` — a **[7 cols][8 rows] int32 table at `0x140b3e580`** (224 bytes, .rdata). Special IDs: 0x34/0x37 → "?" (f_Hatena), 0x35 → Random (f_Random), 0x36 → Random-all. Non-special IDs are validated with `0x140226670(game, chrId)` (available?) and `0x140059520(chrId)`; if a byte at `[singleton+0x5b6c]` (from `0x140001ac0()`) is set, positions (row 0 or 5, col 0 or 5..6) are forced to 0 — probably DLC/lock handling.
+- **Grid builder `0x14036dfbe`** (inside a larger BgMain init): for face `a` and `b` (`chs_meku_face_%c`), for slot 0..27: row = slot/7, col = slot%7; face a uses lookup(3 - row, col), face b uses lookup(4 + row, col). So face a = rows 3,2,1,0 and face b = rows 4..7 of the table; 28 icon nodes per face mesh (children via `0x140326b90(node, idx)`), and the icon texture `f_<Name>00` is assigned via vtable slot +0x50 on the node's material. Then 12 highlight meshes (`chs_meku_sel1_a`…`selr2_b`, string table at `0x140d04300`) × 28 nodes each.
+- Character name table: `0x140058f90(chrId)` returns `char*` from a pointer array at `0x140c553b0` (.data).
+- `0x1403716a0` = per-player card init (uMenuChrSelCardPlayer; vtable near `0x140b3f488`): builds body/name texture handles for chrIds 0..0x33 (52), loads `b_Random`, `n_Hatena`, `chs_card%dp`, `chs_chr_color_type`, and `f_%s%02d` per costume (3×3 loop) into `[this + (0xa2+…)*8]`.
+
+Implication: the visible grid is fully described by a static 56-entry table plus per-player `mCursorPos`. Paging = presenting a different 56-entry table per page and re-running the icon assignment for the 2×28 face nodes. The cursor-movement code that reads/writes `mCursorPos` (+0xbc) is the next target.

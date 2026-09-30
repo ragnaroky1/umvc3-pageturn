@@ -2,7 +2,8 @@
 Usage: python scripts/xref_scan.py 0x140b3f0c0 [more VAs...]
 """
 import sys, struct
-EXE = r"C:\Program Files (x86)\Steam\steamapps\common\ULTIMATE MARVEL VS. CAPCOM 3\umvc3.exe"
+import os
+EXE = os.environ.get("UMVC3_EXE", "C:/Tools/ghidra_projects/umvc3.exe.unpacked.exe")
 BASE = 0x140000000
 SECS = [(".text", 0x1000, 0x400, 0xa59200), (".rdata", 0xa5b000, 0xa59600, 0x1f5e00), (".data", 0xc51000, 0xc4f400, 0xf3000)]
 d = open(EXE, 'rb').read()
@@ -26,6 +27,11 @@ for i in range(len(code) - 8):
                 if tgt in tset:
                     hits[tgt].append(("code", BASE + tv + i, code[i:i+mo+5].hex()))
                     break
+# direct call/jmp rel32
+for i in range(len(code) - 5):
+    if code[i] in (0xE8, 0xE9):
+        tgt = BASE + tv + i + 5 + struct.unpack_from('<i', code, i + 1)[0]
+        if tgt in tset: hits[tgt].append(("call" if code[i]==0xE8 else "jmp", BASE + tv + i, ""))
 for n, v, r, s in SECS[1:]:
     blob = d[r:r+s]
     for i in range(0, len(blob) - 8, 8):
