@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.5"
+#define PT_VERSION "0.1.6"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -143,7 +143,37 @@ static void ProbeFaceNodes(void* bgMain) {
         Log("probe: face_a child %d = %p vt=%p vt[+0x50]=%p", i, n, n ? *(void**)n : nullptr, n ? *(void**)(*(uint8_t**)n + 0x50) : nullptr);
     }
 }
+// ---------------------------------------------------------------- resident texture cache
+// At runtime the resource manager no longer resolves arc-packed textures by name (it goes straight to disk and
+// raises "Failed open file"), so we remember the texture objects the game itself loaded for the grid at screen load.
+typedef void* (__fastcall* tResLoadFn)(void* mgr, void* dti, const char* path, int flag);
+static tResLoadFn o_ResLoad = nullptr;
+static bool g_resLoadHooked = false;
+struct TexCacheEntry { char path[160]; void* tex; };
+static TexCacheEntry g_texCache[128]; static int g_texCacheN = 0;
+static void* CacheFind(const char* path) { for (int i = 0; i < g_texCacheN; i++) if (!_stricmp(g_texCache[i].path, path)) return g_texCache[i].tex; return nullptr; }
+static void CacheAdd(const char* path, void* tex) {
+    if (CacheFind(path) || g_texCacheN >= 128) return;
+    strncpy(g_texCache[g_texCacheN].path, path, 159); g_texCache[g_texCacheN].path[159] = 0; g_texCache[g_texCacheN].tex = tex; g_texCacheN++;
+}
+static void* __fastcall h_ResLoad(void* mgr, void* dti, const char* path, int flag) {
+    void* tex = o_ResLoad(mgr, dti, path, flag);
+    if (g_translate && tex && path && strstr(path, "chs_face_a")) CacheAdd(path, tex);
+    return tex;
+}
+static void EnsureResLoadHook() {
+    if (g_resLoadHooked) return;
+    void* mgr = ((void*(__fastcall*)())0x140001B10)();
+    if (!mgr) return;
+    void* fn = *(void**)(*(uint8_t**)mgr + 0x60);
+    MH_STATUS a = MH_CreateHook(fn, (void*)h_ResLoad, (void**)&o_ResLoad);
+    MH_STATUS b = MH_EnableHook(fn);
+    g_resLoadHooked = (a == MH_OK && b == MH_OK);
+    Log("resource load fn %p hook: %d/%d", fn, a, b);
+}
+
 static void __fastcall h_BuildIcons(void* self) {
+    EnsureResLoadHook();
     Log("buildIcons bgmain=%p (split=%d, P1 page %d, P2 page %d)", self, SplitMode(), g_pc[0].realPos >= 0 ? PageOf(g_pc[0].realPos) + 1 : 0, g_pc[1].realPos >= 0 ? PageOf(g_pc[1].realPos) + 1 : 0);
     g_lookupLogBudget = 8;
     bool prev = g_translate; g_translate = true;
@@ -165,6 +195,7 @@ static void* __fastcall h_CursorCtor(void* self, int player) {
         g_pc[player].inner = (uint8_t*)self + OC_INNER;
         g_pc[player].realPos = *(int*)(g_pc[player].inner + UC_POS);
         g_pc[player].shownPage = -1;
+        g_texCacheN = 0;
         g_cols = *(int*)(g_pc[player].inner + UC_COLS);
         g_rows = *(int*)(g_pc[player].inner + UC_ROWS);
         Log("cursor ctor player=%d outer=%p inner=%p cols=%d rows=%d startPos=%d", player, self, g_pc[player].inner, g_cols, g_rows, g_pc[player].realPos);
@@ -280,7 +311,6 @@ static void RepaintIcons(void* bgMain) {
     void* root = *(void**)((uint8_t*)bgMain + 0x58);
     if (!root) return;
     void* mgr = ((tGetResMgr)ADDR_RESMGR_GET)();
-    tResLoad load = *(tResLoad*)(*(uint8_t**)mgr + 0x60);
     int painted = 0, missing = 0;
     for (int face = 0; face < 2; face++) {
         void* mesh = ((tFindNode)ADDR_FIND_NODE)(root, face ? "chs_meku_face_b" : "chs_meku_face_a");
@@ -291,12 +321,16 @@ static void RepaintIcons(void* bgMain) {
             int chrId = o_Lookup(real & 7, real >> 3);
             char path[160]; IconPathFor(chrId, path, sizeof path); ToBackslashes(path);
             if (g_repaintLog > 0) { g_repaintLog--; Log("   node %c%d vis(%d,%d) real %d chrId %d -> %s", face ? 'b' : 'a', i, x, y, real, chrId, path); }
-            void* tex = load(mgr, (void*)ADDR_TEX_DTI, path, 1);
-            if (g_repaintLog >= 0 && g_repaintLog < 60) Log("      loaded %p", tex);
+            void* tex = CacheFind(path); bool fromCache = tex != nullptr;
+            if (!tex) {
+                if (chrId >= 60 && LooseFileExists(path) && o_ResLoad) tex = o_ResLoad(mgr, (void*)ADDR_TEX_DTI, path, 1);
+                if (!tex) { char alt[160]; snprintf(alt, sizeof alt, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP"); ToBackslashes(alt); tex = CacheFind(alt); fromCache = tex != nullptr; }
+            }
+            if (g_repaintLog >= 0 && g_repaintLog < 60) Log("      tex %p %s", tex, fromCache ? "(cached)" : "(loose)");
             if (!tex) { missing++; continue; }
             void* node = ((tChildByIdx)ADDR_CHILD_BY_IDX)(mesh, i);
             if (node) { (*(tNodeSetTex*)(*(uint8_t**)node + 0x50))(node, ((tTexHandle)ADDR_TEX_HANDLE)(tex)); painted++; }
-            ((tResRelease)ADDR_RES_RELEASE)(tex);
+            if (!fromCache) ((tResRelease)ADDR_RES_RELEASE)(tex);
         }
     }
     Log("repaint: %d nodes painted, %d textures unavailable", painted, missing);
