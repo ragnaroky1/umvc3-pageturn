@@ -125,3 +125,12 @@ Property-registration helpers: `0x140010a20` = bool/u8 prop, `0x14000bb50` = s32
 - `0x1403716a0` = per-player card init (uMenuChrSelCardPlayer; vtable near `0x140b3f488`): builds body/name texture handles for chrIds 0..0x33 (52), loads `b_Random`, `n_Hatena`, `chs_card%dp`, `chs_chr_color_type`, and `f_%s%02d` per costume (3×3 loop) into `[this + (0xa2+…)*8]`.
 
 Implication: the visible grid is fully described by a static 56-entry table plus per-player `mCursorPos`. Paging = presenting a different 56-entry table per page and re-running the icon assignment for the 2×28 face nodes. The cursor-movement code that reads/writes `mCursorPos` (+0xbc) is the next target.
+
+### uMenuChrSelCursor (per-player grid cursor)
+
+- Vtable region `0x140b3fa60..0x140b3fc10` (class name strings at 0x140b3fc18/0x140b3fc30). Derives from a generic grid-cursor class whose methods sit at `0x140323600..0x1403238e0`.
+- Fields: **+0x4c = cursor slot index** (linear, row-major: row = pos / cols, col = pos % cols), **+0x54 = column count (7)**, +0x50 = probably row count (8), +0x64 = flags (bit 2/4 lock input), +0x74/+0x78 = repeat timers, +0x84 = player index, +0x88/+0x8c = confirm state, +0x110/+0x11c/+0x124 = anim state.
+- `0x140372c50` (vtable override): "is the slot under the cursor selectable" → `chrId = 0x140361fd0(pos / cols, pos % cols)` then `0x14024d3f0(game, playerIdx, chrId, -1, -1)`.
+- `0x140372d90` (override): `(this, row, col) -> bool` slot blocked (chrId==0 or not selectable).
+- Base input handlers: `0x140323890` tests mask 0x10010 → calls vtable+0xc0; `0x140323700` mask 0x40040 → vtable+0xc8; `0x140323750` mask 0x80080 → vtable+0xd0; `0x140323840` mask 0x20020 → vtable+0xd8. The mask comes from vtable+0x100 (get input bits; low bits = press, bit<<16 = repeat). So **+0xc0/+0xc8/+0xd0/+0xd8 are the four directional move handlers** (mapping to up/down/left/right TBD). vtable+0xb0 = confirm-allowed check, +0xe0 = on-confirm, +0xe8 = on-confirm-blocked, +0xf0 = on-cancel.
+- Pad/input helpers: `0x140001af0()` = input manager, `0x14025ac40(mgr, playerIdx)` = pad for player, `0x1402b3b80(pad)` = pressed bits, `0x1402b3950(pad)` = held bits, `0x140001b00()`/`0x140001a50`/`0x140001a70` = keyboard/UI-input helpers.
