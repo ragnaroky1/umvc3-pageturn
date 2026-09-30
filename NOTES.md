@@ -134,3 +134,12 @@ Implication: the visible grid is fully described by a static 56-entry table plus
 - `0x140372d90` (override): `(this, row, col) -> bool` slot blocked (chrId==0 or not selectable).
 - Base input handlers: `0x140323890` tests mask 0x10010 → calls vtable+0xc0; `0x140323700` mask 0x40040 → vtable+0xc8; `0x140323750` mask 0x80080 → vtable+0xd0; `0x140323840` mask 0x20020 → vtable+0xd8. The mask comes from vtable+0x100 (get input bits; low bits = press, bit<<16 = repeat). So **+0xc0/+0xc8/+0xd0/+0xd8 are the four directional move handlers** (mapping to up/down/left/right TBD). vtable+0xb0 = confirm-allowed check, +0xe0 = on-confirm, +0xe8 = on-confirm-blocked, +0xf0 = on-cancel.
 - Pad/input helpers: `0x140001af0()` = input manager, `0x14025ac40(mgr, playerIdx)` = pad for player, `0x1402b3b80(pad)` = pressed bits, `0x1402b3950(pad)` = held bits, `0x140001b00()`/`0x140001a50`/`0x140001a70` = keyboard/UI-input helpers.
+
+### uMenuChrSelCursor object layout (corrected, from ctor `0x140372900(this, playerIdx)`)
+
+- Outer object vtable `0x140b3fb90`; base ctor `0x14050d5f0`. Outer fields: +0x110 ptr, +0x11c float anim, **+0x120 / +0x124 = player index**, +0x128 = 1, +0x12c = 0.
+- **Embedded grid cursor at +0x78**, vtable **`0x140b3fa80`**, ctor `0x1403728c0` → base ctor `0x1403233a0` (generic menu cursor), zeroes +0x80,+0x88,+0x8c,+0x90.
+- Right after construction: **`0x140373280(inner, rows=8, cols=7)`** sets the grid size, then `0x140255150(inner, playerIdx)`, then `0x140028060(inner, playerIdx ? 0x1d : 0x1a)`.
+- Second ctor `0x1403729b0` (no player; also 8×7).
+- Inner vtable (`0x140b3fa80` base): +0x00 dtor `0x140372b60`, +0x20 `0x140372e20` (DTI), +0x40 `0x140323920`, +0x60 `0x1407e4d40` (returns 0), +0x78 `0x1403740a0`, +0x88 `0x140323890`, +0x90 `0x140323700`, +0x98 `0x140323750`, +0xa0 `0x140323840`, +0xa8 `0x140372cd0` (confirm), **+0xb0 `0x140372c50` (isSelectable(slot))**, +0xb8 `0x140372bc0` (cancel), +0xc0..+0xf0 = `0x1407e1a10` (stub), +0xf8 `0x140372d90` (isBlocked(row,col)), +0x100 `0x140323600` (input bits), +0x108 = 0.
+- All earlier "field offsets" for the cursor (+0x4c pos, +0x54 cols, +0x84 player) are relative to the **inner** object at outer+0x78.
