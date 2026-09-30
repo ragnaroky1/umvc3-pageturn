@@ -1,0 +1,31 @@
+# Never commit Capcom / Community Edition / Clone Engine assets
+*.arc
+*.exe
+*.dll
+*.asi
+*.tex
+*.gui
+*.gmd
+*.dds
+*.png.bak
+/extracted/
+/backup/
+/thirdparty/
+/vendor/
+/ce_install/
+/game_dump/
+# build output
+/build/
+/out/
+/target/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+# tools / env
+.env
+*.token
+.vs/
+__pycache__/
+*.pyc
