@@ -35,3 +35,4 @@ __pycache__/
 
 # our own assets are allowed
 !assets/**
+test_icons/

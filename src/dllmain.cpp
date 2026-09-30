@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.7"
+#define PT_VERSION "0.1.8"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -151,7 +151,11 @@ static tResLoadFn o_ResLoad = nullptr;
 static bool g_resLoadHooked = false;
 struct TexCacheEntry { char path[160]; void* tex; };
 static TexCacheEntry g_texCache[128]; static int g_texCacheN = 0;
-static void* CacheFind(const char* path) { for (int i = 0; i < g_texCacheN; i++) if (!_stricmp(g_texCache[i].path, path)) return g_texCache[i].tex; return nullptr; }
+static void* CacheFind(const char* path) {
+    char alt[176]; snprintf(alt, sizeof alt, "%s_typeC", path);
+    for (int i = 0; i < g_texCacheN; i++) if (!_stricmp(g_texCache[i].path, path) || !_stricmp(g_texCache[i].path, alt)) return g_texCache[i].tex;
+    return nullptr;
+}
 static void CacheAdd(const char* path, void* tex) {
     if (CacheFind(path) || g_texCacheN >= 128) return;
     strncpy(g_texCache[g_texCacheN].path, path, 159); g_texCache[g_texCacheN].path[159] = 0; g_texCache[g_texCacheN].tex = tex; g_texCacheN++;
@@ -234,8 +238,8 @@ static void PagedCursorUpdate(PlayerCursor& pc) {
         cx += dx; cy += dy;
         if (cx < 0)  { cx = w - 1; page = (page - 1 + npages) % npages; }
         if (cx >= w) { cx = 0;     page = (page + 1) % npages; }
-        if (cy < 0)  { cy = 6;     page = (page - (SplitMode() ? 2 : 1) + npages) % npages; }
-        if (cy >= 7) { cy = 0;     page = (page + (SplitMode() ? 2 : 1)) % npages; }
+        if (cy < 0)  { cy = 6;     page = (page - 1 + npages) % npages; }
+        if (cy >= 7) { cy = 0;     page = (page + 1) % npages; }
         int np = RealFromPage(page, cx, cy);
         if (!RealBlocked(c, np)) { pos = np; break; }
     }
