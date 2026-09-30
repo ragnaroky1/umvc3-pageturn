@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.3"
+#define PT_VERSION "0.1.4"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -274,6 +274,7 @@ static void IconPathFor(int chrId, char* out, size_t n) {
     snprintf(out, n, "ui\chs\chs_b1p\chs_body\b_%s99_BM_HQ_NOMIP", name);       if (LooseFileExists(out)) return;
     snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP");
 }
+static int g_repaintLog = 60;
 static void RepaintIcons(void* bgMain) {
     void* root = *(void**)((uint8_t*)bgMain + 0x58);
     if (!root) return;
@@ -288,7 +289,9 @@ static void RepaintIcons(void* bgMain) {
             int real = RealFromVisible(y * 8 + x);
             int chrId = o_Lookup(real & 7, real >> 3);
             char path[160]; IconPathFor(chrId, path, sizeof path);
+            if (g_repaintLog > 0) { g_repaintLog--; Log("   node %c%d vis(%d,%d) real %d chrId %d -> %s", face ? 'b' : 'a', i, x, y, real, chrId, path); }
             void* tex = load(mgr, (void*)ADDR_TEX_DTI, path, 1);
+            if (g_repaintLog >= 0 && g_repaintLog < 60) Log("      loaded %p", tex);
             if (!tex) { missing++; continue; }
             void* node = ((tChildByIdx)ADDR_CHILD_BY_IDX)(mesh, i);
             if (node) { (*(tNodeSetTex*)(*(uint8_t**)node + 0x50))(node, ((tTexHandle)ADDR_TEX_HANDLE)(tex)); painted++; }
@@ -355,6 +358,12 @@ static void InstallCrashDiag() {
         return EXCEPTION_CONTINUE_SEARCH; });
 }
 
+typedef int (WINAPI* tMsgBoxA)(HWND, LPCSTR, LPCSTR, UINT);
+typedef int (WINAPI* tMsgBoxW)(HWND, LPCWSTR, LPCWSTR, UINT);
+static tMsgBoxA o_MsgBoxA = nullptr; static tMsgBoxW o_MsgBoxW = nullptr;
+static int WINAPI h_MsgBoxA(HWND h, LPCSTR t, LPCSTR c, UINT u) { Log("MessageBoxA [%s]: %s", c ? c : "", t ? t : ""); LogStack("MessageBoxA caller"); return o_MsgBoxA(h, t, c, u); }
+static int WINAPI h_MsgBoxW(HWND h, LPCWSTR t, LPCWSTR c, UINT u) { Log("MessageBoxW [%ls]: %ls", c ? c : L"", t ? t : L""); LogStack("MessageBoxW caller"); return o_MsgBoxW(h, t, c, u); }
+
 // ---------------------------------------------------------------- init
 template<typename T> static bool Hook(uintptr_t addr, void* detour, T** orig, const char* name) {
     MH_STATUS s = MH_CreateHook((void*)addr, detour, (void**)orig);
@@ -385,6 +394,9 @@ static void Init() {
     ok &= Hook(ADDR_CURSOR_UPDATE,   (void*)h_CursorUpdate,   &o_CursorUpdate,   "uMenuChrSelCursor::update");
     ok &= Hook(ADDR_CURSOR_TICK,     (void*)h_CursorTick,     &o_CursorTick,     "uMenuChrSelCursor::tick");
     ok &= Hook(ADDR_UICURSOR_UPDATE, (void*)h_UiCursorUpdate, &o_UiCursorUpdate, "uiCursor::update");
+    HMODULE u32 = GetModuleHandleA("user32.dll");
+    if (u32) { MH_CreateHook((void*)GetProcAddress(u32, "MessageBoxA"), (void*)h_MsgBoxA, (void**)&o_MsgBoxA);
+               MH_CreateHook((void*)GetProcAddress(u32, "MessageBoxW"), (void*)h_MsgBoxW, (void**)&o_MsgBoxW); }
     MH_STATUS s = MH_EnableHook(MH_ALL_HOOKS);
     Log("hooks %s, MH_EnableHook -> %d", ok ? "created" : "PARTIAL", s);
 }

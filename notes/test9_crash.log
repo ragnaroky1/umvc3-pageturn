@@ -1,0 +1,19 @@
+[17:58:13.711] UMvC3 PageTurn 0.1.3 loaded
+[17:58:13.711] ucrtbase invalid-parameter handler installed
+[17:58:13.747] hooks created, MH_EnableHook -> 0
+[17:58:37.404] cursor ctor player=0 outer=00000000161723F0 inner=0000000016172468 cols=8 rows=18 startPos=26
+[17:58:37.404] cursor ctor player=1 outer=000000001616E570 inner=000000001616E5E8 cols=8 rows=18 startPos=29
+[17:58:37.466] buildIcons bgmain=000000001616CCB0 (split=1, P1 page 1, P2 page 2)
+[17:58:37.466]    lookup vis(3,0) -> real(3,0) chrId 53
+[17:58:37.466]    lookup vis(3,1) -> real(3,1) chrId 23
+[17:58:37.466]    lookup vis(3,2) -> real(3,2) chrId 22
+[17:58:37.466]    lookup vis(3,3) -> real(3,3) chrId 7
+[17:58:37.466]    lookup vis(3,4) -> real(3,4) chrId 8
+[17:58:37.466]    lookup vis(3,5) -> real(3,5) chrId 6
+[17:58:37.466]    lookup vis(3,6) -> real(3,6) chrId 12
+[17:58:37.466]    lookup vis(2,0) -> real(2,0) chrId 0
+[17:58:37.466] probe: root=000000001610D7B0 vt=0000000140B22A60 face_a=00000000161FA4B0 vt=0000000140B21DC0
+[17:58:37.468] probe: face_a child 0 = 000000000D15FCA0 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[17:58:37.468] probe: face_a child 1 = 000000000D554090 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[17:58:37.502] player 0 -> page 1/6 (split); repainting grid
+[17:58:40.688] unloading
