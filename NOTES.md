@@ -168,3 +168,10 @@ Implication: the visible grid is fully described by a static 56-entry table plus
 
 ### What Clone Engine most likely does (inference; verify once CE is installed)
 - Raises the row count passed to `FUN_140373280` (7 → 7+k) so the cursor can move into y ≥ 7, and hooks `FUN_140361fd0` / `FUN_140361fa0` (and the 0x33 clamps) to return clone chrIds for those slots. No icons/highlight exist for y ≥ 7 (`FUN_14036e820` drops them), hence "scrolling into empty space".
+
+## DESIGN DECISION (Will, 2026-09-30): split-screen paging
+
+- **Two-player select (versus, online):** each player owns one half of the grid. P1 = left face (`chs_meku_face_a`, x 0..3), P2 = right face (`chs_meku_face_b`, x 4..7). Each half is a **28-slot page** that the owning player pages independently. Page 1 = the vanilla left half (Capcom), page 2 = the vanilla right half (Marvel), pages 3+ = Clone Engine characters in CE's order. Cursor is confined to the owner's 4 columns (horizontal wrap within 4). Opponent's cursor is shown only on the opponent's side.
+- **Solo select (arcade, training, mission, any mode with one picker):** P1 uses the **full width**, 56-slot pages, vanilla look on page 1; CE characters on pages 2+.
+- Both cases: shoulder buttons flip pages; simple page indicator per side; `f_Hatena` ("?") as the placeholder icon when a clone has no face texture.
+- Rejected for now: shrinking icons to fit more per page (needs new mesh + animation assets; ~3-4x the effort; can be a later extension by changing the page size).
