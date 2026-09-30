@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.6"
+#define PT_VERSION "0.1.7"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -158,6 +158,7 @@ static void CacheAdd(const char* path, void* tex) {
 }
 static void* __fastcall h_ResLoad(void* mgr, void* dti, const char* path, int flag) {
     void* tex = o_ResLoad(mgr, dti, path, flag);
+    static int seen = 0; if (g_translate && seen < 70) { seen++; Log("   game loaded [%s] dti=%p flag=%d -> %p", path ? path : "(null)", dti, flag, tex); }
     if (g_translate && tex && path && strstr(path, "chs_face_a")) CacheAdd(path, tex);
     return tex;
 }
@@ -296,7 +297,7 @@ static bool LooseFileExists(const char* resPath) {
 static void IconPathFor(int chrId, char* out, size_t n) {
     if (chrId == 0x35)                { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Random_BM_HQ_NOMIP"); return; }
     if (chrId == 0x36)                { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Random_all_BM_HQ_NOMIP"); return; }
-    if (chrId <= 0 || chrId == 0x34 || chrId == 0x37) { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP"); return; }
+    if (chrId <= 0 || chrId == 0x34 || chrId == 0x37) { snprintf(out, n, "ui/PageTurn/blank_BM_HQ_NOMIP"); return; }   // our transparent icon
     const char* name = ((tChrName)ADDR_CHR_NAME)(chrId);
     if (!name || !*name)              { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP"); return; }
     if (chrId < 60)                   { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_%s00_BM_HQ_NOMIP", name); return; }
@@ -323,7 +324,8 @@ static void RepaintIcons(void* bgMain) {
             if (g_repaintLog > 0) { g_repaintLog--; Log("   node %c%d vis(%d,%d) real %d chrId %d -> %s", face ? 'b' : 'a', i, x, y, real, chrId, path); }
             void* tex = CacheFind(path); bool fromCache = tex != nullptr;
             if (!tex) {
-                if (chrId >= 60 && LooseFileExists(path) && o_ResLoad) tex = o_ResLoad(mgr, (void*)ADDR_TEX_DTI, path, 1);
+                bool loose = (chrId >= 60) || strstr(path, "PageTurn") != nullptr;
+                if (loose && LooseFileExists(path) && o_ResLoad) tex = o_ResLoad(mgr, (void*)ADDR_TEX_DTI, path, 1);
                 if (!tex) { char alt[160]; snprintf(alt, sizeof alt, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP"); ToBackslashes(alt); tex = CacheFind(alt); fromCache = tex != nullptr; }
             }
             if (g_repaintLog >= 0 && g_repaintLog < 60) Log("      tex %p %s", tex, fromCache ? "(cached)" : "(loose)");

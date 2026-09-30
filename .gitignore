@@ -32,3 +32,6 @@ __pycache__/
 *.zip
 *.7z
 *.rar
+
+# our own assets are allowed
+!assets/**

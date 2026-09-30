@@ -5,3 +5,4 @@ Remove-Item "$Game\UMvC3PageTurn.log" -ErrorAction SilentlyContinue
 $others = Get-ChildItem $Game -Filter *.asi -Recurse -ErrorAction SilentlyContinue
 if (-not $others) { Remove-Item "$Game\dinput8.dll" -ErrorAction SilentlyContinue; Write-Host "removed dinput8.dll (no other ASI mods present)" }
 Write-Host "UMvC3PageTurn removed"
+Remove-Item "$Game\nativePCx64\ui\PageTurn" -Recurse -Force -ErrorAction SilentlyContinue

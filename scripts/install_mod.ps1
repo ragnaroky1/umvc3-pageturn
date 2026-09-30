@@ -8,3 +8,6 @@ if (-not (Test-Path "$Game\dinput8.dll")) {
 } else { Write-Host "dinput8.dll already present (left as is)" }
 Copy-Item "$Root\build\UMvC3PageTurn.asi" "$Game\UMvC3PageTurn.asi" -Force
 Write-Host "installed UMvC3PageTurn.asi"
+New-Item -ItemType Directory -Force "$Game\nativePCx64\ui\PageTurn" | Out-Null
+Copy-Item "$Root\assets\nativePCx64\ui\PageTurn\*" "$Game\nativePCx64\ui\PageTurn\" -Force
+Write-Host "installed PageTurn assets (nativePCx64\ui\PageTurn)"
