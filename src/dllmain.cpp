@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.0"
+#define PT_VERSION "0.1.1"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -118,18 +118,37 @@ static int RealFromVisible(int vis) {
 static bool RealBlocked(void* inner, int pos) { int x = pos & 7, y = pos >> 3; return y >= g_rows || vt_blocked(inner, x, y) != 0; }
 
 // ---------------------------------------------------------------- hooks
+static int g_lookupLogBudget = 0;
 static int __fastcall h_Lookup(int x, int y) {
     if (g_translate && x >= 0 && x < 8 && y >= 0 && y < 7) {
         int r = RealFromVisible(y * 8 + x);
-        return o_Lookup(r & 7, r >> 3);
+        int id = o_Lookup(r & 7, r >> 3);
+        if (g_lookupLogBudget > 0) { g_lookupLogBudget--; Log("   lookup vis(%d,%d) -> real(%d,%d) chrId %d", x, y, r & 7, r >> 3, id); }
+        return id;
     }
     return o_Lookup(x, y);
 }
 
+typedef void* (__fastcall* tFindNode)(void* root, const char* name);   // 0x1402de580
+typedef void* (__fastcall* tChildByIdx)(void* node, int idx);          // 0x140326b90
+static void ProbeFaceNodes(void* bgMain) {
+    void* root = *(void**)((uint8_t*)bgMain + 0x58);
+    if (!root) { Log("probe: no model root"); return; }
+    void* face = ((tFindNode)0x1402DE580)(root, "chs_meku_face_a");
+    Log("probe: root=%p vt=%p face_a=%p vt=%p", root, root ? *(void**)root : nullptr, face, face ? *(void**)face : nullptr);
+    if (!face) return;
+    for (int i = 0; i < 2; i++) {
+        void* n = ((tChildByIdx)0x140326B90)(face, i);
+        Log("probe: face_a child %d = %p vt=%p vt[+0x50]=%p", i, n, n ? *(void**)n : nullptr, n ? *(void**)(*(uint8_t**)n + 0x50) : nullptr);
+    }
+}
 static void __fastcall h_BuildIcons(void* self) {
+    Log("buildIcons bgmain=%p (split=%d, P1 page %d, P2 page %d)", self, SplitMode(), g_pc[0].realPos >= 0 ? PageOf(g_pc[0].realPos) + 1 : 0, g_pc[1].realPos >= 0 ? PageOf(g_pc[1].realPos) + 1 : 0);
+    g_lookupLogBudget = 8;
     bool prev = g_translate; g_translate = true;
     o_BuildIcons(self);
     g_translate = prev;
+    static int probes = 0; if (probes++ < 2) ProbeFaceNodes(self);
 }
 static void __fastcall h_BgUpdate(void* self) {
     g_bgMain = (uint8_t*)self;
@@ -187,6 +206,7 @@ static void PagedCursorUpdate(PlayerCursor& pc) {
         int np = RealFromPage(page, cx, cy);
         if (!RealBlocked(c, np)) { pos = np; break; }
     }
+    Log("move p%d d=(%d,%d) -> page %d cell (%d,%d) real slot %d (x=%d y=%d)", player, dx, dy, page + 1, cx, cy, pos, pos & 7, pos >> 3);
     pc.realPos = pos;
     *(int*)(c + UC_POS) = pos;
 }
@@ -249,6 +269,38 @@ static void __fastcall h_SetCur(void* self, uint32_t player, uint32_t slot) {
     o_SetCur(self, player, slot);
 }
 
+// ---------------------------------------------------------------- crash diagnostics
+static void LogStack(const char* why) {
+    void* frames[48]; USHORT n = RtlCaptureStackBackTrace(0, 48, frames, nullptr);
+    Log("%s — stack (%u frames):", why, n);
+    for (USHORT i = 0; i < n; i++) {
+        HMODULE m = nullptr; char name[MAX_PATH] = "?";
+        if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR)frames[i], &m) && m) {
+            GetModuleFileNameA(m, name, MAX_PATH); const char* b = strrchr(name, (int)92); if (b) memmove(name, b + 1, strlen(b));
+        }
+        Log("   #%02u %p  %s+%llx", i, frames[i], name, (unsigned long long)((uintptr_t)frames[i] - (uintptr_t)m));
+    }
+}
+typedef void (__cdecl* tInvParamHandler)(const wchar_t*, const wchar_t*, const wchar_t*, unsigned, uintptr_t);
+static void __cdecl OnInvalidParameter(const wchar_t*, const wchar_t*, const wchar_t*, unsigned, uintptr_t) {
+    LogStack("ucrtbase invalid parameter (this is the crash)");
+}
+static LONG WINAPI OnUnhandled(EXCEPTION_POINTERS* ep) {
+    Log("unhandled exception %lx at %p", ep->ExceptionRecord->ExceptionCode, ep->ExceptionRecord->ExceptionAddress);
+    LogStack("unhandled exception");
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+static void InstallCrashDiag() {
+    HMODULE u = GetModuleHandleA("ucrtbase.dll"); if (!u) u = LoadLibraryA("ucrtbase.dll");
+    typedef tInvParamHandler (__cdecl* tSet)(tInvParamHandler);
+    tSet set = u ? (tSet)GetProcAddress(u, "_set_invalid_parameter_handler") : nullptr;
+    if (set) { set(OnInvalidParameter); Log("ucrtbase invalid-parameter handler installed"); }
+    AddVectoredExceptionHandler(0, [](EXCEPTION_POINTERS* ep) -> LONG {
+        DWORD c = ep->ExceptionRecord->ExceptionCode;
+        if (c == 0xC0000409 || c == 0xC0000005 || c == 0xC000001D) { OnUnhandled(ep); }
+        return EXCEPTION_CONTINUE_SEARCH; });
+}
+
 // ---------------------------------------------------------------- init
 template<typename T> static bool Hook(uintptr_t addr, void* detour, T** orig, const char* name) {
     MH_STATUS s = MH_CreateHook((void*)addr, detour, (void**)orig);
@@ -267,6 +319,7 @@ static void Init() {
         MessageBoxA(nullptr, "UMvC3 PageTurn: unsupported game version. Mod disabled.", "UMvC3 PageTurn", MB_ICONWARNING);
         return;
     }
+    InstallCrashDiag();
     if (MH_Initialize() != MH_OK) { Log("MH_Initialize failed"); return; }
     bool ok = true;
     ok &= Hook(ADDR_GRID_LOOKUP,     (void*)h_Lookup,         &o_Lookup,         "lookup");
