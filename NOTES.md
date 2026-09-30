@@ -59,3 +59,30 @@ Running log of every finding. Newest entries appended at the bottom of each sect
 - How does the exe lay out the grid rows/cols (expected 3 rows × 18? Actually UMvC3 shows 50 chars in 3 rows; confirm from `chs_meku.mod` face count and the grid code).
 - Where is the select-screen state struct (per-player cursor row/col, page, selected char IDs)?
 - How does Clone Engine extend the grid: does it patch the row count, or a slot table, or hook the draw?
+
+## SteamStub DRM (2026-09-30)
+
+- `umvc3.exe` on disk is wrapped by Steam's SteamStub DRM: entry point RVA 0xed3310 lies in the `.bind` section, `.text` has entropy 8.00 (encrypted). Scanning the on-disk exe for code references finds nothing; Ghidra on the raw exe is useless.
+- Consequences: (a) for static analysis we need an unpacked copy — made with Steamless (atom0s, GitHub v3.1.0.5) into `C:\Tools\ghidra_projects\` (never committed, never shipped); (b) at runtime the stub decrypts `.text` in place before jumping to the real entry, so hooks at static 0x140xxxxxx addresses work once the game is running. Ultimate ASI Loader already handles this (UMVC3Hook and Clone Engine rely on it).
+- The string tables in `.rdata` are NOT encrypted, which is why the class/field names below were readable.
+
+## Select-screen classes found in `.rdata` (MT Framework DTI names)
+
+| VA | name |
+|---|---|
+| 0x140b3e758 | uMenuChrSel |
+| 0x140b3ebd0 | uMenuChrSelAssist |
+| 0x140b3f0c0 | uMenuChrSelBgMain — the grid. Fields: mTimeInfinite, mTimeStop, mPhaseStageSel, mVsTexPhase, mSelStgId, **mHideTbl**, mReserveSel, **mCursorPos**, **mCursorPosOld**, mCursorAnimeTime, mpColorTypeSdl, mpUvOffsetSdl, mpVsPrevTex, mpVsNextTex, mpChrNameTex, mpVjobCngColor |
+| 0x140b3f550 | uMenuChrSelCardPlayer — per-player card. Fields: mOldChrSelPhase, mHide, mReserveUnitInit, mReserveUnitCansel, mIsLoadChr, mReqChrType, mReqChrBody, mReqChrVoice, mpBgMain, mpCursorCopy, mpTexChr, mpTexChrName, mpTexReserve[0..2] |
+| 0x140b3f8f0 | uMenuChrSelCtrlMode (Normal/Simple mode picker) |
+| 0x140b3fc18 | uMenuChrSelCursor |
+| 0x140b3fd70 | uMenuChrSelHandicap |
+| 0x140b3fe88 | uMenuChrSelMakeTex |
+| 0x140b3ffd0 | uMenuChrSelNetInfoPlayer |
+| 0x140b40250 | uMenuChrSelOption |
+| 0x140b40800 | uMenuChrSelReserveUnit |
+| 0x140b0a8d0.. | cNetChrSel (netplay select sync) |
+
+- Format strings used by the grid: `chs_meku_face_%c` (0x140b3f250; face mesh a/b), `ui\chs\chs_face_a\chs_cs_f\f_%s%02d_BM_HQ_NOMIP` (0x140b02f40; grid icon per character name + costume index), `ui\chs\chs_meku\chs_card%dp`, `chs_card%dp_no%d[_tf|_tw]`, `Name_name%dp_no%d`, `ColorSelect%dp`.
+- Grid icon textures live in `mnchs.arc` → `ui/chs/chs_face_a/chs_cs_f/f_<Name>00_BM_HQ_NOMIP.tex` (16,408 bytes each; 53 files incl. f_Random, f_Random_all, f_Hatena = "?" placeholder). Big side portraits are `chs_b1p/chs_body/b_<Name>99…` (262 KB), name plates `chs_b1p/chs_as_n/n_<Name>…typeB` (32 KB).
+- `f_Hatena_BM_HQ_NOMIP_typeC.tex` is a ready-made "?" icon → candidate placeholder for missing modded portraits (Phase 3.4).
