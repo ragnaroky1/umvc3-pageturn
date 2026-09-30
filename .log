@@ -3,6 +3,16 @@ operable program or batch file.
 dllmain.cpp
 C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(6): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
 C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(6): note: '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(260): warning C4129: '%': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(265): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(266): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(267): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(269): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(270): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(272): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(273): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(274): warning C4129: 'c': unrecognized character escape sequence
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(275): warning C4129: 'c': unrecognized character escape sequence
 Generating Code...
 Compiling...
 buffer.c

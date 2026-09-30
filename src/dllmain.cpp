@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.2"
+#define PT_VERSION "0.1.3"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -326,7 +326,7 @@ static void __fastcall h_SetCur(void* self, uint32_t player, uint32_t slot) {
 // ---------------------------------------------------------------- crash diagnostics
 static void LogStack(const char* why) {
     void* frames[48]; USHORT n = RtlCaptureStackBackTrace(0, 48, frames, nullptr);
-    Log("%s — stack (%u frames):", why, n);
+    Log("%s - stack (%u frames):", why, n);
     for (USHORT i = 0; i < n; i++) {
         HMODULE m = nullptr; char name[MAX_PATH] = "?";
         if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR)frames[i], &m) && m) {
