@@ -1,0 +1,43 @@
+[18:00:47.286] UMvC3 PageTurn 0.1.4 loaded
+[18:00:47.287] ucrtbase invalid-parameter handler installed
+[18:00:47.324] hooks created, MH_EnableHook -> 0
+[18:01:09.352] cursor ctor player=0 outer=00000000160723F0 inner=0000000016072468 cols=8 rows=18 startPos=26
+[18:01:09.352] cursor ctor player=1 outer=000000001606E570 inner=000000001606E5E8 cols=8 rows=18 startPos=29
+[18:01:09.422] buildIcons bgmain=000000001606CCB0 (split=1, P1 page 1, P2 page 2)
+[18:01:09.423]    lookup vis(3,0) -> real(3,0) chrId 53
+[18:01:09.423]    lookup vis(3,1) -> real(3,1) chrId 23
+[18:01:09.423]    lookup vis(3,2) -> real(3,2) chrId 22
+[18:01:09.423]    lookup vis(3,3) -> real(3,3) chrId 7
+[18:01:09.423]    lookup vis(3,4) -> real(3,4) chrId 8
+[18:01:09.423]    lookup vis(3,5) -> real(3,5) chrId 6
+[18:01:09.423]    lookup vis(3,6) -> real(3,6) chrId 12
+[18:01:09.423]    lookup vis(2,0) -> real(2,0) chrId 0
+[18:01:09.423] probe: root=000000001600D7B0 vt=0000000140B22A60 face_a=00000000160FA4B0 vt=0000000140B21DC0
+[18:01:09.423] probe: face_a child 0 = 000000000CF7E880 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[18:01:09.423] probe: face_a child 1 = 000000000D451B00 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[18:01:09.459] player 0 -> page 1/6 (split); repainting grid
+[18:01:09.459]    node a0 vis(3,0) real 3 chrId 53 -> uichschs_face_achs_cs_f_Random_BM_HQ_NOMIP
+[18:01:09.459] MessageBoxA [Fatal error.]: Failed open file. C:\Program Files (x86)\Steam\steamapps\common\ULTIMATE MARVEL VS. CAPCOM 3\nativePCx64\uichschs_face_achs_cs_f_Random_BM_HQ_NOMIP.tex 123
+
+[18:01:09.459] MessageBoxA caller - stack (20 frames):
+[18:01:09.459]    #00 00007FFA690115CA  UMvC3PageTurn.asi+15ca
+[18:01:09.459]    #01 00007FFA690128A0  UMvC3PageTurn.asi+28a0
+[18:01:09.459]    #02 00000001404C513D  umvc3.exe+4c513d
+[18:01:09.459]    #03 00000001404C64AF  umvc3.exe+4c64af
+[18:01:09.459]    #04 00000001404C521C  umvc3.exe+4c521c
+[18:01:09.459]    #05 0000000140518DB6  umvc3.exe+518db6
+[18:01:09.459]    #06 0000000140516F05  umvc3.exe+516f05
+[18:01:09.459]    #07 00007FFA69011FF8  UMvC3PageTurn.asi+1ff8
+[18:01:09.459]    #08 00007FFA69012779  UMvC3PageTurn.asi+2779
+[18:01:09.459]    #09 000000014036500E  umvc3.exe+36500e
+[18:01:09.459]    #10 00000001403684FE  umvc3.exe+3684fe
+[18:01:09.459]    #11 0000000140367601  umvc3.exe+367601
+[18:01:09.459]    #12 0000000140521ACB  umvc3.exe+521acb
+[18:01:09.459]    #13 000000014052137C  umvc3.exe+52137c
+[18:01:09.459]    #14 000000014051B65C  umvc3.exe+51b65c
+[18:01:09.459]    #15 000000014051B6BC  umvc3.exe+51b6bc
+[18:01:09.459]    #16 0000000140259673  umvc3.exe+259673
+[18:01:09.459]    #17 000000014051DFB5  umvc3.exe+51dfb5
+[18:01:09.459]    #18 00007FFA8AD5CD87  KERNEL32.DLL+2cd87
+[18:01:09.459]    #19 00007FFA8B42CAEC  ntdll.dll+acaec
+[18:01:17.419] unloading

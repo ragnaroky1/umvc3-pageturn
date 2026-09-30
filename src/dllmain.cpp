@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.1.4"
+#define PT_VERSION "0.1.5"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -256,23 +256,24 @@ static const uintptr_t ADDR_RESMGR_GET = 0x140001B10, ADDR_TEX_HANDLE = 0x1400B0
                        ADDR_TEX_DTI = 0x140E17570;
 static char g_gameDir[MAX_PATH];
 
+static void ToBackslashes(char* p) { for (; *p; p++) if (*p == '/') *p = (char)92; }
 static bool LooseFileExists(const char* resPath) {
-    char full[MAX_PATH]; snprintf(full, sizeof full, "%snativePCx64\%s.tex", g_gameDir, resPath);
+    char full[MAX_PATH]; snprintf(full, sizeof full, "%snativePCx64/%s.tex", g_gameDir, resPath); ToBackslashes(full);
     return GetFileAttributesA(full) != INVALID_FILE_ATTRIBUTES;
 }
 // Pick a texture resource path for a character id. Vanilla ids come from the arc (always present).
 static void IconPathFor(int chrId, char* out, size_t n) {
-    if (chrId == 0x35)                { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Random_BM_HQ_NOMIP"); return; }
-    if (chrId == 0x36)                { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Random_all_BM_HQ_NOMIP"); return; }
-    if (chrId <= 0 || chrId == 0x34 || chrId == 0x37) { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP"); return; }
+    if (chrId == 0x35)                { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Random_BM_HQ_NOMIP"); return; }
+    if (chrId == 0x36)                { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Random_all_BM_HQ_NOMIP"); return; }
+    if (chrId <= 0 || chrId == 0x34 || chrId == 0x37) { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP"); return; }
     const char* name = ((tChrName)ADDR_CHR_NAME)(chrId);
-    if (!name || !*name)              { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP"); return; }
-    if (chrId < 60)                   { snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_%s00_BM_HQ_NOMIP", name); return; }
+    if (!name || !*name)              { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP"); return; }
+    if (chrId < 60)                   { snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_%s00_BM_HQ_NOMIP", name); return; }
     // Clone Engine character: only loose files can exist. Try a real icon, then the body portrait, else "?".
-    snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_%s00_BM_HQ_NOMIP", name);   if (LooseFileExists(out)) return;
-    snprintf(out, n, "ui\chs\chs_b1p\chs_body\b_%s255_BM_HQ_NOMIP", name);      if (LooseFileExists(out)) return;  // CE clone bodies use 255
-    snprintf(out, n, "ui\chs\chs_b1p\chs_body\b_%s99_BM_HQ_NOMIP", name);       if (LooseFileExists(out)) return;
-    snprintf(out, n, "ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP");
+    snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_%s00_BM_HQ_NOMIP", name);   if (LooseFileExists(out)) return;
+    snprintf(out, n, "ui/chs/chs_b1p/chs_body/b_%s255_BM_HQ_NOMIP", name);      if (LooseFileExists(out)) return;  // CE clone bodies use 255
+    snprintf(out, n, "ui/chs/chs_b1p/chs_body/b_%s99_BM_HQ_NOMIP", name);       if (LooseFileExists(out)) return;
+    snprintf(out, n, "ui/chs/chs_face_a/chs_cs_f/f_Hatena_BM_HQ_NOMIP");
 }
 static int g_repaintLog = 60;
 static void RepaintIcons(void* bgMain) {
@@ -288,7 +289,7 @@ static void RepaintIcons(void* bgMain) {
             int x = face ? 4 + i / 7 : 3 - i / 7, y = i % 7;
             int real = RealFromVisible(y * 8 + x);
             int chrId = o_Lookup(real & 7, real >> 3);
-            char path[160]; IconPathFor(chrId, path, sizeof path);
+            char path[160]; IconPathFor(chrId, path, sizeof path); ToBackslashes(path);
             if (g_repaintLog > 0) { g_repaintLog--; Log("   node %c%d vis(%d,%d) real %d chrId %d -> %s", face ? 'b' : 'a', i, x, y, real, chrId, path); }
             void* tex = load(mgr, (void*)ADDR_TEX_DTI, path, 1);
             if (g_repaintLog >= 0 && g_repaintLog < 60) Log("      loaded %p", tex);
