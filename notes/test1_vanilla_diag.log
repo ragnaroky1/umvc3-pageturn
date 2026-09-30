@@ -1,0 +1,46 @@
+[17:04:09.309] UMvC3 PageTurn diagnostic 0.0.1 loaded; exe base=0000000140000000
+[17:04:09.309] version check ok
+[17:04:09.309] hook BgMain::setCursorPos at 14036e820 ok
+[17:04:09.309] hook uMenuChrSelCursor::ctor at 140372900 ok
+[17:04:09.309] hook BgMain::buildIcons at 14036df90 ok
+[17:04:09.309] hook uiCursor::setDims at 140373280 ok
+[17:04:09.343] MH_EnableHook -> 0
+[17:05:00.902] uiCursor::setDims cursor=0000000015602468 cols=8 rows=7
+[17:05:00.902] cursor ctor self=00000000156023F0 player=0 inner=0000000015602468 cols=8 rows=7 total=56
+[17:05:00.902] uiCursor::setDims cursor=00000000155B3A88 cols=8 rows=7
+[17:05:00.902] cursor ctor self=00000000155B3A10 player=1 inner=00000000155B3A88 cols=8 rows=7 total=56
+[17:05:00.930] buildIcons bgmain=00000000155B2150
+[17:05:00.930] buildIcons done
+[17:05:01.043] setCursorPos bgmain=00000000155B2150 player=0 slot=26 (x=2 y=3) chrId=1
+[17:05:02.760] setCursorPos bgmain=00000000155B2150 player=0 slot=27 (x=3 y=3) chrId=7
+[17:05:03.111] setCursorPos bgmain=00000000155B2150 player=0 slot=28 (x=4 y=3) chrId=40
+[17:05:03.426] setCursorPos bgmain=00000000155B2150 player=0 slot=29 (x=5 y=3) chrId=28
+[17:05:03.743] setCursorPos bgmain=00000000155B2150 player=0 slot=30 (x=6 y=3) chrId=33
+[17:05:04.093] setCursorPos bgmain=00000000155B2150 player=0 slot=31 (x=7 y=3) chrId=35
+[17:05:04.560] setCursorPos bgmain=00000000155B2150 player=0 slot=24 (x=0 y=3) chrId=5
+[17:05:05.260] setCursorPos bgmain=00000000155B2150 player=0 slot=25 (x=1 y=3) chrId=13
+[17:05:05.627] setCursorPos bgmain=00000000155B2150 player=0 slot=33 (x=1 y=4) chrId=14
+[17:05:05.927] setCursorPos bgmain=00000000155B2150 player=0 slot=41 (x=1 y=5) chrId=10
+[17:05:06.161] setCursorPos bgmain=00000000155B2150 player=0 slot=49 (x=1 y=6) chrId=19
+[17:05:06.411] setCursorPos bgmain=00000000155B2150 player=0 slot=9 (x=1 y=1) chrId=24
+[17:05:07.042] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:07.342] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:08.092] setCursorPos bgmain=00000000155B2150 player=0 slot=7 (x=7 y=0) chrId=37
+[17:05:08.476] setCursorPos bgmain=00000000155B2150 player=0 slot=55 (x=7 y=6) chrId=32
+[17:05:09.326] setCursorPos bgmain=00000000155B2150 player=0 slot=7 (x=7 y=0) chrId=37
+[17:05:11.009] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:11.327] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:11.877] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:12.043] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:12.293] setCursorPos bgmain=00000000155B2150 player=0 slot=9 (x=1 y=1) chrId=24
+[17:05:12.759] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:13.043] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:13.360] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:13.610] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:13.777] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:13.959] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:14.094] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:14.293] setCursorPos bgmain=00000000155B2150 player=0 slot=15 (x=7 y=1) chrId=49
+[17:05:20.610] setCursorPos bgmain=00000000155B2150 player=0 slot=8 (x=0 y=1) chrId=25
+[17:05:21.010] setCursorPos bgmain=00000000155B2150 player=0 slot=9 (x=1 y=1) chrId=24
+[17:05:42.068] unloading

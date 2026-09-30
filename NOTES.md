@@ -175,3 +175,11 @@ Implication: the visible grid is fully described by a static 56-entry table plus
 - **Solo select (arcade, training, mission, any mode with one picker):** P1 uses the **full width**, 56-slot pages, vanilla look on page 1; CE characters on pages 2+.
 - Both cases: shoulder buttons flip pages; simple page indicator per side; `f_Hatena` ("?") as the placeholder icon when a clone has no face texture.
 - Rejected for now: shrinking icons to fit more per page (needs new mesh + animation assets; ~3-4x the effort; can be a later extension by changing the page size).
+
+## Live test 1 (vanilla + diagnostic ASI 0.0.1, 2026-09-30) — PASS
+
+Log: `notes/test1_vanilla_diag.log`. All four hooks installed; version check passed; no crash.
+- Cursor objects created per player with **cols=8 rows=7 total=56** (confirms `0x140373280` args and inner offsets +0x54/+0x58/+0x5c).
+- `buildIcons` (0x14036df90) runs once at screen load, before the first cursor position is pushed.
+- P1 starts at slot 26 (x=2,y=3) = Ryu (chrId 1). Horizontal wrap 31→24 and 24→31 observed; vertical wrap 49 (y=6) → 9 (y=1) because y=0 at x=1 is empty and the blocked-skip in `0x140323b20` continues past it; 7 (y=0) ↑ → 55 (y=6).
+- Every position pushed to `BgMain::setCursorPos` was < 56 on vanilla, as expected.
