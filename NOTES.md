@@ -225,3 +225,10 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 - CE 1.2.3 slot order (56+k) = `Characters.ini` block order **excluding entries named in any `ChildN=`** (85 entries; matches the 141-entry runtime table). Saved in `notes/ce_slot_order.txt`. Verified against `Character_Slot_Locations.png` row 1 (Rash, KennFist, Gui, Chl | Jeannix, WL3, Psylock, Cyclop).
 - Icon convention for creators: `nativePCx64\ui\chs\chs_face_a\chs_cs_f\f_<CharacterID>00_BM_HQ_NOMIP.tex`, 128x128 BC3 (docs/ICONS_FOR_CREATORS.md). Converter: `scripts/make_icon.py` (own BC3 encoder, header from vanilla icon).
 - For Will's install only: 85 icons cropped from CE's own `Character_Slot_Locations.png` (cells: rows y=730,811,891,971,1050,1130,1208,1286,1367,1446,1523; cols 0/79/158/237/316 and 385/463/542/620/699; drop 18 px name strip). Kept in `test_icons/ce_faces/` (gitignored: derived from CE art; ask the CE team before shipping).
+
+## Icon format resolved (2026-09-30)
+
+- Vanilla `f_*00_BM_HQ_NOMIP.tex` are format **0x2a (BM_HQ)** = DXT5 with a colour swizzle (luma in alpha, chroma in R/B, G = coverage; YCoCg-like, exact transform unknown). Plain-RGB data in a 0x2a file renders magenta/green.
+- Format **0x17 (BM_XLU, plain DXT5)**, as used by CE's `b_*255` bodies, renders correctly on the grid nodes (test 16). `scripts/make_icon.py` writes 0x17 now. Own BC3 encoder verified bit-identical to DirectXTex texconv on a test block.
+- Modded pages skip the 4 logo cells (x=1,2,5,6 on the top row): 26 cells per half-page, 52 per full page. CE slot count is scanned at cursor ctor (`g_ceCount`, 85 for CE 1.2.3).
+- Will's navigation preference: only left/right flip pages; up/down wrap inside the page (0.2.1).
