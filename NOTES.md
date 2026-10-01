@@ -232,3 +232,10 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 - Format **0x17 (BM_XLU, plain DXT5)**, as used by CE's `b_*255` bodies, renders correctly on the grid nodes (test 16). `scripts/make_icon.py` writes 0x17 now. Own BC3 encoder verified bit-identical to DirectXTex texconv on a test block.
 - Modded pages skip the 4 logo cells (x=1,2,5,6 on the top row): 26 cells per half-page, 52 per full page. CE slot count is scanned at cursor ctor (`g_ceCount`, 85 for CE 1.2.3).
 - Will's navigation preference: only left/right flip pages; up/down wrap inside the page (0.2.1).
+
+## Scope decisions (Will, 2026-09-30 evening)
+
+- No page indicator, no shoulder-button paging, no page-turn animation/sound. Left/right-only flipping is final.
+- CE-cropped face icons are NOT shipped (artists will make better ones). Converter + docs stay for creators. Fallback chain stays: f_<ID>00 -> b_<ID>255 body -> blank.
+- Online cannot be tested (no second player available); ship as "untested online" with the technical reasoning (game syncs picks by character ID).
+- Shipped version baseline: 0.2.1.

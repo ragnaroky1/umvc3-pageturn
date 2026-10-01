@@ -3,6 +3,7 @@ operable program or batch file.
 dllmain.cpp
 C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(6): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
 C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(6): note: '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
+C:\Users\Will\Documents\umvc3mods\src\dllmain.cpp(368): error C2065: 'g_lastSelectFrame': undeclared identifier
 Generating Code...
 Compiling...
 buffer.c
@@ -11,4 +12,3 @@ trampoline.c
 hde32.c
 hde64.c
 Generating Code...
-   Creating library UMvC3PageTurn.lib and object UMvC3PageTurn.exp
