@@ -37,3 +37,4 @@ __pycache__/
 !assets/**
 test_icons/
 .log
+/dist/
