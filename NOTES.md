@@ -239,3 +239,10 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 - CE-cropped face icons are NOT shipped (artists will make better ones). Converter + docs stay for creators. Fallback chain stays: f_<ID>00 -> b_<ID>255 body -> blank.
 - Online cannot be tested (no second player available); ship as "untested online" with the technical reasoning (game syncs picks by character ID).
 - Shipped version baseline: 0.2.1.
+
+## Minimal Clone Engine install (2026-09-30) — what a trimmed install actually needs
+
+`scripts/make_minimal_ce.ps1 -Count N`: clean vanilla + Clone Engine + first N pack characters (plus their children). Findings while trimming:
+- `CloneEngine.asi` + `dinput8.dll` + `nativePCx64/CloneEngine/*` + `Characters.ini` + per-character files (`chr/archive/<ID>_*.arc`, `sound/se/chr/archive/<ID>.arc`, `sound/bgm/source/<ID>.sngw`, `sound/event/<SoundID>/`, `ui/**/*<ID>*`, `ui/ending/ending_<ID>.arc`) are not enough.
+- **ColorExpansion.asi is required** (Arcade and Training load `b_<Name>99/255` portraits through it) together with `ColorExpansion.ini`, the debug CRT DLLs it links (`msvcp140d`, `vcruntime140d`, `ucrtbased`), its `nativePCx64/ColorExpand/*.msd`, and the pack's **whole `nativePCx64/ui` tree** (the 255 portraits for the base roster are inside the pack's replaced `mnchs*.arc`).
+- Game mode ids (`[game+0x34c]`, `FUN_1400044b0`): Arcade = 1, Training = 5 (Versus TBD). Both cursors are constructed and enabled in every mode, so "split vs solo" must come from the mode id, not from the cursor flags.
