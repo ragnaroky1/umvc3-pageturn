@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.2.1"
+#define PT_VERSION "0.2.2"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -216,6 +216,9 @@ static void* __fastcall h_CursorCtor(void* self, int player) {
         g_ceCount = 0;
         for (int sl = 56; sl < g_rows * 8; sl++) if (o_Lookup(sl & 7, sl >> 3) != 0) g_ceCount = sl - 56 + 1;
         Log("cursor ctor player=%d outer=%p inner=%p cols=%d rows=%d startPos=%d", player, self, g_pc[player].inner, g_cols, g_rows, g_pc[player].realPos);
+        { typedef void* (__fastcall* tG)(); typedef char (__fastcall* tF)(void*); void* game = ((tG)0x140004700)();
+          typedef int (__fastcall* tI)(void*);
+          Log("   mode: id44b0=%d [+0x34c]=%d flags 6af0=%d 6ab0=%d 6770=%d 6920=%d 6870=%d 6800=%d", ((tI)0x1400044B0)(game), *(int*)((uint8_t*)game + 0x34c), ((tF)0x140006AF0)(game), ((tF)0x140006AB0)(game), ((tF)0x140006770)(game), ((tF)0x140006920)(game), ((tF)0x140006870)(game), ((tF)0x140006800)(game)); }
     }
     return r;
 }
@@ -272,6 +275,9 @@ static void __fastcall h_CursorTick(void* self) {
     PlayerCursor* pc = FindByOuter(self);
     if (!pc) { o_CursorTick(self); return; }
     uint8_t* o = (uint8_t*)self; uint8_t* in = pc->inner;
+    { static ULONGLONG lastLog[2] = {0, 0}; int pl = *(int*)(o + OC_PLAYER); ULONGLONG now = GetTickCount64();
+      if (pl >= 0 && pl < 2 && now - lastLog[pl] > 1000) { lastLog[pl] = now;
+        Log("tick p%d outerEnabled=%d innerEnabled=%d innerPlayer=%d state=%d split=%d", pl, o[OC_ENABLED], in[UC_ENABLED], *(int*)(in + UC_PLAYER), *(int*)(in + UC_STATE), SplitMode()); } }
     if (!((tInputBlocked)ADDR_INPUT_BLOCKED)(((tGetPtr)ADDR_INPUTMGR_GET)(), 0)) {
         int before = pc->realPos < 0 ? *(int*)(in + UC_POS) : pc->realPos;
         *(int*)(in + UC_POS) = before;
