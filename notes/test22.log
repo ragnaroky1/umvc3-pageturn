@@ -1,0 +1,762 @@
+[19:37:27.534] UMvC3 PageTurn 0.2.2 loaded
+[19:37:27.535] ucrtbase invalid-parameter handler installed
+[19:37:27.572] hooks created, MH_EnableHook -> 0
+[19:37:51.888] cursor ctor player=0 outer=00000000161524D0 inner=0000000016152548 cols=8 rows=8 startPos=26
+[19:37:51.888]    mode: id44b0=5 [+0x34c]=5 flags 6af0=0 6ab0=0 6770=0 6920=0 6870=0 6800=0
+[19:37:51.888] cursor ctor player=1 outer=0000000016173900 inner=0000000016173978 cols=8 rows=8 startPos=29
+[19:37:51.888]    mode: id44b0=5 [+0x34c]=5 flags 6af0=0 6ab0=0 6770=0 6920=0 6870=0 6800=0
+[19:37:52.074] resource load fn 00000001402B4CD0 hook: 0/0
+[19:37:52.074] buildIcons bgmain=0000000016172040 (split=1, P1 page 1, P2 page 2)
+[19:37:52.074]    lookup vis(3,0) -> real(3,0) chrId 53
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Random_BM_HQ_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000C8AFA20
+[19:37:52.074]    lookup vis(3,1) -> real(3,1) chrId 23
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Naruhodo00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5C500
+[19:37:52.074]    lookup vis(3,2) -> real(3,2) chrId 22
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Vergil00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF92710
+[19:37:52.074]    lookup vis(3,3) -> real(3,3) chrId 7
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Dante00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF2C890
+[19:37:52.074]    lookup vis(3,4) -> real(3,4) chrId 8
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Trish00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF91010
+[19:37:52.074]    lookup vis(3,5) -> real(3,5) chrId 6
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_VJoe00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF73750
+[19:37:52.074]    lookup vis(3,6) -> real(3,6) chrId 12
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Amaterasu00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF496B0
+[19:37:52.074]    lookup vis(2,0) -> real(2,0) chrId 0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000C5DD2B0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Hiryu00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF2DF90
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Frank00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5AE00
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Ryu00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF90490
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Chunli00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5A280
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Gouki00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF39D30
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_CViper00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA17A0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000C5DD2B0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_RedArremer00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF3BFB0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Arthur00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA0C20
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Zero00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF742D0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Tron00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF2D410
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Spencer00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF3A8B0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Haggar00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF4A230
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Jill00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF74E50
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Nemesis00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA2320
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Chris00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA00A0
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Wesker00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF48B30
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Morrigan00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF91B90
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Felicia00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF3B430
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Leilei00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5B980
+[19:37:52.074]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Random_all_BM_HQ_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000CC0E360
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Nova00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF3E230
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_IronFist00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF77C50
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_DeadPool00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF4C4B0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_X2300_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5E780
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_SpiderMan00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF4ADB0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Phoenix00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF93E10
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000C5DD2B0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_GhostRider00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF4D030
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_RRaccoon00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA45A0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Wolverine00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF2EB10
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Storm00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF770D0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Sentinel00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF94990
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Magneto00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF93290
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Hatena_BM_HQ_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000C5DD2B0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_HawkEye00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF95510
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_CapAmerica00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF759D0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_IronMan00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF4B930
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Thor00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF76550
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Hulk00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5D080
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_SheHulk00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF3CB30
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Shuma00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF5DC00
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_DrStrange00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFB0F00
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Dormammu00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA3A20
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_DrDoom00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF2F690
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_Modok00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BF3D6B0
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_SuperSkrull00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFB0380
+[19:37:52.075]    game loaded [ui\chs\chs_face_a\chs_cs_f\f_TaskMaster00_BM_HQ_NOMIP] dti=0000000140E17570 flag=1 -> 000000000BFA2EA0
+[19:37:52.075]    game loaded [ui\chs\chs_meku\chs_sel1_BM_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000CC2D8C0
+[19:37:52.075]    game loaded [ui\chs\chs_meku\chs_sel2_BM_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000CC69CB0
+[19:37:52.075]    game loaded [ui\chs\chs_meku\chs_seld1_BM_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000CCAAF60
+[19:37:52.075]    game loaded [ui\chs\chs_meku\chs_seld2_BM_NOMIP_typeC] dti=0000000140E17570 flag=1 -> 000000000CBFC200
+[19:37:52.075]    game loaded [ui\chs\chs_meku\meku_chs02_BM_NOMIP] dti=0000000140E17570 flag=1 -> 000000000CBFB810
+[19:37:52.075] probe: root=00000000161CD6A0 vt=0000000140B22A60 face_a=000000001623A4B0 vt=0000000140B21DC0
+[19:37:52.075] probe: face_a child 0 = 000000000CF21E00 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[19:37:52.075] probe: face_a child 1 = 000000000D49D210 vt=0000000140B09790 vt[+0x50]=00000001405DDDC0
+[19:37:52.097] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:52.097] player 0 -> page 1/3 (split); repainting grid
+[19:37:52.097]    node a0 vis(3,0) real 3 chrId 53 -> ui\chs\chs_face_a\chs_cs_f\f_Random_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000C8AFA20 (cached)
+[19:37:52.097]    node a1 vis(3,1) real 11 chrId 23 -> ui\chs\chs_face_a\chs_cs_f\f_Naruhodo00_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000BF5C500 (cached)
+[19:37:52.097]    node a2 vis(3,2) real 19 chrId 22 -> ui\chs\chs_face_a\chs_cs_f\f_Vergil00_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000BF92710 (cached)
+[19:37:52.097]    node a3 vis(3,3) real 27 chrId 7 -> ui\chs\chs_face_a\chs_cs_f\f_Dante00_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000BF2C890 (cached)
+[19:37:52.097]    node a4 vis(3,4) real 35 chrId 8 -> ui\chs\chs_face_a\chs_cs_f\f_Trish00_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000BF91010 (cached)
+[19:37:52.097]    node a5 vis(3,5) real 43 chrId 6 -> ui\chs\chs_face_a\chs_cs_f\f_VJoe00_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000BF73750 (cached)
+[19:37:52.097]    node a6 vis(3,6) real 51 chrId 12 -> ui\chs\chs_face_a\chs_cs_f\f_Amaterasu00_BM_HQ_NOMIP
+[19:37:52.097]       tex 000000000BF496B0 (cached)
+[19:37:52.097]    node a7 vis(2,0) real 2 chrId 0 -> ui\PageTurn\blank_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000D1CFBB0 (loose)
+[19:37:52.105]    node a8 vis(2,1) real 10 chrId 21 -> ui\chs\chs_face_a\chs_cs_f\f_Hiryu00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF2DF90 (cached)
+[19:37:52.105]    node a9 vis(2,2) real 18 chrId 9 -> ui\chs\chs_face_a\chs_cs_f\f_Frank00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF5AE00 (cached)
+[19:37:52.105]    node a10 vis(2,3) real 26 chrId 1 -> ui\chs\chs_face_a\chs_cs_f\f_Ryu00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF90490 (cached)
+[19:37:52.105]    node a11 vis(2,4) real 34 chrId 2 -> ui\chs\chs_face_a\chs_cs_f\f_Chunli00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF5A280 (cached)
+[19:37:52.105]    node a12 vis(2,5) real 42 chrId 3 -> ui\chs\chs_face_a\chs_cs_f\f_Gouki00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF39D30 (cached)
+[19:37:52.105]    node a13 vis(2,6) real 50 chrId 18 -> ui\chs\chs_face_a\chs_cs_f\f_CViper00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BFA17A0 (cached)
+[19:37:52.105]    node a14 vis(1,0) real 1 chrId 0 -> ui\PageTurn\blank_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000B188A30 (loose)
+[19:37:52.105]    node a15 vis(1,1) real 9 chrId 24 -> ui\chs\chs_face_a\chs_cs_f\f_RedArremer00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF3BFB0 (cached)
+[19:37:52.105]    node a16 vis(1,2) real 17 chrId 11 -> ui\chs\chs_face_a\chs_cs_f\f_Arthur00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BFA0C20 (cached)
+[19:37:52.105]    node a17 vis(1,3) real 25 chrId 13 -> ui\chs\chs_face_a\chs_cs_f\f_Zero00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF742D0 (cached)
+[19:37:52.105]    node a18 vis(1,4) real 33 chrId 14 -> ui\chs\chs_face_a\chs_cs_f\f_Tron00_BM_HQ_NOMIP
+[19:37:52.105]       tex 000000000BF2D410 (cached)
+[19:37:52.105]    node a19 vis(1,5) real 41 chrId 10 -> ui\chs\chs_face_a\chs_cs_f\f_Spencer00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF3A8B0 (cached)
+[19:37:52.106]    node a20 vis(1,6) real 49 chrId 19 -> ui\chs\chs_face_a\chs_cs_f\f_Haggar00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF4A230 (cached)
+[19:37:52.106]    node a21 vis(0,0) real 0 chrId 20 -> ui\chs\chs_face_a\chs_cs_f\f_Jill00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF74E50 (cached)
+[19:37:52.106]    node a22 vis(0,1) real 8 chrId 25 -> ui\chs\chs_face_a\chs_cs_f\f_Nemesis00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFA2320 (cached)
+[19:37:52.106]    node a23 vis(0,2) real 16 chrId 4 -> ui\chs\chs_face_a\chs_cs_f\f_Chris00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFA00A0 (cached)
+[19:37:52.106]    node a24 vis(0,3) real 24 chrId 5 -> ui\chs\chs_face_a\chs_cs_f\f_Wesker00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF48B30 (cached)
+[19:37:52.106]    node a25 vis(0,4) real 32 chrId 15 -> ui\chs\chs_face_a\chs_cs_f\f_Morrigan00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF91B90 (cached)
+[19:37:52.106]    node a26 vis(0,5) real 40 chrId 17 -> ui\chs\chs_face_a\chs_cs_f\f_Felicia00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF3B430 (cached)
+[19:37:52.106]    node a27 vis(0,6) real 48 chrId 16 -> ui\chs\chs_face_a\chs_cs_f\f_Leilei00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF5B980 (cached)
+[19:37:52.106]    node b0 vis(4,0) real 4 chrId 54 -> ui\chs\chs_face_a\chs_cs_f\f_Random_all_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000CC0E360 (cached)
+[19:37:52.106]    node b1 vis(4,1) real 12 chrId 45 -> ui\chs\chs_face_a\chs_cs_f\f_Nova00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF3E230 (cached)
+[19:37:52.106]    node b2 vis(4,2) real 20 chrId 48 -> ui\chs\chs_face_a\chs_cs_f\f_IronFist00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF77C50 (cached)
+[19:37:52.106]    node b3 vis(4,3) real 28 chrId 40 -> ui\chs\chs_face_a\chs_cs_f\f_DeadPool00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF4C4B0 (cached)
+[19:37:52.106]    node b4 vis(4,4) real 36 chrId 44 -> ui\chs\chs_face_a\chs_cs_f\f_X2300_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF5E780 (cached)
+[19:37:52.106]    node b5 vis(4,5) real 44 chrId 26 -> ui\chs\chs_face_a\chs_cs_f\f_SpiderMan00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF4ADB0 (cached)
+[19:37:52.106]    node b6 vis(4,6) real 52 chrId 36 -> ui\chs\chs_face_a\chs_cs_f\f_Phoenix00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF93E10 (cached)
+[19:37:52.106]    node b7 vis(5,0) real 5 chrId 0 -> ui\PageTurn\blank_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000C5EEC20 (loose)
+[19:37:52.106]    node b8 vis(5,1) real 13 chrId 47 -> ui\chs\chs_face_a\chs_cs_f\f_GhostRider00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF4D030 (cached)
+[19:37:52.106]    node b9 vis(5,2) real 21 chrId 46 -> ui\chs\chs_face_a\chs_cs_f\f_RRaccoon00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFA45A0 (cached)
+[19:37:52.106]    node b10 vis(5,3) real 29 chrId 28 -> ui\chs\chs_face_a\chs_cs_f\f_Wolverine00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF2EB10 (cached)
+[19:37:52.106]    node b11 vis(5,4) real 37 chrId 41 -> ui\chs\chs_face_a\chs_cs_f\f_Storm00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF770D0 (cached)
+[19:37:52.106]    node b12 vis(5,5) real 45 chrId 43 -> ui\chs\chs_face_a\chs_cs_f\f_Sentinel00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF94990 (cached)
+[19:37:52.106]    node b13 vis(5,6) real 53 chrId 29 -> ui\chs\chs_face_a\chs_cs_f\f_Magneto00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF93290 (cached)
+[19:37:52.106]    node b14 vis(6,0) real 6 chrId 0 -> ui\PageTurn\blank_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000D52ECC0 (loose)
+[19:37:52.106]    node b15 vis(6,1) real 14 chrId 50 -> ui\chs\chs_face_a\chs_cs_f\f_HawkEye00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF95510 (cached)
+[19:37:52.106]    node b16 vis(6,2) real 22 chrId 27 -> ui\chs\chs_face_a\chs_cs_f\f_CapAmerica00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF759D0 (cached)
+[19:37:52.106]    node b17 vis(6,3) real 30 chrId 33 -> ui\chs\chs_face_a\chs_cs_f\f_IronMan00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF4B930 (cached)
+[19:37:52.106]    node b18 vis(6,4) real 38 chrId 34 -> ui\chs\chs_face_a\chs_cs_f\f_Thor00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF76550 (cached)
+[19:37:52.106]    node b19 vis(6,5) real 46 chrId 30 -> ui\chs\chs_face_a\chs_cs_f\f_Hulk00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF5D080 (cached)
+[19:37:52.106]    node b20 vis(6,6) real 54 chrId 31 -> ui\chs\chs_face_a\chs_cs_f\f_SheHulk00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF3CB30 (cached)
+[19:37:52.106]    node b21 vis(7,0) real 7 chrId 37 -> ui\chs\chs_face_a\chs_cs_f\f_Shuma00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF5DC00 (cached)
+[19:37:52.106]    node b22 vis(7,1) real 15 chrId 49 -> ui\chs\chs_face_a\chs_cs_f\f_DrStrange00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFB0F00 (cached)
+[19:37:52.106]    node b23 vis(7,2) real 23 chrId 39 -> ui\chs\chs_face_a\chs_cs_f\f_Dormammu00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFA3A20 (cached)
+[19:37:52.106]    node b24 vis(7,3) real 31 chrId 35 -> ui\chs\chs_face_a\chs_cs_f\f_DrDoom00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF2F690 (cached)
+[19:37:52.106]    node b25 vis(7,4) real 39 chrId 38 -> ui\chs\chs_face_a\chs_cs_f\f_Modok00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BF3D6B0 (cached)
+[19:37:52.106]    node b26 vis(7,5) real 47 chrId 42 -> ui\chs\chs_face_a\chs_cs_f\f_SuperSkrull00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFB0380 (cached)
+[19:37:52.106]    node b27 vis(7,6) real 55 chrId 32 -> ui\chs\chs_face_a\chs_cs_f\f_TaskMaster00_BM_HQ_NOMIP
+[19:37:52.106]       tex 000000000BFA2EA0 (cached)
+[19:37:52.106] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:52.915] move p0 d=(1,0) -> page 1 cell (3,3) real slot 27 (x=3 y=3)
+[19:37:53.099] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:53.181] move p0 d=(1,0) -> page 2 cell (0,3) real slot 28 (x=4 y=3)
+[19:37:53.181] player 0 -> page 2/3 (split); repainting grid
+[19:37:53.181]    node a0 vis(3,0) real 7 chrId 37 -> ui\chs\chs_face_a\chs_cs_f\f_Shuma00_BM_HQ_NOMIP
+[19:37:53.181]       tex 000000000BF5DC00 (cached)
+[19:37:53.181]    node a1 vis(3,1) real 15 chrId 49 -> ui\chs\chs_face_a\chs_cs_f\f_DrStrange00_BM_HQ_NOMIP
+[19:37:53.181]       tex 000000000BFB0F00 (cached)
+[19:37:53.181]    node a2 vis(3,2) real 23 chrId 39 -> ui\chs\chs_face_a\chs_cs_f\f_Dormammu00_BM_HQ_NOMIP
+[19:37:53.181]       tex 000000000BFA3A20 (cached)
+[19:37:53.181]    node a3 vis(3,3) real 31 chrId 35 -> ui\chs\chs_face_a\chs_cs_f\f_DrDoom00_BM_HQ_NOMIP
+[19:37:53.181]       tex 000000000BF2F690 (cached)
+[19:37:53.181]       tex 000000000BF3D6B0 (cached)
+[19:37:53.181]       tex 000000000BFB0380 (cached)
+[19:37:53.181]       tex 000000000BFA2EA0 (cached)
+[19:37:53.183]       tex 000000000D11F280 (loose)
+[19:37:53.183]       tex 000000000BF95510 (cached)
+[19:37:53.183]       tex 000000000BF759D0 (cached)
+[19:37:53.183]       tex 000000000BF4B930 (cached)
+[19:37:53.183]       tex 000000000BF76550 (cached)
+[19:37:53.183]       tex 000000000BF5D080 (cached)
+[19:37:53.183]       tex 000000000BF3CB30 (cached)
+[19:37:53.183]       tex 000000000D0AF4A0 (loose)
+[19:37:53.183]       tex 000000000BF4D030 (cached)
+[19:37:53.183]       tex 000000000BFA45A0 (cached)
+[19:37:53.183]       tex 000000000BF2EB10 (cached)
+[19:37:53.183]       tex 000000000BF770D0 (cached)
+[19:37:53.183]       tex 000000000BF94990 (cached)
+[19:37:53.183]       tex 000000000BF93290 (cached)
+[19:37:53.183]       tex 000000000CC0E360 (cached)
+[19:37:53.183]       tex 000000000BF3E230 (cached)
+[19:37:53.183]       tex 000000000BF77C50 (cached)
+[19:37:53.183]       tex 000000000BF4C4B0 (cached)
+[19:37:53.183]       tex 000000000BF5E780 (cached)
+[19:37:53.183]       tex 000000000BF4ADB0 (cached)
+[19:37:53.183]       tex 000000000BF93E10 (cached)
+[19:37:53.183]       tex 000000000CC0E360 (cached)
+[19:37:53.183]       tex 000000000BF3E230 (cached)
+[19:37:53.183]       tex 000000000BF77C50 (cached)
+[19:37:53.183]       tex 000000000BF4C4B0 (cached)
+[19:37:53.183]       tex 000000000BF5E780 (cached)
+[19:37:53.183]       tex 000000000BF4ADB0 (cached)
+[19:37:53.183]       tex 000000000BF93E10 (cached)
+[19:37:53.183]       tex 000000000D5C8D40 (loose)
+[19:37:53.183]       tex 000000000BF4D030 (cached)
+[19:37:53.183]       tex 000000000BFA45A0 (cached)
+[19:37:53.183]       tex 000000000BF2EB10 (cached)
+[19:37:53.183]       tex 000000000BF770D0 (cached)
+[19:37:53.183]       tex 000000000BF94990 (cached)
+[19:37:53.183]       tex 000000000BF93290 (cached)
+[19:37:53.183]       tex 000000000D1CFBB0 (loose)
+[19:37:53.183]       tex 000000000BF95510 (cached)
+[19:37:53.183]       tex 000000000BF759D0 (cached)
+[19:37:53.183]       tex 000000000BF4B930 (cached)
+[19:37:53.183]       tex 000000000BF76550 (cached)
+[19:37:53.183]       tex 000000000BF5D080 (cached)
+[19:37:53.183]       tex 000000000BF3CB30 (cached)
+[19:37:53.183]       tex 000000000BF5DC00 (cached)
+[19:37:53.183]       tex 000000000BFB0F00 (cached)
+[19:37:53.183]       tex 000000000BFA3A20 (cached)
+[19:37:53.183]       tex 000000000BF2F690 (cached)
+[19:37:53.183]       tex 000000000BF3D6B0 (cached)
+[19:37:53.183]       tex 000000000BFB0380 (cached)
+[19:37:53.183]       tex 000000000BFA2EA0 (cached)
+[19:37:53.183] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:53.765] move p0 d=(1,0) -> page 2 cell (1,3) real slot 29 (x=5 y=3)
+[19:37:54.048] move p0 d=(1,0) -> page 2 cell (2,3) real slot 30 (x=6 y=3)
+[19:37:54.115] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:54.281] move p0 d=(1,0) -> page 2 cell (3,3) real slot 31 (x=7 y=3)
+[19:37:54.498] move p0 d=(1,0) -> page 1 cell (0,3) real slot 24 (x=0 y=3)
+[19:37:54.498] player 0 -> page 1/3 (split); repainting grid
+[19:37:54.498]       tex 000000000C8AFA20 (cached)
+[19:37:54.498]       tex 000000000BF5C500 (cached)
+[19:37:54.498]       tex 000000000BF92710 (cached)
+[19:37:54.498]       tex 000000000BF2C890 (cached)
+[19:37:54.498]       tex 000000000BF91010 (cached)
+[19:37:54.498]       tex 000000000BF73750 (cached)
+[19:37:54.498]       tex 000000000BF496B0 (cached)
+[19:37:54.499]       tex 000000000B188A30 (loose)
+[19:37:54.499]       tex 000000000BF2DF90 (cached)
+[19:37:54.499]       tex 000000000BF5AE00 (cached)
+[19:37:54.499]       tex 000000000BF90490 (cached)
+[19:37:54.499]       tex 000000000BF5A280 (cached)
+[19:37:54.499]       tex 000000000BF39D30 (cached)
+[19:37:54.499]       tex 000000000BFA17A0 (cached)
+[19:37:54.499]       tex 000000000C5EEC20 (loose)
+[19:37:54.500]       tex 000000000BF3BFB0 (cached)
+[19:37:54.500]       tex 000000000BFA0C20 (cached)
+[19:37:54.500]       tex 000000000BF742D0 (cached)
+[19:37:54.500]       tex 000000000BF2D410 (cached)
+[19:37:54.500]       tex 000000000BF3A8B0 (cached)
+[19:37:54.500]       tex 000000000BF4A230 (cached)
+[19:37:54.500]       tex 000000000BF74E50 (cached)
+[19:37:54.500]       tex 000000000BFA2320 (cached)
+[19:37:54.500]       tex 000000000BFA00A0 (cached)
+[19:37:54.500]       tex 000000000BF48B30 (cached)
+[19:37:54.500]       tex 000000000BF91B90 (cached)
+[19:37:54.500]       tex 000000000BF3B430 (cached)
+[19:37:54.500]       tex 000000000BF5B980 (cached)
+[19:37:54.500]       tex 000000000CC0E360 (cached)
+[19:37:54.500]       tex 000000000BF3E230 (cached)
+[19:37:54.500]       tex 000000000BF77C50 (cached)
+[19:37:54.500]       tex 000000000BF4C4B0 (cached)
+[19:37:54.500]       tex 000000000BF5E780 (cached)
+[19:37:54.500]       tex 000000000BF4ADB0 (cached)
+[19:37:54.500]       tex 000000000BF93E10 (cached)
+[19:37:54.500]       tex 000000000D52ECC0 (loose)
+[19:37:54.500]       tex 000000000BF4D030 (cached)
+[19:37:54.500]       tex 000000000BFA45A0 (cached)
+[19:37:54.500]       tex 000000000BF2EB10 (cached)
+[19:37:54.500]       tex 000000000BF770D0 (cached)
+[19:37:54.500]       tex 000000000BF94990 (cached)
+[19:37:54.500]       tex 000000000BF93290 (cached)
+[19:37:54.501]       tex 000000000D11F280 (loose)
+[19:37:54.501]       tex 000000000BF95510 (cached)
+[19:37:54.501]       tex 000000000BF759D0 (cached)
+[19:37:54.501]       tex 000000000BF4B930 (cached)
+[19:37:54.501]       tex 000000000BF76550 (cached)
+[19:37:54.501]       tex 000000000BF5D080 (cached)
+[19:37:54.501]       tex 000000000BF3CB30 (cached)
+[19:37:54.501]       tex 000000000BF5DC00 (cached)
+[19:37:54.501]       tex 000000000BFB0F00 (cached)
+[19:37:54.501]       tex 000000000BFA3A20 (cached)
+[19:37:54.501]       tex 000000000BF2F690 (cached)
+[19:37:54.501]       tex 000000000BF3D6B0 (cached)
+[19:37:54.501]       tex 000000000BFB0380 (cached)
+[19:37:54.501]       tex 000000000BFA2EA0 (cached)
+[19:37:54.501] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:54.715] move p0 d=(1,0) -> page 1 cell (1,3) real slot 25 (x=1 y=3)
+[19:37:54.948] move p0 d=(1,0) -> page 1 cell (2,3) real slot 26 (x=2 y=3)
+[19:37:55.131] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:55.148] move p0 d=(1,0) -> page 1 cell (3,3) real slot 27 (x=3 y=3)
+[19:37:55.348] move p0 d=(1,0) -> page 2 cell (0,3) real slot 28 (x=4 y=3)
+[19:37:55.348] player 0 -> page 2/3 (split); repainting grid
+[19:37:55.348]       tex 000000000BF5DC00 (cached)
+[19:37:55.348]       tex 000000000BFB0F00 (cached)
+[19:37:55.348]       tex 000000000BFA3A20 (cached)
+[19:37:55.348]       tex 000000000BF2F690 (cached)
+[19:37:55.348]       tex 000000000BF3D6B0 (cached)
+[19:37:55.348]       tex 000000000BFB0380 (cached)
+[19:37:55.348]       tex 000000000BFA2EA0 (cached)
+[19:37:55.350]       tex 000000000D0AF4A0 (loose)
+[19:37:55.350]       tex 000000000BF95510 (cached)
+[19:37:55.350]       tex 000000000BF759D0 (cached)
+[19:37:55.350]       tex 000000000BF4B930 (cached)
+[19:37:55.350]       tex 000000000BF76550 (cached)
+[19:37:55.350]       tex 000000000BF5D080 (cached)
+[19:37:55.350]       tex 000000000BF3CB30 (cached)
+[19:37:55.351]       tex 000000000D5C8D40 (loose)
+[19:37:55.351]       tex 000000000BF4D030 (cached)
+[19:37:55.351]       tex 000000000BFA45A0 (cached)
+[19:37:55.351]       tex 000000000BF2EB10 (cached)
+[19:37:55.351]       tex 000000000BF770D0 (cached)
+[19:37:55.351]       tex 000000000BF94990 (cached)
+[19:37:55.351]       tex 000000000BF93290 (cached)
+[19:37:55.351]       tex 000000000CC0E360 (cached)
+[19:37:55.351]       tex 000000000BF3E230 (cached)
+[19:37:55.351]       tex 000000000BF77C50 (cached)
+[19:37:55.351]       tex 000000000BF4C4B0 (cached)
+[19:37:55.351]       tex 000000000BF5E780 (cached)
+[19:37:55.351]       tex 000000000BF4ADB0 (cached)
+[19:37:55.351]       tex 000000000BF93E10 (cached)
+[19:37:55.351]       tex 000000000CC0E360 (cached)
+[19:37:55.351]       tex 000000000BF3E230 (cached)
+[19:37:55.351]       tex 000000000BF77C50 (cached)
+[19:37:55.351]       tex 000000000BF4C4B0 (cached)
+[19:37:55.351]       tex 000000000BF5E780 (cached)
+[19:37:55.351]       tex 000000000BF4ADB0 (cached)
+[19:37:55.351]       tex 000000000BF93E10 (cached)
+[19:37:55.351]       tex 000000000D1CFBB0 (loose)
+[19:37:55.351]       tex 000000000BF4D030 (cached)
+[19:37:55.351]       tex 000000000BFA45A0 (cached)
+[19:37:55.351]       tex 000000000BF2EB10 (cached)
+[19:37:55.351]       tex 000000000BF770D0 (cached)
+[19:37:55.351]       tex 000000000BF94990 (cached)
+[19:37:55.351]       tex 000000000BF93290 (cached)
+[19:37:55.351]       tex 000000000B188A30 (loose)
+[19:37:55.351]       tex 000000000BF95510 (cached)
+[19:37:55.351]       tex 000000000BF759D0 (cached)
+[19:37:55.351]       tex 000000000BF4B930 (cached)
+[19:37:55.351]       tex 000000000BF76550 (cached)
+[19:37:55.351]       tex 000000000BF5D080 (cached)
+[19:37:55.351]       tex 000000000BF3CB30 (cached)
+[19:37:55.351]       tex 000000000BF5DC00 (cached)
+[19:37:55.351]       tex 000000000BFB0F00 (cached)
+[19:37:55.351]       tex 000000000BFA3A20 (cached)
+[19:37:55.351]       tex 000000000BF2F690 (cached)
+[19:37:55.351]       tex 000000000BF3D6B0 (cached)
+[19:37:55.351]       tex 000000000BFB0380 (cached)
+[19:37:55.351]       tex 000000000BFA2EA0 (cached)
+[19:37:55.351] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:55.565] move p0 d=(1,0) -> page 2 cell (1,3) real slot 29 (x=5 y=3)
+[19:37:55.798] move p0 d=(1,0) -> page 2 cell (2,3) real slot 30 (x=6 y=3)
+[19:37:55.999] move p0 d=(1,0) -> page 2 cell (3,3) real slot 31 (x=7 y=3)
+[19:37:56.148] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:56.215] move p0 d=(1,0) -> page 1 cell (0,3) real slot 24 (x=0 y=3)
+[19:37:56.215] player 0 -> page 1/3 (split); repainting grid
+[19:37:56.215]       tex 000000000C8AFA20 (cached)
+[19:37:56.215]       tex 000000000BF5C500 (cached)
+[19:37:56.215]       tex 000000000BF92710 (cached)
+[19:37:56.215]       tex 000000000BF2C890 (cached)
+[19:37:56.215]       tex 000000000BF91010 (cached)
+[19:37:56.215]       tex 000000000BF73750 (cached)
+[19:37:56.215]       tex 000000000BF496B0 (cached)
+[19:37:56.216]       tex 000000000C5EEC20 (loose)
+[19:37:56.216]       tex 000000000BF2DF90 (cached)
+[19:37:56.216]       tex 000000000BF5AE00 (cached)
+[19:37:56.216]       tex 000000000BF90490 (cached)
+[19:37:56.216]       tex 000000000BF5A280 (cached)
+[19:37:56.216]       tex 000000000BF39D30 (cached)
+[19:37:56.216]       tex 000000000BFA17A0 (cached)
+[19:37:56.218]       tex 000000000D52ECC0 (loose)
+[19:37:56.218]       tex 000000000BF3BFB0 (cached)
+[19:37:56.218]       tex 000000000BFA0C20 (cached)
+[19:37:56.218]       tex 000000000BF742D0 (cached)
+[19:37:56.218]       tex 000000000BF2D410 (cached)
+[19:37:56.218]       tex 000000000BF3A8B0 (cached)
+[19:37:56.218]       tex 000000000BF4A230 (cached)
+[19:37:56.218]       tex 000000000BF74E50 (cached)
+[19:37:56.218]       tex 000000000BFA2320 (cached)
+[19:37:56.218]       tex 000000000BFA00A0 (cached)
+[19:37:56.218]       tex 000000000BF48B30 (cached)
+[19:37:56.218]       tex 000000000BF91B90 (cached)
+[19:37:56.218]       tex 000000000BF3B430 (cached)
+[19:37:56.218]       tex 000000000BF5B980 (cached)
+[19:37:56.218]       tex 000000000CC0E360 (cached)
+[19:37:56.218]       tex 000000000BF3E230 (cached)
+[19:37:56.218]       tex 000000000BF77C50 (cached)
+[19:37:56.218]       tex 000000000BF4C4B0 (cached)
+[19:37:56.218]       tex 000000000BF5E780 (cached)
+[19:37:56.218]       tex 000000000BF4ADB0 (cached)
+[19:37:56.218]       tex 000000000BF93E10 (cached)
+[19:37:56.218]       tex 000000000D11F280 (loose)
+[19:37:56.218]       tex 000000000BF4D030 (cached)
+[19:37:56.218]       tex 000000000BFA45A0 (cached)
+[19:37:56.218]       tex 000000000BF2EB10 (cached)
+[19:37:56.218]       tex 000000000BF770D0 (cached)
+[19:37:56.218]       tex 000000000BF94990 (cached)
+[19:37:56.218]       tex 000000000BF93290 (cached)
+[19:37:56.218]       tex 000000000D0AF4A0 (loose)
+[19:37:56.218]       tex 000000000BF95510 (cached)
+[19:37:56.218]       tex 000000000BF759D0 (cached)
+[19:37:56.218]       tex 000000000BF4B930 (cached)
+[19:37:56.218]       tex 000000000BF76550 (cached)
+[19:37:56.218]       tex 000000000BF5D080 (cached)
+[19:37:56.218]       tex 000000000BF3CB30 (cached)
+[19:37:56.218]       tex 000000000BF5DC00 (cached)
+[19:37:56.218]       tex 000000000BFB0F00 (cached)
+[19:37:56.218]       tex 000000000BFA3A20 (cached)
+[19:37:56.218]       tex 000000000BF2F690 (cached)
+[19:37:56.218]       tex 000000000BF3D6B0 (cached)
+[19:37:56.218]       tex 000000000BFB0380 (cached)
+[19:37:56.218]       tex 000000000BFA2EA0 (cached)
+[19:37:56.218] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:56.414] move p0 d=(1,0) -> page 1 cell (1,3) real slot 25 (x=1 y=3)
+[19:37:56.631] move p0 d=(1,0) -> page 1 cell (2,3) real slot 26 (x=2 y=3)
+[19:37:56.831] move p0 d=(1,0) -> page 1 cell (3,3) real slot 27 (x=3 y=3)
+[19:37:57.049] move p0 d=(1,0) -> page 2 cell (0,3) real slot 28 (x=4 y=3)
+[19:37:57.049] player 0 -> page 2/3 (split); repainting grid
+[19:37:57.049]       tex 000000000BF5DC00 (cached)
+[19:37:57.049]       tex 000000000BFB0F00 (cached)
+[19:37:57.049]       tex 000000000BFA3A20 (cached)
+[19:37:57.049]       tex 000000000BF2F690 (cached)
+[19:37:57.049]       tex 000000000BF3D6B0 (cached)
+[19:37:57.049]       tex 000000000BFB0380 (cached)
+[19:37:57.049]       tex 000000000BFA2EA0 (cached)
+[19:37:57.051]       tex 000000000D5C8D40 (loose)
+[19:37:57.051]       tex 000000000BF95510 (cached)
+[19:37:57.051]       tex 000000000BF759D0 (cached)
+[19:37:57.051]       tex 000000000BF4B930 (cached)
+[19:37:57.051]       tex 000000000BF76550 (cached)
+[19:37:57.051]       tex 000000000BF5D080 (cached)
+[19:37:57.051]       tex 000000000BF3CB30 (cached)
+[19:37:57.051]       tex 000000000D1CFBB0 (loose)
+[19:37:57.051]       tex 000000000BF4D030 (cached)
+[19:37:57.051]       tex 000000000BFA45A0 (cached)
+[19:37:57.051]       tex 000000000BF2EB10 (cached)
+[19:37:57.051]       tex 000000000BF770D0 (cached)
+[19:37:57.051]       tex 000000000BF94990 (cached)
+[19:37:57.051]       tex 000000000BF93290 (cached)
+[19:37:57.051]       tex 000000000CC0E360 (cached)
+[19:37:57.051]       tex 000000000BF3E230 (cached)
+[19:37:57.051]       tex 000000000BF77C50 (cached)
+[19:37:57.051]       tex 000000000BF4C4B0 (cached)
+[19:37:57.051]       tex 000000000BF5E780 (cached)
+[19:37:57.051]       tex 000000000BF4ADB0 (cached)
+[19:37:57.051]       tex 000000000BF93E10 (cached)
+[19:37:57.051]       tex 000000000CC0E360 (cached)
+[19:37:57.051]       tex 000000000BF3E230 (cached)
+[19:37:57.051]       tex 000000000BF77C50 (cached)
+[19:37:57.051]       tex 000000000BF4C4B0 (cached)
+[19:37:57.051]       tex 000000000BF5E780 (cached)
+[19:37:57.051]       tex 000000000BF4ADB0 (cached)
+[19:37:57.051]       tex 000000000BF93E10 (cached)
+[19:37:57.051]       tex 000000000B188A30 (loose)
+[19:37:57.051]       tex 000000000BF4D030 (cached)
+[19:37:57.051]       tex 000000000BFA45A0 (cached)
+[19:37:57.051]       tex 000000000BF2EB10 (cached)
+[19:37:57.051]       tex 000000000BF770D0 (cached)
+[19:37:57.051]       tex 000000000BF94990 (cached)
+[19:37:57.051]       tex 000000000BF93290 (cached)
+[19:37:57.052]       tex 000000000C5EEC20 (loose)
+[19:37:57.052]       tex 000000000BF95510 (cached)
+[19:37:57.052]       tex 000000000BF759D0 (cached)
+[19:37:57.052]       tex 000000000BF4B930 (cached)
+[19:37:57.052]       tex 000000000BF76550 (cached)
+[19:37:57.052]       tex 000000000BF5D080 (cached)
+[19:37:57.052]       tex 000000000BF3CB30 (cached)
+[19:37:57.052]       tex 000000000BF5DC00 (cached)
+[19:37:57.052]       tex 000000000BFB0F00 (cached)
+[19:37:57.052]       tex 000000000BFA3A20 (cached)
+[19:37:57.052]       tex 000000000BF2F690 (cached)
+[19:37:57.052]       tex 000000000BF3D6B0 (cached)
+[19:37:57.052]       tex 000000000BFB0380 (cached)
+[19:37:57.052]       tex 000000000BFA2EA0 (cached)
+[19:37:57.052] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:57.165] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:57.248] move p0 d=(1,0) -> page 2 cell (1,3) real slot 29 (x=5 y=3)
+[19:37:57.465] move p0 d=(1,0) -> page 2 cell (2,3) real slot 30 (x=6 y=3)
+[19:37:57.731] move p0 d=(1,0) -> page 2 cell (3,3) real slot 31 (x=7 y=3)
+[19:37:57.998] move p0 d=(1,0) -> page 1 cell (0,3) real slot 24 (x=0 y=3)
+[19:37:57.998] player 0 -> page 1/3 (split); repainting grid
+[19:37:57.998]       tex 000000000C8AFA20 (cached)
+[19:37:57.998]       tex 000000000BF5C500 (cached)
+[19:37:57.998]       tex 000000000BF92710 (cached)
+[19:37:57.998]       tex 000000000BF2C890 (cached)
+[19:37:57.998]       tex 000000000BF91010 (cached)
+[19:37:57.998]       tex 000000000BF73750 (cached)
+[19:37:57.998]       tex 000000000BF496B0 (cached)
+[19:37:58.000]       tex 000000000D52ECC0 (loose)
+[19:37:58.000]       tex 000000000BF2DF90 (cached)
+[19:37:58.000]       tex 000000000BF5AE00 (cached)
+[19:37:58.000]       tex 000000000BF90490 (cached)
+[19:37:58.000]       tex 000000000BF5A280 (cached)
+[19:37:58.000]       tex 000000000BF39D30 (cached)
+[19:37:58.000]       tex 000000000BFA17A0 (cached)
+[19:37:58.000]       tex 000000000D11F280 (loose)
+[19:37:58.000]       tex 000000000BF3BFB0 (cached)
+[19:37:58.000]       tex 000000000BFA0C20 (cached)
+[19:37:58.000]       tex 000000000BF742D0 (cached)
+[19:37:58.000]       tex 000000000BF2D410 (cached)
+[19:37:58.000]       tex 000000000BF3A8B0 (cached)
+[19:37:58.000]       tex 000000000BF4A230 (cached)
+[19:37:58.000]       tex 000000000BF74E50 (cached)
+[19:37:58.000]       tex 000000000BFA2320 (cached)
+[19:37:58.000]       tex 000000000BFA00A0 (cached)
+[19:37:58.000]       tex 000000000BF48B30 (cached)
+[19:37:58.000]       tex 000000000BF91B90 (cached)
+[19:37:58.000]       tex 000000000BF3B430 (cached)
+[19:37:58.000]       tex 000000000BF5B980 (cached)
+[19:37:58.000]       tex 000000000CC0E360 (cached)
+[19:37:58.000]       tex 000000000BF3E230 (cached)
+[19:37:58.000]       tex 000000000BF77C50 (cached)
+[19:37:58.000]       tex 000000000BF4C4B0 (cached)
+[19:37:58.000]       tex 000000000BF5E780 (cached)
+[19:37:58.000]       tex 000000000BF4ADB0 (cached)
+[19:37:58.000]       tex 000000000BF93E10 (cached)
+[19:37:58.001]       tex 000000000D0AF4A0 (loose)
+[19:37:58.001]       tex 000000000BF4D030 (cached)
+[19:37:58.001]       tex 000000000BFA45A0 (cached)
+[19:37:58.001]       tex 000000000BF2EB10 (cached)
+[19:37:58.001]       tex 000000000BF770D0 (cached)
+[19:37:58.001]       tex 000000000BF94990 (cached)
+[19:37:58.001]       tex 000000000BF93290 (cached)
+[19:37:58.001]       tex 000000000D5C8D40 (loose)
+[19:37:58.001]       tex 000000000BF95510 (cached)
+[19:37:58.001]       tex 000000000BF759D0 (cached)
+[19:37:58.001]       tex 000000000BF4B930 (cached)
+[19:37:58.001]       tex 000000000BF76550 (cached)
+[19:37:58.001]       tex 000000000BF5D080 (cached)
+[19:37:58.001]       tex 000000000BF3CB30 (cached)
+[19:37:58.001]       tex 000000000BF5DC00 (cached)
+[19:37:58.001]       tex 000000000BFB0F00 (cached)
+[19:37:58.001]       tex 000000000BFA3A20 (cached)
+[19:37:58.001]       tex 000000000BF2F690 (cached)
+[19:37:58.001]       tex 000000000BF3D6B0 (cached)
+[19:37:58.001]       tex 000000000BFB0380 (cached)
+[19:37:58.001]       tex 000000000BFA2EA0 (cached)
+[19:37:58.001] repaint: 52 nodes painted, 0 textures unavailable
+[19:37:58.181] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:59.199] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:37:59.331] move p0 d=(0,1) -> page 1 cell (0,4) real slot 32 (x=0 y=4)
+[19:37:59.515] move p0 d=(0,1) -> page 1 cell (0,5) real slot 40 (x=0 y=5)
+[19:37:59.698] move p0 d=(0,1) -> page 1 cell (0,6) real slot 48 (x=0 y=6)
+[19:38:00.065] move p0 d=(0,1) -> page 1 cell (0,0) real slot 0 (x=0 y=0)
+[19:38:00.215] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:01.232] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:01.365] move p0 d=(0,1) -> page 1 cell (0,1) real slot 8 (x=0 y=1)
+[19:38:01.648] move p0 d=(1,0) -> page 1 cell (1,1) real slot 9 (x=1 y=1)
+[19:38:01.832] move p0 d=(1,0) -> page 1 cell (2,1) real slot 10 (x=2 y=1)
+[19:38:02.031] move p0 d=(1,0) -> page 1 cell (3,1) real slot 11 (x=3 y=1)
+[19:38:02.249] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:02.416] move p0 d=(1,0) -> page 2 cell (0,1) real slot 12 (x=4 y=1)
+[19:38:02.416] player 0 -> page 2/3 (split); repainting grid
+[19:38:02.416]       tex 000000000BF5DC00 (cached)
+[19:38:02.416]       tex 000000000BFB0F00 (cached)
+[19:38:02.416]       tex 000000000BFA3A20 (cached)
+[19:38:02.416]       tex 000000000BF2F690 (cached)
+[19:38:02.416]       tex 000000000BF3D6B0 (cached)
+[19:38:02.416]       tex 000000000BFB0380 (cached)
+[19:38:02.416]       tex 000000000BFA2EA0 (cached)
+[19:38:02.418]       tex 000000000D1CFBB0 (loose)
+[19:38:02.418]       tex 000000000BF95510 (cached)
+[19:38:02.418]       tex 000000000BF759D0 (cached)
+[19:38:02.418]       tex 000000000BF4B930 (cached)
+[19:38:02.418]       tex 000000000BF76550 (cached)
+[19:38:02.418]       tex 000000000BF5D080 (cached)
+[19:38:02.418]       tex 000000000BF3CB30 (cached)
+[19:38:02.418]       tex 000000000B188A30 (loose)
+[19:38:02.418]       tex 000000000BF4D030 (cached)
+[19:38:02.418]       tex 000000000BFA45A0 (cached)
+[19:38:02.418]       tex 000000000BF2EB10 (cached)
+[19:38:02.418]       tex 000000000BF770D0 (cached)
+[19:38:02.418]       tex 000000000BF94990 (cached)
+[19:38:02.418]       tex 000000000BF93290 (cached)
+[19:38:02.418]       tex 000000000CC0E360 (cached)
+[19:38:02.418]       tex 000000000BF3E230 (cached)
+[19:38:02.418]       tex 000000000BF77C50 (cached)
+[19:38:02.418]       tex 000000000BF4C4B0 (cached)
+[19:38:02.418]       tex 000000000BF5E780 (cached)
+[19:38:02.418]       tex 000000000BF4ADB0 (cached)
+[19:38:02.418]       tex 000000000BF93E10 (cached)
+[19:38:02.418]       tex 000000000CC0E360 (cached)
+[19:38:02.418]       tex 000000000BF3E230 (cached)
+[19:38:02.418]       tex 000000000BF77C50 (cached)
+[19:38:02.418]       tex 000000000BF4C4B0 (cached)
+[19:38:02.418]       tex 000000000BF5E780 (cached)
+[19:38:02.418]       tex 000000000BF4ADB0 (cached)
+[19:38:02.418]       tex 000000000BF93E10 (cached)
+[19:38:02.418]       tex 000000000C5EEC20 (loose)
+[19:38:02.418]       tex 000000000BF4D030 (cached)
+[19:38:02.418]       tex 000000000BFA45A0 (cached)
+[19:38:02.418]       tex 000000000BF2EB10 (cached)
+[19:38:02.418]       tex 000000000BF770D0 (cached)
+[19:38:02.418]       tex 000000000BF94990 (cached)
+[19:38:02.418]       tex 000000000BF93290 (cached)
+[19:38:02.418]       tex 000000000D52ECC0 (loose)
+[19:38:02.418]       tex 000000000BF95510 (cached)
+[19:38:02.418]       tex 000000000BF759D0 (cached)
+[19:38:02.418]       tex 000000000BF4B930 (cached)
+[19:38:02.418]       tex 000000000BF76550 (cached)
+[19:38:02.418]       tex 000000000BF5D080 (cached)
+[19:38:02.418]       tex 000000000BF3CB30 (cached)
+[19:38:02.418]       tex 000000000BF5DC00 (cached)
+[19:38:02.418]       tex 000000000BFB0F00 (cached)
+[19:38:02.418]       tex 000000000BFA3A20 (cached)
+[19:38:02.418]       tex 000000000BF2F690 (cached)
+[19:38:02.418]       tex 000000000BF3D6B0 (cached)
+[19:38:02.418]       tex 000000000BFB0380 (cached)
+[19:38:02.418]       tex 000000000BFA2EA0 (cached)
+[19:38:02.418] repaint: 52 nodes painted, 0 textures unavailable
+[19:38:03.265] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:04.281] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:04.348] move p0 d=(-1,0) -> page 1 cell (3,1) real slot 11 (x=3 y=1)
+[19:38:04.348] player 0 -> page 1/3 (split); repainting grid
+[19:38:04.348]       tex 000000000C8AFA20 (cached)
+[19:38:04.348]       tex 000000000BF5C500 (cached)
+[19:38:04.348]       tex 000000000BF92710 (cached)
+[19:38:04.348]       tex 000000000BF2C890 (cached)
+[19:38:04.348]       tex 000000000BF91010 (cached)
+[19:38:04.348]       tex 000000000BF73750 (cached)
+[19:38:04.348]       tex 000000000BF496B0 (cached)
+[19:38:04.349]       tex 000000000D11F280 (loose)
+[19:38:04.349]       tex 000000000BF2DF90 (cached)
+[19:38:04.349]       tex 000000000BF5AE00 (cached)
+[19:38:04.349]       tex 000000000BF90490 (cached)
+[19:38:04.350]       tex 000000000BF5A280 (cached)
+[19:38:04.350]       tex 000000000BF39D30 (cached)
+[19:38:04.350]       tex 000000000BFA17A0 (cached)
+[19:38:04.350]       tex 000000000D0AF4A0 (loose)
+[19:38:04.350]       tex 000000000BF3BFB0 (cached)
+[19:38:04.350]       tex 000000000BFA0C20 (cached)
+[19:38:04.350]       tex 000000000BF742D0 (cached)
+[19:38:04.350]       tex 000000000BF2D410 (cached)
+[19:38:04.350]       tex 000000000BF3A8B0 (cached)
+[19:38:04.350]       tex 000000000BF4A230 (cached)
+[19:38:04.350]       tex 000000000BF74E50 (cached)
+[19:38:04.350]       tex 000000000BFA2320 (cached)
+[19:38:04.350]       tex 000000000BFA00A0 (cached)
+[19:38:04.350]       tex 000000000BF48B30 (cached)
+[19:38:04.350]       tex 000000000BF91B90 (cached)
+[19:38:04.350]       tex 000000000BF3B430 (cached)
+[19:38:04.350]       tex 000000000BF5B980 (cached)
+[19:38:04.350]       tex 000000000CC0E360 (cached)
+[19:38:04.350]       tex 000000000BF3E230 (cached)
+[19:38:04.350]       tex 000000000BF77C50 (cached)
+[19:38:04.350]       tex 000000000BF4C4B0 (cached)
+[19:38:04.350]       tex 000000000BF5E780 (cached)
+[19:38:04.350]       tex 000000000BF4ADB0 (cached)
+[19:38:04.350]       tex 000000000BF93E10 (cached)
+[19:38:04.350]       tex 000000000D5C8D40 (loose)
+[19:38:04.350]       tex 000000000BF4D030 (cached)
+[19:38:04.350]       tex 000000000BFA45A0 (cached)
+[19:38:04.350]       tex 000000000BF2EB10 (cached)
+[19:38:04.350]       tex 000000000BF770D0 (cached)
+[19:38:04.350]       tex 000000000BF94990 (cached)
+[19:38:04.350]       tex 000000000BF93290 (cached)
+[19:38:04.350]       tex 000000000D1CFBB0 (loose)
+[19:38:04.350]       tex 000000000BF95510 (cached)
+[19:38:04.350]       tex 000000000BF759D0 (cached)
+[19:38:04.350]       tex 000000000BF4B930 (cached)
+[19:38:04.350]       tex 000000000BF76550 (cached)
+[19:38:04.350]       tex 000000000BF5D080 (cached)
+[19:38:04.350]       tex 000000000BF3CB30 (cached)
+[19:38:04.350]       tex 000000000BF5DC00 (cached)
+[19:38:04.350]       tex 000000000BFB0F00 (cached)
+[19:38:04.350]       tex 000000000BFA3A20 (cached)
+[19:38:04.350]       tex 000000000BF2F690 (cached)
+[19:38:04.350]       tex 000000000BF3D6B0 (cached)
+[19:38:04.350]       tex 000000000BFB0380 (cached)
+[19:38:04.350]       tex 000000000BFA2EA0 (cached)
+[19:38:04.350] repaint: 52 nodes painted, 0 textures unavailable
+[19:38:04.848] move p0 d=(0,1) -> page 1 cell (3,2) real slot 19 (x=3 y=2)
+[19:38:05.065] move p0 d=(0,1) -> page 1 cell (3,3) real slot 27 (x=3 y=3)
+[19:38:05.265] move p0 d=(0,1) -> page 1 cell (3,4) real slot 35 (x=3 y=4)
+[19:38:05.298] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:05.449] move p0 d=(0,1) -> page 1 cell (3,5) real slot 43 (x=3 y=5)
+[19:38:05.648] move p0 d=(0,1) -> page 1 cell (3,6) real slot 51 (x=3 y=6)
+[19:38:06.199] move p0 d=(0,1) -> page 1 cell (3,0) real slot 3 (x=3 y=0)
+[19:38:06.316] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:06.965] move p0 d=(0,1) -> page 1 cell (3,1) real slot 11 (x=3 y=1)
+[19:38:07.182] move p0 d=(0,1) -> page 1 cell (3,2) real slot 19 (x=3 y=2)
+[19:38:07.331] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:07.383] move p0 d=(0,1) -> page 1 cell (3,3) real slot 27 (x=3 y=3)
+[19:38:07.581] move p0 d=(0,1) -> page 1 cell (3,4) real slot 35 (x=3 y=4)
+[19:38:07.799] move p0 d=(0,1) -> page 1 cell (3,5) real slot 43 (x=3 y=5)
+[19:38:08.015] move p0 d=(0,1) -> page 1 cell (3,6) real slot 51 (x=3 y=6)
+[19:38:08.299] move p0 d=(-1,0) -> page 1 cell (2,6) real slot 50 (x=2 y=6)
+[19:38:08.349] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:08.599] move p0 d=(0,1) -> page 1 cell (2,1) real slot 10 (x=2 y=1)
+[19:38:09.364] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:09.648] move p0 d=(0,1) -> page 1 cell (2,2) real slot 18 (x=2 y=2)
+[19:38:09.865] move p0 d=(0,1) -> page 1 cell (2,3) real slot 26 (x=2 y=3)
+[19:38:10.231] move p0 d=(-1,0) -> page 1 cell (1,3) real slot 25 (x=1 y=3)
+[19:38:10.381] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:10.431] move p0 d=(-1,0) -> page 1 cell (0,3) real slot 24 (x=0 y=3)
+[19:38:10.764] move p0 d=(0,1) -> page 1 cell (0,4) real slot 32 (x=0 y=4)
+[19:38:10.964] move p0 d=(0,1) -> page 1 cell (0,5) real slot 40 (x=0 y=5)
+[19:38:11.165] move p0 d=(0,1) -> page 1 cell (0,6) real slot 48 (x=0 y=6)
+[19:38:11.381] move p0 d=(0,1) -> page 1 cell (0,0) real slot 0 (x=0 y=0)
+[19:38:11.397] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:11.765] move p0 d=(0,1) -> page 1 cell (0,1) real slot 8 (x=0 y=1)
+[19:38:11.999] move p0 d=(0,1) -> page 1 cell (0,2) real slot 16 (x=0 y=2)
+[19:38:12.199] move p0 d=(0,1) -> page 1 cell (0,3) real slot 24 (x=0 y=3)
+[19:38:12.381] move p0 d=(0,1) -> page 1 cell (0,4) real slot 32 (x=0 y=4)
+[19:38:12.414] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:12.566] move p0 d=(0,1) -> page 1 cell (0,5) real slot 40 (x=0 y=5)
+[19:38:12.764] move p0 d=(0,1) -> page 1 cell (0,6) real slot 48 (x=0 y=6)
+[19:38:12.965] move p0 d=(0,1) -> page 1 cell (0,0) real slot 0 (x=0 y=0)
+[19:38:13.432] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:14.131] move p0 d=(0,1) -> page 1 cell (0,1) real slot 8 (x=0 y=1)
+[19:38:14.366] move p0 d=(0,1) -> page 1 cell (0,2) real slot 16 (x=0 y=2)
+[19:38:14.449] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:14.597] move p0 d=(0,1) -> page 1 cell (0,3) real slot 24 (x=0 y=3)
+[19:38:14.814] move p0 d=(0,1) -> page 1 cell (0,4) real slot 32 (x=0 y=4)
+[19:38:14.999] move p0 d=(0,1) -> page 1 cell (0,5) real slot 40 (x=0 y=5)
+[19:38:15.299] move p0 d=(0,1) -> page 1 cell (0,6) real slot 48 (x=0 y=6)
+[19:38:15.465] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:16.049] move p0 d=(1,0) -> page 1 cell (1,6) real slot 49 (x=1 y=6)
+[19:38:16.464] move p0 d=(0,1) -> page 1 cell (1,1) real slot 9 (x=1 y=1)
+[19:38:16.482] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:17.131] move p0 d=(0,1) -> page 1 cell (1,2) real slot 17 (x=1 y=2)
+[19:38:17.365] move p0 d=(0,1) -> page 1 cell (1,3) real slot 25 (x=1 y=3)
+[19:38:17.499] tick p0 outerEnabled=1 innerEnabled=1 innerPlayer=0 state=-1 split=1
+[19:38:17.549] move p0 d=(0,1) -> page 1 cell (1,4) real slot 33 (x=1 y=4)
+[19:38:21.010] unloading

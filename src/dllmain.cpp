@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.2.2"
+#define PT_VERSION "0.2.3"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -76,6 +76,7 @@ struct PlayerCursor {
     uint8_t* inner = nullptr;   // uiCursor at outer+0x78
     int      realPos = -1;      // authoritative slot in CE's 8 x rows grid
     int      shownPage = -1;    // page currently painted on this player's face (-1 = never)
+    ULONGLONG lastTick = 0;     // GetTickCount64 of this cursor's last tick (solo modes never tick P2's cursor)
 };
 static PlayerCursor g_pc[2];
 static uint8_t* g_bgMain = nullptr;
@@ -90,7 +91,8 @@ static PlayerCursor* FindByOuter(void* outer) { for (auto& p : g_pc) if (p.outer
 
 // Split mode = both cursors exist and are enabled. Otherwise solo (full width).
 static bool SplitMode() {
-    return g_pc[0].inner && g_pc[1].inner && g_pc[0].inner[UC_ENABLED] && g_pc[1].inner[UC_ENABLED];
+    ULONGLONG now = GetTickCount64();
+    return g_pc[0].inner && g_pc[1].inner && now - g_pc[0].lastTick < 500 && now - g_pc[1].lastTick < 500;
 }
 static int  g_ceCount = 0;                   // number of Clone Engine slots (real pos 56 .. 56+g_ceCount-1)
 static int  BasePages()    { return SplitMode() ? 2 : 1; }
@@ -251,12 +253,31 @@ static void PagedCursorUpdate(PlayerCursor& pc) {
     // step in page space; skip blocked cells continuing in the same direction (like the game does)
     for (int guard = 0; guard < npages * 56; guard++) {
         cx += dx; cy += dy;
-        if (cx < 0)  { cx = w - 1; page = (page - 1 + npages) % npages; }
-        if (cx >= w) { cx = 0;     page = (page + 1) % npages; }
+        bool newPage = false;
+        if (cx < 0)  { cx = w - 1; page = (page - 1 + npages) % npages; newPage = true; }
+        if (cx >= w) { cx = 0;     page = (page + 1) % npages; newPage = true; }
         if (cy < 0)  { cy = 6; }                                   // up/down wrap inside the page
         if (cy >= 7) { cy = 0; }                                   // only left/right flip pages (Will's preference)
         int np = RealFromPage(page, cx, cy);
         if (!RealBlocked(c, np)) { pos = np; break; }
+        if (newPage) {
+            // just flipped onto a page whose entry cell is empty: take the nearest valid cell on this page
+            // (same row first, scanning in the movement direction, then the other rows), else keep flipping
+            int best = -1;
+            for (int ring = 0; ring < 7 && best < 0; ring++) {
+                for (int sgn = -1; sgn <= 1 && best < 0; sgn += 2) {
+                    int ry = cy + sgn * ring; if (ry < 0 || ry >= 7) continue;
+                    for (int i = 0; i < w; i++) {
+                        int rx = dx >= 0 ? (cx + i) % w : ((cx - i) % w + w) % w;
+                        int cand = RealFromPage(page, rx, ry);
+                        if (!RealBlocked(c, cand)) { best = cand; break; }
+                    }
+                    if (ring == 0) break;   // ring 0: only one row
+                }
+            }
+            if (best >= 0) { pos = best; break; }
+            cx = dx > 0 ? w - 1 : 0;        // nothing on this page: continue flipping in the same direction
+        }
     }
     Log("move p%d d=(%d,%d) -> page %d cell (%d,%d) real slot %d (x=%d y=%d)", player, dx, dy, page + 1, cx, cy, pos, pos & 7, pos >> 3);
     pc.realPos = pos;
@@ -275,6 +296,7 @@ static void __fastcall h_CursorTick(void* self) {
     PlayerCursor* pc = FindByOuter(self);
     if (!pc) { o_CursorTick(self); return; }
     uint8_t* o = (uint8_t*)self; uint8_t* in = pc->inner;
+    pc->lastTick = GetTickCount64();
     { static ULONGLONG lastLog[2] = {0, 0}; int pl = *(int*)(o + OC_PLAYER); ULONGLONG now = GetTickCount64();
       if (pl >= 0 && pl < 2 && now - lastLog[pl] > 1000) { lastLog[pl] = now;
         Log("tick p%d outerEnabled=%d innerEnabled=%d innerPlayer=%d state=%d split=%d", pl, o[OC_ENABLED], in[UC_ENABLED], *(int*)(in + UC_PLAYER), *(int*)(in + UC_STATE), SplitMode()); } }
