@@ -18,6 +18,8 @@ Copy-Item "$CE\dinput8.dll", "$CE\CloneEngine.asi" $Game -Force
 Copy-Item "$CE\ColorExpansion.asi", "$CE\ColorExpansion.ini", "$CE\msvcp140d.dll", "$CE\vcruntime140d.dll", "$CE\ucrtbased.dll" $Game -Force
 New-Item -ItemType Directory -Force "$Game\nativePCx64\CloneEngine" | Out-Null
 Copy-Item "$CE\nativePCx64\CloneEngine\*" "$Game\nativePCx64\CloneEngine\" -Force
+New-Item -ItemType Directory -Force "$Game\nativePCx64\ColorExpand" | Out-Null
+Copy-Item "$CE\nativePCx64\ColorExpand\*" "$Game\nativePCx64\ColorExpand\" -Force
 
 # Characters.ini: first $Count characters plus any children they reference
 $ini = Get-Content "$CE\Characters.ini"
