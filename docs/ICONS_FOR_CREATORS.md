@@ -20,10 +20,10 @@ Example: `CharacterID=Rash` -> `nativePCx64\ui\chs\chs_face_a\chs_cs_f\f_Rash00_
 
 ## Easiest way: the converter script
 
-Any PNG or JPG works. It is center-cropped to a square and resized to 128 x 128.
+`make_icon.py` is in the `docs` folder of the download (`scripts` in the repo). Any PNG or JPG works. It is center-cropped to a square and resized to 128 x 128.
 
 ```
-python scripts\make_icon.py my_picture.png Rash
+python make_icon.py my_picture.png Rash
 ```
 
 That writes `icons_out\f_Rash00_BM_HQ_NOMIP.tex`. Copy it into
@@ -32,7 +32,7 @@ That writes `icons_out\f_Rash00_BM_HQ_NOMIP.tex`. Copy it into
 To get a placeholder with just the name on it:
 
 ```
-python scripts\make_icon.py --label Rash
+python make_icon.py --label Rash
 ```
 
 Other tools that write MT Framework `.tex` files (for example EternalYoshi's texture converter
