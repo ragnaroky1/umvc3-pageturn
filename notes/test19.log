@@ -1,0 +1,20 @@
+[19:25:18.523] UMvC3 PageTurn 0.2.2 loaded
+[19:25:18.523] ucrtbase invalid-parameter handler installed
+[19:25:18.562] hooks created, MH_EnableHook -> 0
+[19:25:41.250] cursor ctor player=0 outer=00000000160523F0 inner=0000000016052468 cols=8 rows=8 startPos=26
+[19:25:41.250]    mode: id44b0=1 [+0x34c]=1 flags 6af0=0 6ab0=0 6770=1 6920=0 6870=0 6800=0
+[19:25:41.250] cursor ctor player=1 outer=000000001600B2C0 inner=000000001600B338 cols=8 rows=8 startPos=29
+[19:25:41.250]    mode: id44b0=1 [+0x34c]=1 flags 6af0=0 6ab0=0 6770=1 6920=0 6870=0 6800=0
+[19:25:41.257] MessageBoxA [Fatal error.]: Failed open file. C:\Program Files (x86)\Steam\steamapps\common\ULTIMATE MARVEL VS. CAPCOM 3\nativePCx64\ui\chs\chs_b1p\chs_body\b_Rash99_BM_HQ_NOMIP.tex 2
+
+[19:25:41.258] MessageBoxA caller - stack (9 frames):
+[19:25:41.258]    #00 00007FFA6683169A  UMvC3PageTurn.asi+169a
+[19:25:41.258]    #01 00007FFA66832F50  UMvC3PageTurn.asi+2f50
+[19:25:41.258]    #02 00000001404C513D  umvc3.exe+4c513d
+[19:25:41.258]    #03 00000001404C64AF  umvc3.exe+4c64af
+[19:25:41.258]    #04 00000001404C521C  umvc3.exe+4c521c
+[19:25:41.258]    #05 0000000140518DB6  umvc3.exe+518db6
+[19:25:41.258]    #06 0000000140516F05  umvc3.exe+516f05
+[19:25:41.258]    #07 000000014033ED6C  umvc3.exe+33ed6c
+[19:25:41.258]    #08 000000013FF40023  ?+13ff40023
+[19:25:53.938] unloading

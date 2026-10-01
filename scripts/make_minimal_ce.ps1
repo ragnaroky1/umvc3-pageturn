@@ -14,6 +14,8 @@ if ($LASTEXITCODE -ge 8) { throw "restore failed ($LASTEXITCODE)" }
 
 Write-Host "2/4 Clone Engine runtime..."
 Copy-Item "$CE\dinput8.dll", "$CE\CloneEngine.asi" $Game -Force
+# ColorExpansion.asi remaps costume/colour ids (the "255" portrait files); the game needs it in Arcade mode. It is a debug build and needs the shipped debug CRT DLLs.
+Copy-Item "$CE\ColorExpansion.asi", "$CE\ColorExpansion.ini", "$CE\msvcp140d.dll", "$CE\vcruntime140d.dll", "$CE\ucrtbased.dll" $Game -Force
 New-Item -ItemType Directory -Force "$Game\nativePCx64\CloneEngine" | Out-Null
 Copy-Item "$CE\nativePCx64\CloneEngine\*" "$Game\nativePCx64\CloneEngine\" -Force
 
