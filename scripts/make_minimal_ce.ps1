@@ -60,8 +60,8 @@ foreach ($sid in ($sids | Sort-Object -Unique)) {
 }
 Write-Host ("   copied files: " + (Get-ChildItem "$Game\nativePCx64" -Recurse -File | Measure-Object).Count + " total in nativePCx64")
 
-# ColorExpansion expects the pack's loose UI textures (e.g. b_<Name>255 bodies) for the whole roster: copy the pack's loose ui files, but keep the vanilla .arc files
-robocopy "$CE\nativePCx64\ui" "$Game\nativePCx64\ui" /E /XF *.arc /NP /NFL /NDL | Out-Null
+# ColorExpansion expects the pack's UI assets (b_<Name>255 bodies for the whole roster live inside the pack's mnchs*.arc): copy the pack's whole ui tree
+robocopy "$CE\nativePCx64\ui" "$Game\nativePCx64\ui" /E /NP /NFL /NDL | Out-Null
 Write-Host "4/4 PageTurn..."
 Copy-Item "$Root\build\UMvC3PageTurn.asi" "$Game\UMvC3PageTurn.asi" -Force
 New-Item -ItemType Directory -Force "$Game\nativePCx64\ui\PageTurn" | Out-Null
