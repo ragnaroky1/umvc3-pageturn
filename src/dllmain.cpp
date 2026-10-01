@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.2.4"
+#define PT_VERSION "0.2.5"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -89,10 +89,18 @@ static inline char vt_blocked(void* self, int x, int y)          { return (*(tVt
 static PlayerCursor* FindByInner(void* inner) { for (auto& p : g_pc) if (p.inner == inner) return &p; return nullptr; }
 static PlayerCursor* FindByOuter(void* outer) { for (auto& p : g_pc) if (p.outer == outer) return &p; return nullptr; }
 
-// Split mode = both cursors exist and are enabled. Otherwise solo (full width).
+// Split vs solo comes from the game mode id ([game+0x34c], read at cursor ctor): Versus = 0 (two pickers),
+// Arcade = 1 and Training = 5 (one picker). Both cursors tick in every mode until a player confirms, so the
+// "both cursors ticking" heuristic is only a fallback for mode ids we have not identified yet; it must never be
+// used in Versus, where a confirmed player's cursor stops ticking while the other is still picking (0.2.4 bug:
+// the remaining player fell into solo mode and could roam onto the opponent's half).
+static int g_modeId = -1;
 static bool SplitMode() {
+    if (!g_pc[0].inner || !g_pc[1].inner) return false;
+    if (g_modeId == 0) return true;                       // Versus
+    if (g_modeId == 1 || g_modeId == 5) return false;     // Arcade, Training
     ULONGLONG now = GetTickCount64();
-    return g_pc[0].inner && g_pc[1].inner && now - g_pc[0].lastTick < 500 && now - g_pc[1].lastTick < 500;
+    return now - g_pc[0].lastTick < 500 && now - g_pc[1].lastTick < 500;
 }
 static int  ActivePlayer() { return (g_pc[1].inner && g_pc[1].lastTick > g_pc[0].lastTick) ? 1 : 0; }   // solo modes: whichever cursor ticked last
 static int  g_ceCount = 0;                   // number of Clone Engine slots (real pos 56 .. 56+g_ceCount-1)
@@ -221,6 +229,7 @@ static void* __fastcall h_CursorCtor(void* self, int player) {
         Log("cursor ctor player=%d outer=%p inner=%p cols=%d rows=%d startPos=%d", player, self, g_pc[player].inner, g_cols, g_rows, g_pc[player].realPos);
         { typedef void* (__fastcall* tG)(); typedef char (__fastcall* tF)(void*); void* game = ((tG)0x140004700)();
           typedef int (__fastcall* tI)(void*);
+          g_modeId = game ? *(int*)((uint8_t*)game + 0x34c) : -1;
           Log("   mode: id44b0=%d [+0x34c]=%d flags 6af0=%d 6ab0=%d 6770=%d 6920=%d 6870=%d 6800=%d", ((tI)0x1400044B0)(game), *(int*)((uint8_t*)game + 0x34c), ((tF)0x140006AF0)(game), ((tF)0x140006AB0)(game), ((tF)0x140006770)(game), ((tF)0x140006920)(game), ((tF)0x140006870)(game), ((tF)0x140006800)(game)); }
     }
     return r;

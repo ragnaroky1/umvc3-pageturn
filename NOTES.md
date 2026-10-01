@@ -245,4 +245,9 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 `scripts/make_minimal_ce.ps1 -Count N`: clean vanilla + Clone Engine + first N pack characters (plus their children). Findings while trimming:
 - `CloneEngine.asi` + `dinput8.dll` + `nativePCx64/CloneEngine/*` + `Characters.ini` + per-character files (`chr/archive/<ID>_*.arc`, `sound/se/chr/archive/<ID>.arc`, `sound/bgm/source/<ID>.sngw`, `sound/event/<SoundID>/`, `ui/**/*<ID>*`, `ui/ending/ending_<ID>.arc`) are not enough.
 - **ColorExpansion.asi is required** (Arcade and Training load `b_<Name>99/255` portraits through it) together with `ColorExpansion.ini`, the debug CRT DLLs it links (`msvcp140d`, `vcruntime140d`, `ucrtbased`), its `nativePCx64/ColorExpand/*.msd`, and the pack's **whole `nativePCx64/ui` tree** (the 255 portraits for the base roster are inside the pack's replaced `mnchs*.arc`).
-- Game mode ids (`[game+0x34c]`, `FUN_1400044b0`): Arcade = 1, Training = 5 (Versus TBD). Both cursors are constructed and enabled in every mode, so "split vs solo" must come from the mode id, not from the cursor flags.
+- Game mode ids (`[game+0x34c]`, `FUN_1400044b0`): **Versus = 0**, Arcade = 1, Training = 5 (from the 19:51 live log, 0.2.4). Both cursors are constructed and enabled in every mode, so "split vs solo" must come from the mode id, not from the cursor flags.
+
+## Test 24 (0.2.4, Versus) — FAIL, fixed in 0.2.5
+
+- Arcade and Training OK. Versus: once a player confirmed a character (assist not yet chosen), their cursor stopped ticking, so the 500 ms "both cursors ticking" heuristic flipped SplitMode() to solo and the other player could roam the full width (onto the opponent's half). Picking the assist re-enabled the cursor and split came back. Also a stretched P1 marker: P1's real pos chosen while in bogus solo mode mapped, once split returned, onto a top-row logo hole cell (`Screenshot_3.png`).
+- 0.2.5: SplitMode() keys off the mode id read at cursor ctor (`g_modeId`): 0 = split, 1/5 = solo; the tick heuristic is only a fallback for mode ids not yet identified (Mission, Online, Heroes & Heralds still unknown; the `mode:` line in the log records them).
