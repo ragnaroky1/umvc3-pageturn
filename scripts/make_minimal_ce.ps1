@@ -1,4 +1,5 @@
-# Rebuilds the game folder as: clean vanilla + Clone Engine runtime + the first N Community Edition characters + PageTurn.
+# Rebuilds the game folder as: clean vanilla + Clone Engine runtime (+ColorExpansion) + the pack's data files + a Characters.ini
+# trimmed to the first N characters + PageTurn. (mag_patch.asi and mod_enable_damage_counter.asi are left out.)
 # Usage: .\scripts\make_minimal_ce.ps1 [-Count 7]
 param([int]$Count = 7)
 $ErrorActionPreference = "Stop"
@@ -40,28 +41,10 @@ foreach ($id in $want) { $b = $byId[$id]; $out += "[Character$n]"; $out += $b.li
 Set-Content "$Game\Characters.ini" $out
 Write-Host ("   characters: " + ($want -join ", "))
 
-Write-Host "3/4 character files..."
-$sids = @()
-foreach ($id in $want) {
-    $b = $byId[$id]
-    foreach ($l in $b.lines) { if ($l -match '^SoundID=(.+)$') { $sids += $Matches[1].Trim() } }
-    Get-ChildItem "$CE\nativePCx64" -Recurse -File | Where-Object {
-        $_.Name -like "${id}_*.arc" -or $_.Name -eq "${id}.arc" -or $_.Name -eq "${id}.sngw" -or $_.Name -like "*_${id}*.tex" -or $_.Name -like "*_${id}.arc" -or $_.Name -like "*_${id}[0-9][0-9]*.tex"
-    } | ForEach-Object {
-        $rel = $_.FullName.Substring($CE.Length + 1)
-        $dst = Join-Path $Game $rel
-        New-Item -ItemType Directory -Force (Split-Path $dst) | Out-Null
-        Copy-Item $_.FullName $dst -Force
-    }
-}
-foreach ($sid in ($sids | Sort-Object -Unique)) {
-    $src = "$CE\nativePCx64\sound\event\$sid"
-    if (Test-Path $src) { robocopy $src "$Game\nativePCx64\sound\event\$sid" /E /NP /NFL /NDL | Out-Null }
-}
-Write-Host ("   copied files: " + (Get-ChildItem "$Game\nativePCx64" -Recurse -File | Measure-Object).Count + " total in nativePCx64")
+Write-Host "3/4 pack data (whole nativePCx64 tree: extra costume/colour files are needed by ColorExpansion and Arcade CPU picks)..."
+robocopy "$CE\nativePCx64" "$Game\nativePCx64" /E /NP /NFL /NDL | Out-Null
+Write-Host ("   files in nativePCx64: " + (Get-ChildItem "$Game\nativePCx64" -Recurse -File | Measure-Object).Count)
 
-# ColorExpansion expects the pack's UI assets (b_<Name>255 bodies for the whole roster live inside the pack's mnchs*.arc): copy the pack's whole ui tree
-robocopy "$CE\nativePCx64\ui" "$Game\nativePCx64\ui" /E /NP /NFL /NDL | Out-Null
 Write-Host "4/4 PageTurn..."
 Copy-Item "$Root\build\UMvC3PageTurn.asi" "$Game\UMvC3PageTurn.asi" -Force
 New-Item -ItemType Directory -Force "$Game\nativePCx64\ui\PageTurn" | Out-Null

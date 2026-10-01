@@ -11,7 +11,7 @@
 #include <cstring>
 #include "MinHook.h"
 
-#define PT_VERSION "0.2.3"
+#define PT_VERSION "0.2.4"
 
 // ---------------------------------------------------------------- logging
 static FILE* g_log = nullptr;
@@ -94,6 +94,7 @@ static bool SplitMode() {
     ULONGLONG now = GetTickCount64();
     return g_pc[0].inner && g_pc[1].inner && now - g_pc[0].lastTick < 500 && now - g_pc[1].lastTick < 500;
 }
+static int  ActivePlayer() { return (g_pc[1].inner && g_pc[1].lastTick > g_pc[0].lastTick) ? 1 : 0; }   // solo modes: whichever cursor ticked last
 static int  g_ceCount = 0;                   // number of Clone Engine slots (real pos 56 .. 56+g_ceCount-1)
 static int  BasePages()    { return SplitMode() ? 2 : 1; }
 static int  PageW()        { return SplitMode() ? 4 : 8; }
@@ -122,7 +123,7 @@ static int VisibleFromReal(int p, int pos) { int cx, cy; PageCell(pos, cx, cy); 
 // real pos for a visible slot (face f = x/4 in split mode); -1 for holes / beyond roster
 static int RealFromVisible(int vis) {
     int x = vis & 7, y = vis >> 3;
-    if (!SplitMode()) return RealFromPage(g_pc[0].realPos < 0 ? 0 : PageOf(g_pc[0].realPos), x, y);
+    if (!SplitMode()) { PlayerCursor& a = g_pc[ActivePlayer()]; return RealFromPage(a.realPos < 0 ? 0 : PageOf(a.realPos), x, y); }
     int face = x / 4;
     int page = g_pc[face].realPos < 0 ? face : PageOf(g_pc[face].realPos);
     return RealFromPage(page, x % 4, y);
