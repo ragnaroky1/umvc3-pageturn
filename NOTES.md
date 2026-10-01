@@ -251,3 +251,8 @@ CloneEngine.asi computes `gameBase + RVA` and writes inline patches (VirtualProt
 
 - Arcade and Training OK. Versus: once a player confirmed a character (assist not yet chosen), their cursor stopped ticking, so the 500 ms "both cursors ticking" heuristic flipped SplitMode() to solo and the other player could roam the full width (onto the opponent's half). Picking the assist re-enabled the cursor and split came back. Also a stretched P1 marker: P1's real pos chosen while in bogus solo mode mapped, once split returned, onto a top-row logo hole cell (`Screenshot_3.png`).
 - 0.2.5: SplitMode() keys off the mode id read at cursor ctor (`g_modeId`): 0 = split, 1/5 = solo; the tick heuristic is only a fallback for mode ids not yet identified (Mission, Online, Heroes & Heralds still unknown; the `mode:` line in the log records them).
+
+## Test 25 (0.2.5) — PASS. Mode ids
+
+- Versus split mode stays split after one player confirms (the 0.2.4 bug). Arcade and Training solo OK.
+- Mode ids seen: Versus = 0, Arcade = 1, Training = 5, Online lobby pick = 5, Mission = 5 (Mission has no regular select screen; out of scope). Real online two-player select untestable (no opponent); its id is unknown.
