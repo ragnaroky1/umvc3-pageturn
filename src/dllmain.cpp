@@ -1,4 +1,6 @@
-// UMvC3 PageTurn 0.1.0 (Phase 2 minimum version)
+// UMvC3 PageTurn
+// Required Notice: Copyright ragnaroky1 (https://ko-fi.com/ragnaroky1)
+// Licensed under the PolyForm Noncommercial License 1.0.0 (see LICENSE.md).
 // Pages the character select grid over Clone Engine's extended rows.
 //   Two-player select: each player owns one half (P1 left, P2 right); each half is a 28-slot page.
 //   Solo select: full-width 56-slot pages.

@@ -59,6 +59,18 @@ one file; see `docs/ICONS_FOR_CREATORS.md`.
 check that `dinput8.dll` and `CloneEngine.asi` are present and that Community Edition works
 without PageTurn. If you report a problem, include the log.
 
+## License
+
+Required Notice: Copyright ragnaroky1 (https://ko-fi.com/ragnaroky1)
+
+UMvC3 PageTurn is licensed under the PolyForm Noncommercial License 1.0.0. See `LICENSE.md`
+or <https://polyformproject.org/licenses/noncommercial/1.0.0>. In short: use it, share it, and
+modify it for any noncommercial purpose, keep this notice with any copy, and do not sell it or
+use it to make money.
+
+Additional permission: bundling this mod, unmodified, in a free community mod pack is permitted,
+including packs whose authors accept voluntary donations.
+
 ## Third-party code
 
 PageTurn is built with MinHook (BSD 2-clause, Copyright (C) 2009-2017 Tsuda Kageyu). Its
